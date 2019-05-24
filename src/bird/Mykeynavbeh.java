@@ -58,6 +58,8 @@ public class Mykeynavbeh extends Applet implements KeyListener {
  private TransformGroup viewtrans = null;
 
  private TransformGroup tg = null;
+ private TransformGroup kula1 = null;
+ private TransformGroup walec1 = null;
  private Transform3D t3d = null;
  private Transform3D t3dstep = new Transform3D();
  private Matrix4d matrix = new Matrix4d();
@@ -103,31 +105,62 @@ public class Mykeynavbeh extends Applet implements KeyListener {
 
   BranchGroup objRoot = new BranchGroup();
   tg = new TransformGroup();
+  kula1 = new TransformGroup();
+  walec1 = new TransformGroup();
   t3d = new Transform3D();
 
   tg.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+  kula1.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+  walec1.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
 
-  t3d.setTranslation(new Vector3d(0.0, -0.0, -20.0));
+  t3d.setTranslation(new Vector3d(0.0, -5.0, -30.0));
   t3d.setRotation(new AxisAngle4f(0.0f, 1.0f, 0.0f, -1.2f));
-  t3d.setScale(1.43);
+  t3d.setScale(1.00);
 
   tg.setTransform(t3d);
+  t3d.setTranslation(new Vector3d(0.0, -10.0, -40.0));
+  t3d.setRotation(new AxisAngle4f(0.0f, 1.0f, 0.0f, -1.2f));
+  t3d.setScale(2.0);
+  kula1.setTransform(t3d);
+  
+  t3d.setTranslation(new Vector3d(0.0, 2.0, -40.0));
+  t3d.setRotation(new AxisAngle4f(0.0f, 0.0f, 90.0f, -1.2f));
+  t3d.setScale(1.0);
+  walec1.setTransform(t3d);
 
   ObjectFile loader = new ObjectFile();
   Scene s = null;
+  Scene s1 = null;
+  Scene s2 = null;
 
   File file = new java.io.File("model/bird_bl.obj");
+  File file1 = new java.io.File("model/kula.obj");
+  File file2 = new java.io.File("model/walec.obj");
 
   try {
    s = loader.load(file.toURI().toURL());
+   s1 = loader.load(file1.toURI().toURL());
+   s2 = loader.load(file2.toURI().toURL());
   } catch (Exception e) {
    System.err.println(e);
    System.exit(1);
   }
 
-  tg.addChild(s.getSceneGroup());
 
+  tg.addChild(s.getSceneGroup());
+  kula1.addChild(s1.getSceneGroup());
+   t3dstep.set(new Vector3d(0.0, 6.0, 0.0));
+   kula1.getTransform(t3d);
+   t3d.mul(t3dstep);
+   kula1.setTransform(t3d);
+  walec1.addChild(s2.getSceneGroup());
+   t3dstep.set(new Vector3d(0.0, 0.0, 0.0));
+   walec1.getTransform(t3d);
+   t3d.mul(t3dstep);
+   walec1.setTransform(t3d);
   objRoot.addChild(tg);
+  objRoot.addChild(kula1);
+  objRoot.addChild(walec1);
   objRoot.addChild(createLight());
 
   objRoot.compile();
