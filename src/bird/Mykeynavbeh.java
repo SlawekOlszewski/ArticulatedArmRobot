@@ -1,35 +1,6 @@
 package bird;
 
-/* Mykeynavbeh.java
- * Originally based on code from BackgroundApp.java
- *      @(#)BackgroundApp.java 1.1 00/09/22 14:03
- *
- * portions Copyright (c) 1996-2000 Sun Microsystems, Inc. All Rights Reserved.
- * 
- * Sun grants you ("Licensee") a non-exclusive, royalty free, license to use,
- * modify and redistribute this software in source and binary code form,
- * provided that i) this copyright notice and license appear on all copies of
- * the software; and ii) Licensee does not utilize the software in a manner
- * which is disparaging to Sun.
- *
- * This software is provided "AS IS," without a warranty of any kind. ALL
- * EXPRESS OR IMPLIED CONDITIONS, REPRESENTATIONS AND WARRANTIES, INCLUDING ANY
- * IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR
- * NON-INFRINGEMENT, ARE HEREBY EXCLUDED. SUN AND ITS LICENSORS SHALL NOT BE
- * LIABLE FOR ANY DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING
- * OR DISTRIBUTING THE SOFTWARE OR ITS DERIVATIVES. IN NO EVENT WILL SUN OR ITS
- * LICENSORS BE LIABLE FOR ANY LOST REVENUE, PROFIT OR DATA, OR FOR DIRECT,
- * INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
- * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF
- * OR INABILITY TO USE SOFTWARE, EVEN IF SUN HAS BEEN ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGES.
- *
- * This software is not designed or intended for use in on-line control of
- * aircraft, air traffic, aircraft navigation or aircraft communications; or in
- * the design, construction, operation or maintenance of any nuclear
- * facility. Licensee represents and warrants that it will not use or
- * redistribute the Software for such purposes.
- */
+
 
 import java.applet.*;
 import java.awt.*;
@@ -57,9 +28,15 @@ public class Mykeynavbeh extends Applet implements KeyListener {
  private Canvas3D canvas = null;
  private TransformGroup viewtrans = null;
 
- private TransformGroup tg = null;
- private TransformGroup kula1 = null;
- private TransformGroup walec1 = null;
+ //private TransformGroup tg = null;
+ private TransformGroup walec_glowny = null;
+ private TransformGroup walec_srodek = null;
+ private TransformGroup walec_gora = null;
+ private TransformGroup kula_1 = null;
+ private TransformGroup kula_2 = null;
+ private TransformGroup ryst = null;
+ private TransformGroup lapa_1 = null;
+ private TransformGroup lapa_2 = null;
  private Transform3D t3d = null;
  private Transform3D t3dstep = new Transform3D();
  private Matrix4d matrix = new Matrix4d();
@@ -104,63 +81,75 @@ public class Mykeynavbeh extends Applet implements KeyListener {
  private BranchGroup createBird() {
 
   BranchGroup objRoot = new BranchGroup();
-  tg = new TransformGroup();
-  kula1 = new TransformGroup();
-  walec1 = new TransformGroup();
+  walec_glowny = new TransformGroup();
+  walec_srodek = new TransformGroup();
+  walec_gora = new TransformGroup();
+  kula_1 = new TransformGroup();
+  kula_2 = new TransformGroup();
+  ryst = new TransformGroup();
+  lapa_1 = new TransformGroup();
+  lapa_2 =  new TransformGroup();
   t3d = new Transform3D();
 
-  tg.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
-  kula1.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
-  walec1.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+  walec_glowny.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+  walec_srodek.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+  walec_gora.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+  kula_1.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+  kula_2.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+  ryst.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+  lapa_2.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+  walec_gora.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
 
   t3d.setTranslation(new Vector3d(0.0, -5.0, -30.0));
   t3d.setRotation(new AxisAngle4f(0.0f, 1.0f, 0.0f, -1.2f));
   t3d.setScale(1.00);
-
-  tg.setTransform(t3d);
+  walec_glowny.setTransform(t3d);
+  
   t3d.setTranslation(new Vector3d(0.0, -10.0, -40.0));
   t3d.setRotation(new AxisAngle4f(0.0f, 1.0f, 0.0f, -1.2f));
   t3d.setScale(2.0);
-  kula1.setTransform(t3d);
+  kula_1.setTransform(t3d);
   
   t3d.setTranslation(new Vector3d(0.0, 2.0, -40.0));
   t3d.setRotation(new AxisAngle4f(0.0f, 0.0f, 90.0f, -1.2f));
   t3d.setScale(1.0);
-  walec1.setTransform(t3d);
+  walec_srodek.setTransform(t3d);
 
   ObjectFile loader = new ObjectFile();
-  Scene s = null;
-  Scene s1 = null;
-  Scene s2 = null;
+  Scene s_walec_glowny = null;
+  Scene s_kula_1 = null;
+  Scene s_walec_srodek = null;
 
   File file = new java.io.File("model/bird_bl.obj");
   File file1 = new java.io.File("model/kula.obj");
   File file2 = new java.io.File("model/walec.obj");
 
   try {
-   s = loader.load(file.toURI().toURL());
-   s1 = loader.load(file1.toURI().toURL());
-   s2 = loader.load(file2.toURI().toURL());
+   s_walec_glowny = loader.load(file.toURI().toURL());
+   s_kula_1 = loader.load(file1.toURI().toURL());
+   s_walec_srodek = loader.load(file2.toURI().toURL());
   } catch (Exception e) {
    System.err.println(e);
    System.exit(1);
   }
 
 
-  tg.addChild(s.getSceneGroup());
-  kula1.addChild(s1.getSceneGroup());
-   t3dstep.set(new Vector3d(0.0, 6.0, 0.0));
-   kula1.getTransform(t3d);
-   t3d.mul(t3dstep);
-   kula1.setTransform(t3d);
-  walec1.addChild(s2.getSceneGroup());
-   t3dstep.set(new Vector3d(0.0, 0.0, 0.0));
-   walec1.getTransform(t3d);
-   t3d.mul(t3dstep);
-   walec1.setTransform(t3d);
-  objRoot.addChild(tg);
-  objRoot.addChild(kula1);
-  objRoot.addChild(walec1);
+  walec_glowny.addChild(s_walec_glowny.getSceneGroup());
+  kula_1.addChild(s_kula_1.getSceneGroup());
+  t3dstep.set(new Vector3d(1.0, 6.0, 0.0));
+  kula_1.getTransform(t3d);
+  t3d.mul(t3dstep);
+  kula_1.setTransform(t3d);
+  
+  walec_srodek.addChild(s_walec_srodek.getSceneGroup());
+  t3dstep.set(new Vector3d(0.0, 0.0, 0.0));
+  walec_srodek.getTransform(t3d);
+  t3d.mul(t3dstep);
+  walec_srodek.setTransform(t3d);
+  
+  objRoot.addChild(walec_glowny);
+  objRoot.addChild(kula_1);
+  objRoot.addChild(walec_srodek);
   objRoot.addChild(createLight());
 
   objRoot.compile();
@@ -185,7 +174,7 @@ public class Mykeynavbeh extends Applet implements KeyListener {
 
  public void keyTyped(KeyEvent e) {
   char key = e.getKeyChar();
-
+/*
   if (key == 'e') {
    t3dstep.set(new Vector3d(0.0, 0.0, 0.1));
    tg.getTransform(t3d);
@@ -287,7 +276,7 @@ public class Mykeynavbeh extends Applet implements KeyListener {
    t3d.setTranslation(new Vector3d(matrix.m03, matrix.m13, matrix.m23));
    tg.setTransform(t3d);
 
-  }
+  }*/
  }
 
  public void keyReleased(KeyEvent e) {
