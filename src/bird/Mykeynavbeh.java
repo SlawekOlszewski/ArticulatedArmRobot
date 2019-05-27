@@ -73,6 +73,22 @@ public class Mykeynavbeh extends Applet implements KeyListener {
   platformGeom.addChild(keyNavBeh);
   universe.getViewingPlatform().setPlatformGeometry(platformGeom);
 
+  AmbientLight lightA = new AmbientLight();
+  lightA.setInfluencingBounds(bounds);
+  objRoot.addChild(lightA);
+
+  DirectionalLight lightD = new DirectionalLight();
+  lightD.setInfluencingBounds(bounds);
+  lightD.setDirection(new Vector3f(0.0f, 0.0f, -1.0f));
+  lightD.setColor(new Color3f(1.0f, 1.0f, 1.0f));
+  objRoot.addChild(lightD);
+  
+  DirectionalLight lightC = new DirectionalLight();
+  lightC.setInfluencingBounds(bounds);
+  lightC.setDirection(new Vector3f(0.0f, 0.0f, 1.0f));
+  lightC.setColor(new Color3f(1.0f, 1.0f, 1.0f));
+  objRoot.addChild(lightC);
+  
   objRoot.addChild(createBird());
 
   return objRoot;
@@ -80,6 +96,8 @@ public class Mykeynavbeh extends Applet implements KeyListener {
 
  private BranchGroup createBird() {
 
+  
+     
   BranchGroup objRoot = new BranchGroup();
   walec_glowny = new TransformGroup();
   walec_srodek = new TransformGroup();
@@ -97,6 +115,7 @@ public class Mykeynavbeh extends Applet implements KeyListener {
   kula_1.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
   kula_2.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
   ryst.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+  lapa_1.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
   lapa_2.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
   walec_gora.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
 
@@ -105,52 +124,138 @@ public class Mykeynavbeh extends Applet implements KeyListener {
   t3d.setScale(1.00);
   walec_glowny.setTransform(t3d);
   
-  t3d.setTranslation(new Vector3d(0.0, -10.0, -40.0));
+  t3d.set(new Vector3f(0.0f,2.0f,-30.0f));
+  t3d.setRotation(new AxisAngle4f(0.0f, 0.0f, 1.57f,(float) Math.PI/2));
+  t3d.setScale(1.0);
+  walec_srodek.setTransform(t3d);
+  
+  t3d.set(new Vector3f(-5.0f,2.0f,-30.0f));
+  t3d.setRotation(new AxisAngle4f(0.0f, 0.0f, 1.57f, (float) Math.PI));
+  t3d.setScale(0.7);
+  walec_gora.setTransform(t3d);
+  
+  t3d.setTranslation(new Vector3d(0.0, -10.0, -30.0));
   t3d.setRotation(new AxisAngle4f(0.0f, 1.0f, 0.0f, -1.2f));
   t3d.setScale(2.0);
   kula_1.setTransform(t3d);
   
-  t3d.setTranslation(new Vector3d(0.0, 2.0, -40.0));
-  t3d.setRotation(new AxisAngle4f(0.0f, 0.0f, 90.0f, -1.2f));
-  t3d.setScale(1.0);
-  walec_srodek.setTransform(t3d);
+  t3d.setTranslation(new Vector3d(-5.0, -7.0, -30.0));
+  t3d.setRotation(new AxisAngle4f(0.0f, 1.0f, 0.0f, -1.2f));
+  t3d.setScale(1.5);
+  kula_2.setTransform(t3d);
+  
+  t3d.setTranslation(new Vector3d(-5.0, -7.5, -30.0));
+  t3d.setRotation(new AxisAngle4f(0.0f, 1.0f, 0.0f, -1.2f));
+  t3d.setScale(0.9);
+  ryst.setTransform(t3d);
+  
+  t3d.setTranslation(new Vector3d(-5.5, -6.8, -30.0));
+  t3d.setRotation(new AxisAngle4f(0.0f, 0.0f, 0.0f, 0.0f));
+  t3d.setScale(0.6);
+  lapa_1.setTransform(t3d);
+  
+  //lapa_2
+  t3d.setTranslation(new Vector3d(-4.5, -6.8, -30.0));
+  //t3d.setRotation(new AxisAngle4f(0.0f, 0.0f, 0.0f, 0.0f));
+  t3d.setRotation(new AxisAngle4f(0.0f, 1.0f, 0.0f, (float) Math.PI));
+  t3d.setScale(0.6);
+  lapa_2.setTransform(t3d);
+  
 
   ObjectFile loader = new ObjectFile();
   Scene s_walec_glowny = null;
-  Scene s_kula_1 = null;
   Scene s_walec_srodek = null;
+  Scene s_walec_gora = null;
+  Scene s_kula_1 = null;
+  Scene s_kula_2 = null;
+  Scene s_ryst = null;
+  Scene s_lapa_1 = null;
+  Scene s_lapa_2 = null;
+
 
   File file = new java.io.File("model/bird_bl.obj");
   File file1 = new java.io.File("model/kula.obj");
   File file2 = new java.io.File("model/walec.obj");
+  File file3 = new java.io.File("model/lapa.obj");
 
   try {
    s_walec_glowny = loader.load(file.toURI().toURL());
-   s_kula_1 = loader.load(file1.toURI().toURL());
    s_walec_srodek = loader.load(file2.toURI().toURL());
+   s_walec_gora = loader.load(file2.toURI().toURL());
+   s_kula_1 = loader.load(file1.toURI().toURL());
+   s_kula_2 = loader.load(file1.toURI().toURL());
+   s_ryst = loader.load(file1.toURI().toURL());
+   s_lapa_1 = loader.load(file3.toURI().toURL());
+   s_lapa_2 = loader.load(file3.toURI().toURL());
+
   } catch (Exception e) {
    System.err.println(e);
    System.exit(1);
   }
 
-
+  //podstawa
   walec_glowny.addChild(s_walec_glowny.getSceneGroup());
-  kula_1.addChild(s_kula_1.getSceneGroup());
-  t3dstep.set(new Vector3d(1.0, 6.0, 0.0));
-  kula_1.getTransform(t3d);
-  t3d.mul(t3dstep);
-  kula_1.setTransform(t3d);
   
+    //walec_srodek
   walec_srodek.addChild(s_walec_srodek.getSceneGroup());
   t3dstep.set(new Vector3d(0.0, 0.0, 0.0));
   walec_srodek.getTransform(t3d);
   t3d.mul(t3dstep);
   walec_srodek.setTransform(t3d);
   
+  //walec_gora
+  walec_gora.addChild(s_walec_gora.getSceneGroup());
+  t3dstep.set(new Vector3d(0.0, 0.0, 0.0));
+  walec_gora.getTransform(t3d);
+  t3d.mul(t3dstep);
+  walec_gora.setTransform(t3d);
+  
+  // kula_1
+  kula_1.addChild(s_kula_1.getSceneGroup());
+  t3dstep.set(new Vector3d(0.0, 6.0, 0.0));
+  kula_1.getTransform(t3d);
+  t3d.mul(t3dstep);
+  kula_1.setTransform(t3d);
+  
+  //kula_2
+  kula_2.addChild(s_kula_2.getSceneGroup());
+  t3dstep.set(new Vector3d(0.0, 6.0, 0.0));
+  kula_2.getTransform(t3d);
+  t3d.mul(t3dstep);
+  kula_2.setTransform(t3d);
+  
+  //ryst
+  ryst.addChild(s_ryst.getSceneGroup());
+  t3dstep.set(new Vector3d(0.0, 6.0, 0.0));
+  ryst.getTransform(t3d);
+  t3d.mul(t3dstep);
+  ryst.setTransform(t3d);
+  
+  //lapa_1
+  lapa_1.addChild(s_lapa_1.getSceneGroup());
+  t3dstep.set(new Vector3d(0.0, 6.0, 0.0));
+  lapa_1.getTransform(t3d);
+  t3d.mul(t3dstep);
+  lapa_1.setTransform(t3d);
+  
+  //lapa_2
+  lapa_2.addChild(s_lapa_2.getSceneGroup());
+  t3dstep.set(new Vector3d(0.0, 6.0, 0.0));
+  lapa_2.getTransform(t3d);
+  t3d.mul(t3dstep);
+  lapa_2.setTransform(t3d);
+ 
+
+  
   objRoot.addChild(walec_glowny);
-  objRoot.addChild(kula_1);
   objRoot.addChild(walec_srodek);
-  objRoot.addChild(createLight());
+  objRoot.addChild(walec_gora);
+  objRoot.addChild(kula_1);
+  objRoot.addChild(kula_2);
+  objRoot.addChild(ryst);
+  objRoot.addChild(lapa_1);
+  objRoot.addChild(lapa_2);
+  //objRoot.addChild(createLight());
 
   objRoot.compile();
 
@@ -158,14 +263,14 @@ public class Mykeynavbeh extends Applet implements KeyListener {
 
  }
 
- private Light createLight() {
+ /*private Light createLight() {
   DirectionalLight light = new DirectionalLight(true, new Color3f(1.0f,
     1.0f, 1.0f), new Vector3f(-0.3f, 0.2f, -1.0f));
 
   light.setInfluencingBounds(new BoundingSphere(new Point3d(), 10000.0));
 
   return light;
- }
+ }*/
 
  public static void main(String[] args) {
   Mykeynavbeh applet = new Mykeynavbeh();
