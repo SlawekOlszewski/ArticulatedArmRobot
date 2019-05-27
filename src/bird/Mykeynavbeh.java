@@ -37,6 +37,10 @@ public class Mykeynavbeh extends Applet implements KeyListener {
  private TransformGroup ryst = null;
  private TransformGroup lapa_1 = null;
  private TransformGroup lapa_2 = null;
+ private TransformGroup t_obrot_1 = null;
+ private TransformGroup t_obrot_2 = null;
+ private BranchGroup b_obrot_1 = null;
+ private BranchGroup b_obrot_2 = null;
  private Transform3D t3d = null;
  private Transform3D t3dstep = new Transform3D();
  private Matrix4d matrix = new Matrix4d();
@@ -99,6 +103,8 @@ public class Mykeynavbeh extends Applet implements KeyListener {
   
      
   BranchGroup objRoot = new BranchGroup();
+  b_obrot_1 = new BranchGroup();
+  b_obrot_2 = new BranchGroup();
   walec_glowny = new TransformGroup();
   walec_srodek = new TransformGroup();
   walec_gora = new TransformGroup();
@@ -107,55 +113,126 @@ public class Mykeynavbeh extends Applet implements KeyListener {
   ryst = new TransformGroup();
   lapa_1 = new TransformGroup();
   lapa_2 =  new TransformGroup();
+  t_obrot_1 =  new TransformGroup();
+  t_obrot_2 =  new TransformGroup();
   t3d = new Transform3D();
 
   walec_glowny.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+  walec_glowny.setCapability(TransformGroup.ALLOW_CHILDREN_EXTEND);
+  walec_glowny.setCapability(TransformGroup.ALLOW_CHILDREN_READ);
+  walec_glowny.setCapability(TransformGroup.ALLOW_CHILDREN_WRITE);
+  walec_glowny.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
+  
   walec_srodek.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+  walec_srodek.setCapability(TransformGroup.ALLOW_CHILDREN_EXTEND);
+  walec_srodek.setCapability(TransformGroup.ALLOW_CHILDREN_READ);
+  walec_srodek.setCapability(TransformGroup.ALLOW_CHILDREN_WRITE);
+  walec_srodek.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
+  
   walec_gora.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+  walec_gora.setCapability(TransformGroup.ALLOW_CHILDREN_EXTEND);
+  walec_gora.setCapability(TransformGroup.ALLOW_CHILDREN_READ);
+  walec_gora.setCapability(TransformGroup.ALLOW_CHILDREN_WRITE);
+  walec_gora.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
+  
   kula_1.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+  kula_1.setCapability(TransformGroup.ALLOW_CHILDREN_EXTEND);
+  kula_1.setCapability(TransformGroup.ALLOW_CHILDREN_READ);
+  kula_1.setCapability(TransformGroup.ALLOW_CHILDREN_WRITE);
+  kula_1.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
+  
   kula_2.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+  kula_2.setCapability(TransformGroup.ALLOW_CHILDREN_EXTEND);
+  kula_2.setCapability(TransformGroup.ALLOW_CHILDREN_READ);
+  kula_2.setCapability(TransformGroup.ALLOW_CHILDREN_WRITE);
+  kula_2.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
+  
   ryst.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+  ryst.setCapability(TransformGroup.ALLOW_CHILDREN_EXTEND);
+  ryst.setCapability(TransformGroup.ALLOW_CHILDREN_READ);
+  ryst.setCapability(TransformGroup.ALLOW_CHILDREN_WRITE);
+  ryst.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
+  
   lapa_1.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+  lapa_1.setCapability(TransformGroup.ALLOW_CHILDREN_EXTEND);
+  lapa_1.setCapability(TransformGroup.ALLOW_CHILDREN_READ);
+  lapa_1.setCapability(TransformGroup.ALLOW_CHILDREN_WRITE);
+  lapa_1.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
+  
   lapa_2.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+  lapa_2.setCapability(TransformGroup.ALLOW_CHILDREN_EXTEND);
+  lapa_2.setCapability(TransformGroup.ALLOW_CHILDREN_READ);
+  lapa_2.setCapability(TransformGroup.ALLOW_CHILDREN_WRITE);
+  lapa_2.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
+  
   walec_gora.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+  walec_gora.setCapability(TransformGroup.ALLOW_CHILDREN_EXTEND);
+  walec_gora.setCapability(TransformGroup.ALLOW_CHILDREN_READ);
+  walec_gora.setCapability(TransformGroup.ALLOW_CHILDREN_WRITE);
+  walec_gora.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
+ 
+  b_obrot_1.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+  b_obrot_1.setCapability(TransformGroup.ALLOW_CHILDREN_EXTEND);
+  b_obrot_1.setCapability(TransformGroup.ALLOW_CHILDREN_READ);
+  b_obrot_1.setCapability(TransformGroup.ALLOW_CHILDREN_WRITE);
+  b_obrot_1.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
+ 
+  t_obrot_1.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+  t_obrot_1.setCapability(TransformGroup.ALLOW_CHILDREN_EXTEND);
+  t_obrot_1.setCapability(TransformGroup.ALLOW_CHILDREN_READ);
+  t_obrot_1.setCapability(TransformGroup.ALLOW_CHILDREN_WRITE);
+  t_obrot_1.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
+ 
+  b_obrot_2.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+  b_obrot_2.setCapability(TransformGroup.ALLOW_CHILDREN_EXTEND);
+  b_obrot_2.setCapability(TransformGroup.ALLOW_CHILDREN_READ);
+  b_obrot_2.setCapability(TransformGroup.ALLOW_CHILDREN_WRITE);
+  b_obrot_2.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
+ 
+  t_obrot_2.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+  t_obrot_2.setCapability(TransformGroup.ALLOW_CHILDREN_EXTEND);
+  t_obrot_2.setCapability(TransformGroup.ALLOW_CHILDREN_READ);
+  t_obrot_2.setCapability(TransformGroup.ALLOW_CHILDREN_WRITE);
+  t_obrot_2.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
+ 
 
-  t3d.setTranslation(new Vector3d(0.0, -5.0, -30.0));
+  t3d.setTranslation(new Vector3d(0.0, -5.0, 0.0));
   t3d.setRotation(new AxisAngle4f(0.0f, 1.0f, 0.0f, -1.2f));
   t3d.setScale(1.00);
   walec_glowny.setTransform(t3d);
   
-  t3d.set(new Vector3f(0.0f,2.0f,-30.0f));
+  t3d.set(new Vector3f(0.0f,2.0f, 0.0f));
   t3d.setRotation(new AxisAngle4f(0.0f, 0.0f, 1.57f,(float) Math.PI/2));
   t3d.setScale(1.0);
   walec_srodek.setTransform(t3d);
   
-  t3d.set(new Vector3f(-5.0f,2.0f,-30.0f));
+  t3d.set(new Vector3f(-5.0f,2.0f, 0.0f));
   t3d.setRotation(new AxisAngle4f(0.0f, 0.0f, 1.57f, (float) Math.PI));
   t3d.setScale(0.7);
   walec_gora.setTransform(t3d);
   
-  t3d.setTranslation(new Vector3d(0.0, -10.0, -30.0));
+  t3d.setTranslation(new Vector3d(0.0, -10.0, 0.0));
   t3d.setRotation(new AxisAngle4f(0.0f, 1.0f, 0.0f, -1.2f));
   t3d.setScale(2.0);
   kula_1.setTransform(t3d);
   
-  t3d.setTranslation(new Vector3d(-5.0, -7.0, -30.0));
+  t3d.setTranslation(new Vector3d(-5.0, -7.0, 0.0));
   t3d.setRotation(new AxisAngle4f(0.0f, 1.0f, 0.0f, -1.2f));
   t3d.setScale(1.5);
   kula_2.setTransform(t3d);
   
-  t3d.setTranslation(new Vector3d(-5.0, -7.5, -30.0));
+  t3d.setTranslation(new Vector3d(-5.0, -7.5, 0.0));
   t3d.setRotation(new AxisAngle4f(0.0f, 1.0f, 0.0f, -1.2f));
   t3d.setScale(0.9);
   ryst.setTransform(t3d);
   
-  t3d.setTranslation(new Vector3d(-5.5, -6.8, -30.0));
+  t3d.setTranslation(new Vector3d(-5.5, -6.8, 0.0));
   t3d.setRotation(new AxisAngle4f(0.0f, 0.0f, 0.0f, 0.0f));
   t3d.setScale(0.6);
   lapa_1.setTransform(t3d);
   
   //lapa_2
-  t3d.setTranslation(new Vector3d(-4.5, -6.8, -30.0));
+  t3d.setTranslation(new Vector3d(-4.5, -6.8, 0.0));
   //t3d.setRotation(new AxisAngle4f(0.0f, 0.0f, 0.0f, 0.0f));
   t3d.setRotation(new AxisAngle4f(0.0f, 1.0f, 0.0f, (float) Math.PI));
   t3d.setScale(0.6);
@@ -245,18 +322,40 @@ public class Mykeynavbeh extends Applet implements KeyListener {
   t3d.mul(t3dstep);
   lapa_2.setTransform(t3d);
  
+  /*b_obrot_1.addChild(ryst);
+  b_obrot_1.addChild(walec_srodek);
+  b_obrot_1.addChild(walec_gora);*/
+  b_obrot_1.addChild(walec_glowny);
+  /*dupa.addChild(kula_1);
+  dupa.addChild(kula_2);
+  dupa.addChild(lapa_1);
+  dupa.addChild(lapa_2);*/
+  
+  b_obrot_2.addChild(ryst);
+  b_obrot_2.addChild(walec_srodek);
+  b_obrot_2.addChild(walec_gora);
+  b_obrot_2.addChild(kula_1);
+  b_obrot_2.addChild(kula_2);
+  b_obrot_2.addChild(lapa_1);
+  b_obrot_2.addChild(lapa_2);
+ 
 
   
-  objRoot.addChild(walec_glowny);
-  objRoot.addChild(walec_srodek);
+  t_obrot_1.addChild(b_obrot_1);
+  t_obrot_2.addChild(b_obrot_2);
+  t_obrot_1.addChild(t_obrot_2);
+  /*objRoot.addChild(walec_glowny);
+  //objRoot.addChild(walec_srodek);
   objRoot.addChild(walec_gora);
   objRoot.addChild(kula_1);
   objRoot.addChild(kula_2);
-  objRoot.addChild(ryst);
+  //objRoot.addChild(ryst);
   objRoot.addChild(lapa_1);
-  objRoot.addChild(lapa_2);
-  //objRoot.addChild(createLight());
-
+  objRoot.addChild(lapa_2);*/
+   
+  //objRoot.addChild(dupa);
+ objRoot.addChild(t_obrot_1);
+ //objRoot.addChild(t_obrot_2);
   objRoot.compile();
 
   return objRoot;
@@ -280,37 +379,37 @@ public class Mykeynavbeh extends Applet implements KeyListener {
  public void keyTyped(KeyEvent e) {
   char key = e.getKeyChar();
 /*
-  if (key == 'e') {
+  if (key == 'a') {
    t3dstep.set(new Vector3d(0.0, 0.0, 0.1));
    tg.getTransform(t3d);
    t3d.mul(t3dstep);
    tg.setTransform(t3d);
-  }
+  }*/
 
-  if (key == 'y') {
+  if (key == 'a') {
 
    t3dstep.rotY(Math.PI / 32);
-   tg.getTransform(t3d);
+   t_obrot_1.getTransform(t3d);
    t3d.get(matrix);
    t3d.setTranslation(new Vector3d(0.0, 0.0, 0.0));
    t3d.mul(t3dstep);
    t3d.setTranslation(new Vector3d(matrix.m03, matrix.m13, matrix.m23));
-   tg.setTransform(t3d);
+   t_obrot_1.setTransform(t3d);
 
   }
 
-  if (key == 'u') {
+  if (key == 'd') {
 
    t3dstep.rotY(-Math.PI / 32);
-   tg.getTransform(t3d);
+   t_obrot_2.getTransform(t3d);
    t3d.get(matrix);
    t3d.setTranslation(new Vector3d(0.0, 0.0, 0.0));
    t3d.mul(t3dstep);
    t3d.setTranslation(new Vector3d(matrix.m03, matrix.m13, matrix.m23));
-   tg.setTransform(t3d);
+   t_obrot_2.setTransform(t3d);
 
   }
-
+/*
   if (key == 's') {
    t3dstep.set(new Vector3d(0.0, 0.1, 0.0));
    tg.getTransform(t3d);
