@@ -41,21 +41,18 @@ public class Mykeynavbeh extends Applet implements KeyListener {
  private TransformGroup t_obrot_2 = null;
  private TransformGroup t_obrot_3 = null;
  private TransformGroup t_obrot_4 = null;
+ private TransformGroup t_obrot_5 = null;
  private BranchGroup b_obrot_1 = null;
  private BranchGroup b_obrot_2 = null;
  private BranchGroup b_obrot_3 = null;
  private BranchGroup b_obrot_4 = null;
+ private BranchGroup b_obrot_5 = null;
  private Transform3D t3d = null;
  private Transform3D  t3d_obrot_3   = new Transform3D();
  private Transform3D  t3d_obrot_4   = new Transform3D();
+ private Transform3D  t3d_obrot_5   = new Transform3D();
  private Transform3D t3dstep = new Transform3D();
  private Matrix4d matrix = new Matrix4d();
- 
-     private double kat=0, kat_licz=0;
-    private final int ROTATE = 1;
-    private int r;
-    
-    private volatile double t, k, speed;
 
  public Mykeynavbeh() {
   setLayout(new BorderLayout());
@@ -117,7 +114,10 @@ public class Mykeynavbeh extends Applet implements KeyListener {
   
   t3d_obrot_4 = new Transform3D();
   t3d_obrot_4.setTranslation(new Vector3f(0.0f, -4.5f, 0.0f));
-     
+  
+  t3d_obrot_5 = new Transform3D();
+  t3d_obrot_5.setTranslation(new Vector3f(0.0f, 0.0f, 0.0f));
+  
   BranchGroup objRoot = new BranchGroup();
   b_obrot_1 = new BranchGroup();
   b_obrot_2 = new BranchGroup();
