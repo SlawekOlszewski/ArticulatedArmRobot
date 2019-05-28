@@ -44,7 +44,7 @@ public class Mykeynavbeh extends Applet implements KeyListener {
  private BranchGroup b_obrot_2 = null;
  private BranchGroup b_obrot_3 = null;
  private Transform3D t3d = null;
- private Transform3D  proba   = new Transform3D();
+ private Transform3D  t3d_obrot_3   = new Transform3D();
  private Transform3D t3dstep = new Transform3D();
  private Matrix4d matrix = new Matrix4d();
  
@@ -109,7 +109,8 @@ public class Mykeynavbeh extends Applet implements KeyListener {
 
  private BranchGroup createBird() {
 
-  
+  t3d_obrot_3 = new Transform3D();
+  t3d_obrot_3.setTranslation(new Vector3f(-6.0f, 0.0f, 0.0f));
      
   BranchGroup objRoot = new BranchGroup();
   b_obrot_1 = new BranchGroup();
@@ -125,10 +126,9 @@ public class Mykeynavbeh extends Applet implements KeyListener {
   lapa_2 =  new TransformGroup();
   t_obrot_1 =  new TransformGroup();
   t_obrot_2 =  new TransformGroup();
-  t_obrot_3 =  new TransformGroup();
+  t_obrot_3 =  new TransformGroup(t3d_obrot_3);
   t3d = new Transform3D();
-  proba = new Transform3D();
-  proba.setTranslation(new Vector3f(0.0f, 0.0f, 0.0f));
+
 
   walec_glowny.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
   walec_glowny.setCapability(TransformGroup.ALLOW_CHILDREN_EXTEND);
@@ -221,7 +221,7 @@ public class Mykeynavbeh extends Applet implements KeyListener {
   t_obrot_3.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
  
 
-  t3d.setTranslation(new Vector3d(0.0, -7.0, 0.0));
+  t3d.set(new Vector3d(0.0, -7.0, 0.0));
   t3d.setRotation(new AxisAngle4f(0.0f, 1.0f, 0.0f, -1.2f));
   t3d.setScale(1.00);
   walec_glowny.setTransform(t3d);
@@ -231,38 +231,37 @@ public class Mykeynavbeh extends Applet implements KeyListener {
   t3d.setScale(1.0);
   walec_srodek.setTransform(t3d);
   
-  t3d.set(new Vector3f(-6.0f,0.0f, 0.0f));
+  t3d.set(new Vector3f(0.0f,0.0f, 0.0f));
   t3d.setRotation(new AxisAngle4f(0.0f, 0.0f, 1.57f, (float) Math.PI));
   t3d.setScale(0.7);
   walec_gora.setTransform(t3d);
   
-  t3d.setTranslation(new Vector3d(0.0, 0.0, 0.0));
+  t3d.set(new Vector3d(0.0, 0.0, 0.0));
   t3d.setRotation(new AxisAngle4f(0.0f, 1.0f, 0.0f, -1.2f));
   t3d.setScale(2.0);
   kula_1.setTransform(t3d);
   
-  t3d.setTranslation(new Vector3d(-6.0, 0.0, 0.0));
+  t3d.set(new Vector3d(0.0, 0.0, 0.0));
   t3d.setRotation(new AxisAngle4f(0.0f, 1.0f, 0.0f, -1.2f));
   t3d.setScale(1.5);
   kula_2.setTransform(t3d);
   
-  t3d.setTranslation(new Vector3d(-6.0, -4.5, 0.0));
+  t3d.set(new Vector3d(0.0, -4.5, 0.0));
   t3d.setRotation(new AxisAngle4f(0.0f, 1.0f, 0.0f, -1.2f));
   t3d.setScale(0.9);
   ryst.setTransform(t3d);
-  
-  t3d.setTranslation(new Vector3d(-6.5, -5.5, 0.0));
+
+  t3d.set(new Vector3d(-0.5, -5.5, 0.0));
   t3d.setRotation(new AxisAngle4f(0.0f, 0.0f, 0.0f, 0.0f));
   t3d.setScale(0.6);
   lapa_1.setTransform(t3d);
   
   //lapa_2
-  t3d.setTranslation(new Vector3d(-5.5, -5.5, 0.0));
+  t3d.set(new Vector3d(0.5, -5.5, 0.0));
   //t3d.setRotation(new AxisAngle4f(0.0f, 0.0f, 0.0f, 0.0f));
   t3d.setRotation(new AxisAngle4f(0.0f, 1.0f, 0.0f, (float) Math.PI));
   t3d.setScale(0.6);
   lapa_2.setTransform(t3d);
-  
 
   ObjectFile loader = new ObjectFile();
   Scene s_walec_glowny = null;
@@ -467,21 +466,15 @@ public class Mykeynavbeh extends Applet implements KeyListener {
    t_obrot_2.setTransform(t3d);
   }
   if (key == '8') {
-   t3dstep.rotZ(Math.PI / 32);
-   //t3dstep.
-   t_obrot_3.getTransform(t3d);
-   t3d.get(matrix);
-   t3d.setTranslation(new Vector3d(0.0, 0.0, 0.0));
-   t3d.mul(t3dstep);
-   t3d.setTranslation(new Vector3d(matrix.m03, matrix.m13, matrix.m23));
-   t_obrot_3.setTransform(t3d);
-  }/*
-    if (key == 'q') {
-   t3dstep.setScale(new Vector3d(1.5, 1.5, 1.5));
-   tg.getTransform(t3d);
-   t3d.mul(t3dstep);
-   tg.setTransform(t3d);
+   t3dstep.rotZ(-Math.PI / 32);
+   t3d_obrot_3.mul(t3dstep);
+   t_obrot_3.setTransform(t3d_obrot_3);
   }
+    if (key == '2') {
+   t3dstep.rotZ(Math.PI / 32);
+   t3d_obrot_3.mul(t3dstep);
+   t_obrot_3.setTransform(t3d_obrot_3);
+  }/*
   if (key == 'x') {
 
    t3dstep.rotX(Math.PI / 32);
