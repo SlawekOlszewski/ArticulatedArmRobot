@@ -311,7 +311,6 @@ public class Mykeynavbeh extends Applet implements KeyListener {
   
   //lapa_2
   t3d.set(new Vector3d(0.5, -1.2, 0.0));
-  //t3d.setRotation(new AxisAngle4f(0.0f, 0.0f, 0.0f, 0.0f));
   t3d.setRotation(new AxisAngle4f(0.0f, 1.0f, 0.0f, (float) Math.PI));
   t3d.setScale(0.6);
   lapa_2.setTransform(t3d);
@@ -409,15 +408,6 @@ public class Mykeynavbeh extends Applet implements KeyListener {
 
  }
 
- /*private Light createLight() {
-  DirectionalLight light = new DirectionalLight(true, new Color3f(1.0f,
-    1.0f, 1.0f), new Vector3f(-0.3f, 0.2f, -1.0f));
-
-  light.setInfluencingBounds(new BoundingSphere(new Point3d(), 10000.0));
-
-  return light;
- }*/
-
  public static void main(String[] args) {
   Mykeynavbeh applet = new Mykeynavbeh();
   Frame frame = new MainFrame(applet, 800, 600);
@@ -425,13 +415,6 @@ public class Mykeynavbeh extends Applet implements KeyListener {
 
  public void keyTyped(KeyEvent e) {
   char key = e.getKeyChar();
-/*
-  if (key == 'a') {
-   t3dstep.set(new Vector3d(0.0, 0.0, 0.1));
-   tg.getTransform(t3d);
-   t3d.mul(t3dstep);
-   tg.setTransform(t3d);
-  }*/
 
   if (key == 'a') {
 
@@ -460,27 +443,14 @@ public class Mykeynavbeh extends Applet implements KeyListener {
   if (key == 'w') {
    t3dstep.rotZ(-Math.PI / 32);
    t_obrot_2.getTransform(t3d);
-   //t3d.get(matrix);
-   //t3d.setTranslation(new Vector3d(0.0, 0.0, 0.0));
    t3d.mul(t3dstep);
    t3d.setTranslation(new Vector3d(matrix.m03, matrix.m13, matrix.m23));
    t_obrot_2.setTransform(t3d);
-                /*kat=speed*Math.atan(k*t);
-             obrot2.setTranslation(new Vector3f(-rotx, -roty, 0.0f));
-             obrot3.rotZ(kat);
-             obrot3.mul(obrot2);
-             obrot.setTranslation(new Vector3f(rotx, roty, 0.0f));
-             obrot.mul(obrot3);
-             kk.setTransform(obrot);
-             
-            kat_licz=kat_licz+kat;*/
   }
 
   if (key == 's') {
    t3dstep.rotZ(Math.PI / 32);
    t_obrot_2.getTransform(t3d);
-   //t3d.get(matrix);
-   //t3d.setTranslation(new Vector3d(0.0, 0.0, 0.0));
    t3d.mul(t3dstep);
    t3d.setTranslation(new Vector3d(matrix.m03, matrix.m13, matrix.m23));
    t_obrot_2.setTransform(t3d);
