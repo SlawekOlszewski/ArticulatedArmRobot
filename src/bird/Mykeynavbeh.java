@@ -42,15 +42,18 @@ public class Mykeynavbeh extends Applet implements KeyListener {
  private TransformGroup t_obrot_3 = null;
  private TransformGroup t_obrot_4 = null;
  private TransformGroup t_obrot_5 = null;
+ private TransformGroup t_obrot_6 = null;
  private BranchGroup b_obrot_1 = null;
  private BranchGroup b_obrot_2 = null;
  private BranchGroup b_obrot_3 = null;
  private BranchGroup b_obrot_4 = null;
  private BranchGroup b_obrot_5 = null;
+ private BranchGroup b_obrot_6 = null;
  private Transform3D t3d = null;
  private Transform3D  t3d_obrot_3   = new Transform3D();
  private Transform3D  t3d_obrot_4   = new Transform3D();
  private Transform3D  t3d_obrot_5   = new Transform3D();
+ private Transform3D  t3d_obrot_6   = new Transform3D();
  private Transform3D t3dstep = new Transform3D();
  private Matrix4d matrix = new Matrix4d();
 
@@ -118,11 +121,16 @@ public class Mykeynavbeh extends Applet implements KeyListener {
   t3d_obrot_5 = new Transform3D();
   t3d_obrot_5.setTranslation(new Vector3f(0.0f, 0.0f, 0.0f));
   
+  t3d_obrot_6 = new Transform3D();
+  t3d_obrot_6.setTranslation(new Vector3f(0.0f, 0.0f, 0.0f));
+  
   BranchGroup objRoot = new BranchGroup();
   b_obrot_1 = new BranchGroup();
   b_obrot_2 = new BranchGroup();
   b_obrot_3 = new BranchGroup();
   b_obrot_4 = new BranchGroup();
+  b_obrot_5 = new BranchGroup();
+  b_obrot_6 = new BranchGroup();
   walec_glowny = new TransformGroup();
   walec_srodek = new TransformGroup();
   walec_gora = new TransformGroup();
@@ -135,6 +143,8 @@ public class Mykeynavbeh extends Applet implements KeyListener {
   t_obrot_2 =  new TransformGroup();
   t_obrot_3 =  new TransformGroup(t3d_obrot_3);
   t_obrot_4 =  new TransformGroup(t3d_obrot_4);
+  t_obrot_5 =  new TransformGroup(t3d_obrot_5);
+  t_obrot_6 =  new TransformGroup(t3d_obrot_6);
   t3d = new Transform3D();
 
 
@@ -239,7 +249,30 @@ public class Mykeynavbeh extends Applet implements KeyListener {
   t_obrot_4.setCapability(TransformGroup.ALLOW_CHILDREN_READ);
   t_obrot_4.setCapability(TransformGroup.ALLOW_CHILDREN_WRITE);
   t_obrot_4.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
+  
+  b_obrot_5.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+  b_obrot_5.setCapability(TransformGroup.ALLOW_CHILDREN_EXTEND);
+  b_obrot_5.setCapability(TransformGroup.ALLOW_CHILDREN_READ);
+  b_obrot_5.setCapability(TransformGroup.ALLOW_CHILDREN_WRITE);
+  b_obrot_5.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
  
+  t_obrot_5.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+  t_obrot_5.setCapability(TransformGroup.ALLOW_CHILDREN_EXTEND);
+  t_obrot_5.setCapability(TransformGroup.ALLOW_CHILDREN_READ);
+  t_obrot_5.setCapability(TransformGroup.ALLOW_CHILDREN_WRITE);
+  t_obrot_5.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
+  
+  b_obrot_6.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+  b_obrot_6.setCapability(TransformGroup.ALLOW_CHILDREN_EXTEND);
+  b_obrot_6.setCapability(TransformGroup.ALLOW_CHILDREN_READ);
+  b_obrot_6.setCapability(TransformGroup.ALLOW_CHILDREN_WRITE);
+  b_obrot_6.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
+ 
+  t_obrot_6.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+  t_obrot_6.setCapability(TransformGroup.ALLOW_CHILDREN_EXTEND);
+  t_obrot_6.setCapability(TransformGroup.ALLOW_CHILDREN_READ);
+  t_obrot_6.setCapability(TransformGroup.ALLOW_CHILDREN_WRITE);
+  t_obrot_6.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
 
   t3d.set(new Vector3d(0.0, -7.0, 0.0));
   t3d.setRotation(new AxisAngle4f(0.0f, 1.0f, 0.0f, -1.2f));
@@ -319,61 +352,27 @@ public class Mykeynavbeh extends Applet implements KeyListener {
   
     //walec_srodek
   walec_srodek.addChild(s_walec_srodek.getSceneGroup());
- /* t3dstep.set(new Vector3d(0.0, 0.0, 0.0));
-  walec_srodek.getTransform(t3d);
-  t3d.mul(t3dstep);
-  walec_srodek.setTransform(t3d);*/
   
   //walec_gora
   walec_gora.addChild(s_walec_gora.getSceneGroup());
-  /*t3dstep.set(new Vector3d(0.0, 0.0, 0.0));
-  walec_gora.getTransform(t3d);
-  t3d.mul(t3dstep);
-  walec_gora.setTransform(t3d);*/
   
   // kula_1
   kula_1.addChild(s_kula_1.getSceneGroup());
-  /*t3dstep.set(new Vector3d(0.0, 6.0, 0.0));
-  kula_1.getTransform(t3d);
-  t3d.mul(t3dstep);
-  kula_1.setTransform(t3d);*/
   
   //kula_2
   kula_2.addChild(s_kula_2.getSceneGroup());
-  /*t3dstep.set(new Vector3d(0.0, 6.0, 0.0));
-  kula_2.getTransform(t3d);
-  t3d.mul(t3dstep);
-  kula_2.setTransform(t3d);*/
   
   //ryst
   ryst.addChild(s_ryst.getSceneGroup());
-  /*t3dstep.set(new Vector3d(0.0, 6.0, 0.0));
-  ryst.getTransform(t3d);
-  t3d.mul(t3dstep);
-  ryst.setTransform(t3d);*/
   
   //lapa_1
   lapa_1.addChild(s_lapa_1.getSceneGroup());
- /* t3dstep.set(new Vector3d(0.0, 6.0, 0.0));
-  lapa_1.getTransform(t3d);
-  t3d.mul(t3dstep);
-  lapa_1.setTransform(t3d);*/
   
   //lapa_2
   lapa_2.addChild(s_lapa_2.getSceneGroup());
-  /*t3dstep.set(new Vector3d(0.0, 6.0, 0.0));
-  lapa_2.getTransform(t3d);
-  t3d.mul(t3dstep);
-  lapa_2.setTransform(t3d);*/
- 
-  /*b_obrot_1.addChild(ryst);
-  b_obrot_1.addChild(walec_srodek);
-  b_obrot_1.addChild(walec_gora);*/
+
   b_obrot_1.addChild(walec_glowny);
-  /*dupa.addChild(kula_1);
-  dupa.addChild(kula_2);
-  dupa.addChild(lapa_1);
-  dupa.addChild(lapa_2);*/
+
   b_obrot_2.addChild(walec_srodek);
   b_obrot_2.addChild(kula_1);
   
@@ -381,9 +380,11 @@ public class Mykeynavbeh extends Applet implements KeyListener {
   b_obrot_3.addChild(walec_gora);
   b_obrot_3.addChild(kula_2);
   
-  b_obrot_4.addChild(lapa_1);
-  b_obrot_4.addChild(lapa_2);
   b_obrot_4.addChild(ryst);
+  
+  b_obrot_5.addChild(lapa_1);
+  b_obrot_6.addChild(lapa_2);
+
  
 
   
@@ -391,22 +392,17 @@ public class Mykeynavbeh extends Applet implements KeyListener {
   t_obrot_2.addChild(b_obrot_2);
   t_obrot_3.addChild(b_obrot_3);
   t_obrot_4.addChild(b_obrot_4);
+  t_obrot_5.addChild(b_obrot_5);
+  t_obrot_6.addChild(b_obrot_6);
+  
+  t_obrot_4.addChild(t_obrot_6);
+  t_obrot_4.addChild(t_obrot_5);
   t_obrot_3.addChild(t_obrot_4);
   t_obrot_2.addChild(t_obrot_3);
   t_obrot_1.addChild(t_obrot_2);
 
-  /*objRoot.addChild(walec_glowny);
-  //objRoot.addChild(walec_srodek);
-  objRoot.addChild(walec_gora);
-  objRoot.addChild(kula_1);
-  objRoot.addChild(kula_2);
-  //objRoot.addChild(ryst);
-  objRoot.addChild(lapa_1);
-  objRoot.addChild(lapa_2);*/
-   
-  //objRoot.addChild(dupa);
  objRoot.addChild(t_obrot_1);
- //objRoot.addChild(t_obrot_2);
+
   objRoot.compile();
 
   return objRoot;
@@ -533,6 +529,27 @@ public class Mykeynavbeh extends Applet implements KeyListener {
    t3d_obrot_4.mul(t3dstep);
    t_obrot_4.setTransform(t3d_obrot_4);
   }
+  
+   if (key == '/') {
+   t3dstep.rotZ(Math.PI / 32);
+   t3d_obrot_5.mul(t3dstep);
+   t_obrot_5.setTransform(t3d_obrot_5);
+   
+   t3dstep.rotZ(-Math.PI / 32);
+   t3d_obrot_6.mul(t3dstep);
+   t_obrot_6.setTransform(t3d_obrot_6);
+  }
+
+  if (key == '*') {
+   t3dstep.rotZ(-Math.PI / 32);
+   t3d_obrot_5.mul(t3dstep);
+   t_obrot_5.setTransform(t3d_obrot_5);
+   
+   t3dstep.rotZ(Math.PI / 32);
+   t3d_obrot_6.mul(t3dstep);
+   t_obrot_6.setTransform(t3d_obrot_6);
+  }
+  
  }
 
  public void keyReleased(KeyEvent e) {
