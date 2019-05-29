@@ -68,8 +68,8 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
     private boolean remote = false;
     private ServerSocket welcomeSocket = null;
     private Socket connectionSocket = null;
-    
-     private double kat_1 = 0;
+
+    private double kat_1 = 0;
     private double kat_2 = 0;
     private double kat_3 = 0;
     private double kat_4 = 0;
@@ -457,159 +457,149 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
             key = e.getKeyChar();
 
             if (key == 'a') {
-            t3dstep.rotY(Math.PI / dzielnik);
-            t_obrot_1.getTransform(t3d);
-            t3d.get(matrix);
-            t3d.setTranslation(new Vector3d(0.0, 0.0, 0.0));
-            t3d.mul(t3dstep);
-            t3d.setTranslation(new Vector3d(matrix.m03, matrix.m13, matrix.m23));
-            t_obrot_1.setTransform(t3d);
+                t3dstep.rotY(Math.PI / dzielnik);
+                t_obrot_1.getTransform(t3d);
+                t3d.get(matrix);
+                t3d.setTranslation(new Vector3d(0.0, 0.0, 0.0));
+                t3d.mul(t3dstep);
+                t3d.setTranslation(new Vector3d(matrix.m03, matrix.m13, matrix.m23));
+                t_obrot_1.setTransform(t3d);
 
-             }
-            
+            }
+
             if (key == 'd') {
 
-            t3dstep.rotY(-Math.PI / dzielnik);
-            t_obrot_1.getTransform(t3d);
-            t3d.get(matrix);
-            t3d.setTranslation(new Vector3d(0.0, 0.0, 0.0));
-            t3d.mul(t3dstep);
-            t3d.setTranslation(new Vector3d(matrix.m03, matrix.m13, matrix.m23));
-            t_obrot_1.setTransform(t3d);
+                t3dstep.rotY(-Math.PI / dzielnik);
+                t_obrot_1.getTransform(t3d);
+                t3d.get(matrix);
+                t3d.setTranslation(new Vector3d(0.0, 0.0, 0.0));
+                t3d.mul(t3dstep);
+                t3d.setTranslation(new Vector3d(matrix.m03, matrix.m13, matrix.m23));
+                t_obrot_1.setTransform(t3d);
 
-           }
+            }
 
-           if (key == 'w') {
-            if(kat_1 < Math.PI / 4)
-            {
-                 t3dstep.rotZ(-Math.PI / dzielnik);
-                 t_obrot_2.getTransform(t3d);
-                 t3d.mul(t3dstep);
-                 t3d.setTranslation(new Vector3d(matrix.m03, matrix.m13, matrix.m23));
-                 t_obrot_2.setTransform(t3d);
-                 kat_1 += Math.PI / dzielnik;
-                 kat_2 -= Math.PI / dzielnik;
+            if (key == 'w') {
+                if (kat_1 < Math.PI / 4) {
+                    t3dstep.rotZ(-Math.PI / dzielnik);
+                    t_obrot_2.getTransform(t3d);
+                    t3d.mul(t3dstep);
+                    t3d.setTranslation(new Vector3d(matrix.m03, matrix.m13, matrix.m23));
+                    t_obrot_2.setTransform(t3d);
+                    kat_1 += Math.PI / dzielnik;
+                    kat_2 -= Math.PI / dzielnik;
+                }
             }
-           }
 
-           if (key == 's') {
-            if(kat_2 < Math.PI / 8)
-            {
-                 t3dstep.rotZ(Math.PI / dzielnik);
-                 t_obrot_2.getTransform(t3d);
-                 t3d.mul(t3dstep);
-                 t3d.setTranslation(new Vector3d(matrix.m03, matrix.m13, matrix.m23));
-                 t_obrot_2.setTransform(t3d);
-                 kat_1 -= Math.PI / dzielnik;
-                 kat_2 += Math.PI / dzielnik;
+            if (key == 's') {
+                if (kat_2 < Math.PI / 8) {
+                    t3dstep.rotZ(Math.PI / dzielnik);
+                    t_obrot_2.getTransform(t3d);
+                    t3d.mul(t3dstep);
+                    t3d.setTranslation(new Vector3d(matrix.m03, matrix.m13, matrix.m23));
+                    t_obrot_2.setTransform(t3d);
+                    kat_1 -= Math.PI / dzielnik;
+                    kat_2 += Math.PI / dzielnik;
+                }
             }
-           }
-           if (key == '8') {
-            if(kat_3 < Math.PI / 4)
-            {
-                 t3dstep.rotZ(-Math.PI / dzielnik);
-                 t3d_obrot_3.mul(t3dstep);
-                 t_obrot_3.setTransform(t3d_obrot_3);
-                 kat_3 += Math.PI / dzielnik;
-                 kat_4 -= Math.PI / dzielnik;
+            if (key == '8') {
+                if (kat_3 < Math.PI / 4) {
+                    t3dstep.rotZ(-Math.PI / dzielnik);
+                    t3d_obrot_3.mul(t3dstep);
+                    t_obrot_3.setTransform(t3d_obrot_3);
+                    kat_3 += Math.PI / dzielnik;
+                    kat_4 -= Math.PI / dzielnik;
+                }
             }
-           }
-             if (key == '2') {
-            if(kat_4 < Math.PI / 8)
-            {
-                 t3dstep.rotZ(Math.PI / dzielnik);
-                 t3d_obrot_3.mul(t3dstep);
-                 t_obrot_3.setTransform(t3d_obrot_3);
-                 kat_3 -= Math.PI / dzielnik;
-                 kat_4 += Math.PI / dzielnik;
+            if (key == '2') {
+                if (kat_4 < Math.PI / 8) {
+                    t3dstep.rotZ(Math.PI / dzielnik);
+                    t3d_obrot_3.mul(t3dstep);
+                    t_obrot_3.setTransform(t3d_obrot_3);
+                    kat_3 -= Math.PI / dzielnik;
+                    kat_4 += Math.PI / dzielnik;
+                }
             }
-           }
-           if (key == '4') {
-            t3dstep.rotY(Math.PI / dzielnik);
-            t3d_obrot_4.mul(t3dstep);
-            t_obrot_4.setTransform(t3d_obrot_4);
-           }
+            if (key == '4') {
+                t3dstep.rotY(Math.PI / dzielnik);
+                t3d_obrot_4.mul(t3dstep);
+                t_obrot_4.setTransform(t3d_obrot_4);
+            }
 
-           if (key == '6') {
-            t3dstep.rotY(-Math.PI / dzielnik);
-            t3d_obrot_4.mul(t3dstep);
-            t_obrot_4.setTransform(t3d_obrot_4);
-           }
-             if (key == '1') {
-            if(kat_5 < Math.PI / 3)
-            {
-                 t3dstep.rotZ(-Math.PI / dzielnik);
-                 t3d_obrot_4.mul(t3dstep);
-                 t_obrot_4.setTransform(t3d_obrot_4);
-                 kat_5 += Math.PI / dzielnik;
-                 kat_6 -= Math.PI / dzielnik;
+            if (key == '6') {
+                t3dstep.rotY(-Math.PI / dzielnik);
+                t3d_obrot_4.mul(t3dstep);
+                t_obrot_4.setTransform(t3d_obrot_4);
             }
-           }
+            if (key == '1') {
+                if (kat_5 < Math.PI / 3) {
+                    t3dstep.rotZ(-Math.PI / dzielnik);
+                    t3d_obrot_4.mul(t3dstep);
+                    t_obrot_4.setTransform(t3d_obrot_4);
+                    kat_5 += Math.PI / dzielnik;
+                    kat_6 -= Math.PI / dzielnik;
+                }
+            }
 
-           if (key == '9') {
-            if(kat_6 < Math.PI / 3)
-            {
-                 t3dstep.rotZ(Math.PI / dzielnik);
-                 t3d_obrot_4.mul(t3dstep);
-                 t_obrot_4.setTransform(t3d_obrot_4);
-                 kat_5 -= Math.PI / dzielnik;
-                 kat_6 += Math.PI / dzielnik;
+            if (key == '9') {
+                if (kat_6 < Math.PI / 3) {
+                    t3dstep.rotZ(Math.PI / dzielnik);
+                    t3d_obrot_4.mul(t3dstep);
+                    t_obrot_4.setTransform(t3d_obrot_4);
+                    kat_5 -= Math.PI / dzielnik;
+                    kat_6 += Math.PI / dzielnik;
+                }
             }
-           }
 
             if (key == '3') {
-            if(kat_7 < Math.PI / 3)
-            {
-                 t3dstep.rotX(-Math.PI / dzielnik);
-                 t3d_obrot_4.mul(t3dstep);
-                 t_obrot_4.setTransform(t3d_obrot_4);
-                 kat_7 += Math.PI / dzielnik;
-                 kat_8 -= Math.PI / dzielnik;
+                if (kat_7 < Math.PI / 3) {
+                    t3dstep.rotX(-Math.PI / dzielnik);
+                    t3d_obrot_4.mul(t3dstep);
+                    t_obrot_4.setTransform(t3d_obrot_4);
+                    kat_7 += Math.PI / dzielnik;
+                    kat_8 -= Math.PI / dzielnik;
+                }
             }
-           }
 
-           if (key == '7') {
-            if(kat_8 < Math.PI / 3)
-            {
-                 t3dstep.rotX(Math.PI / dzielnik);
-                 t3d_obrot_4.mul(t3dstep);
-                 t_obrot_4.setTransform(t3d_obrot_4);
-                 kat_7 -= Math.PI / dzielnik;
-                 kat_8 += Math.PI / dzielnik;        
+            if (key == '7') {
+                if (kat_8 < Math.PI / 3) {
+                    t3dstep.rotX(Math.PI / dzielnik);
+                    t3d_obrot_4.mul(t3dstep);
+                    t_obrot_4.setTransform(t3d_obrot_4);
+                    kat_7 -= Math.PI / dzielnik;
+                    kat_8 += Math.PI / dzielnik;
+                }
             }
-           }
 
             if (key == '5') {
-            if(kat_9 < 0)
-            {
-                t3dstep.rotZ(Math.PI / dzielnik);
-                t3d_obrot_5.mul(t3dstep);
-                t_obrot_5.setTransform(t3d_obrot_5);
+                if (kat_9 < 0) {
+                    t3dstep.rotZ(Math.PI / dzielnik);
+                    t3d_obrot_5.mul(t3dstep);
+                    t_obrot_5.setTransform(t3d_obrot_5);
 
-                t3dstep.rotZ(-Math.PI / dzielnik);
-                t3d_obrot_6.mul(t3dstep);
-                t_obrot_6.setTransform(t3d_obrot_6);
-                
-                kat_9 += Math.PI / dzielnik;
-                kat_10 -= Math.PI / dzielnik; 
+                    t3dstep.rotZ(-Math.PI / dzielnik);
+                    t3d_obrot_6.mul(t3dstep);
+                    t_obrot_6.setTransform(t3d_obrot_6);
+
+                    kat_9 += Math.PI / dzielnik;
+                    kat_10 -= Math.PI / dzielnik;
+                }
             }
-           }
 
-           if (key == '0') {
-            if(kat_10 < Math.PI / 8)
-            {
-                t3dstep.rotZ(-Math.PI / dzielnik);
-                t3d_obrot_5.mul(t3dstep);
-                t_obrot_5.setTransform(t3d_obrot_5);
+            if (key == '0') {
+                if (kat_10 < Math.PI / 8) {
+                    t3dstep.rotZ(-Math.PI / dzielnik);
+                    t3d_obrot_5.mul(t3dstep);
+                    t_obrot_5.setTransform(t3d_obrot_5);
 
-                t3dstep.rotZ(Math.PI / dzielnik);
-                t3d_obrot_6.mul(t3dstep);
-                t_obrot_6.setTransform(t3d_obrot_6);
-                
-                kat_9 -= Math.PI / dzielnik;
-                kat_10 += Math.PI / dzielnik;
+                    t3dstep.rotZ(Math.PI / dzielnik);
+                    t3d_obrot_6.mul(t3dstep);
+                    t_obrot_6.setTransform(t3d_obrot_6);
+
+                    kat_9 -= Math.PI / dzielnik;
+                    kat_10 += Math.PI / dzielnik;
+                }
             }
-           }
             if (key == 'r') {
                 remote = !remote;
                 try {
@@ -645,8 +635,7 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
                 remote = !remote;
             }
             if (key == 'a') {
-
-                t3dstep.rotY(Math.PI / 32);
+                t3dstep.rotY(Math.PI / dzielnik);
                 t_obrot_1.getTransform(t3d);
                 t3d.get(matrix);
                 t3d.setTranslation(new Vector3d(0.0, 0.0, 0.0));
@@ -658,7 +647,7 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
 
             if (key == 'd') {
 
-                t3dstep.rotY(-Math.PI / 32);
+                t3dstep.rotY(-Math.PI / dzielnik);
                 t_obrot_1.getTransform(t3d);
                 t3d.get(matrix);
                 t3d.setTranslation(new Vector3d(0.0, 0.0, 0.0));
@@ -669,93 +658,135 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
             }
 
             if (key == 'w') {
-                t3dstep.rotZ(-Math.PI / 32);
-                t_obrot_2.getTransform(t3d);
-                t3d.mul(t3dstep);
-                t3d.setTranslation(new Vector3d(matrix.m03, matrix.m13, matrix.m23));
-                t_obrot_2.setTransform(t3d);
+                if (kat_1 < Math.PI / 4) {
+                    t3dstep.rotZ(-Math.PI / dzielnik);
+                    t_obrot_2.getTransform(t3d);
+                    t3d.mul(t3dstep);
+                    t3d.setTranslation(new Vector3d(matrix.m03, matrix.m13, matrix.m23));
+                    t_obrot_2.setTransform(t3d);
+                    kat_1 += Math.PI / dzielnik;
+                    kat_2 -= Math.PI / dzielnik;
+                }
             }
 
             if (key == 's') {
-                t3dstep.rotZ(Math.PI / 32);
-                t_obrot_2.getTransform(t3d);
-                t3d.mul(t3dstep);
-                t3d.setTranslation(new Vector3d(matrix.m03, matrix.m13, matrix.m23));
-                t_obrot_2.setTransform(t3d);
+                if (kat_2 < Math.PI / 8) {
+                    t3dstep.rotZ(Math.PI / dzielnik);
+                    t_obrot_2.getTransform(t3d);
+                    t3d.mul(t3dstep);
+                    t3d.setTranslation(new Vector3d(matrix.m03, matrix.m13, matrix.m23));
+                    t_obrot_2.setTransform(t3d);
+                    kat_1 -= Math.PI / dzielnik;
+                    kat_2 += Math.PI / dzielnik;
+                }
             }
             if (key == '8') {
-                t3dstep.rotZ(-Math.PI / 32);
-                t3d_obrot_3.mul(t3dstep);
-                t_obrot_3.setTransform(t3d_obrot_3);
+                if (kat_3 < Math.PI / 4) {
+                    t3dstep.rotZ(-Math.PI / dzielnik);
+                    t3d_obrot_3.mul(t3dstep);
+                    t_obrot_3.setTransform(t3d_obrot_3);
+                    kat_3 += Math.PI / dzielnik;
+                    kat_4 -= Math.PI / dzielnik;
+                }
             }
             if (key == '2') {
-                t3dstep.rotZ(Math.PI / 32);
-                t3d_obrot_3.mul(t3dstep);
-                t_obrot_3.setTransform(t3d_obrot_3);
+                if (kat_4 < Math.PI / 8) {
+                    t3dstep.rotZ(Math.PI / dzielnik);
+                    t3d_obrot_3.mul(t3dstep);
+                    t_obrot_3.setTransform(t3d_obrot_3);
+                    kat_3 -= Math.PI / dzielnik;
+                    kat_4 += Math.PI / dzielnik;
+                }
             }
             if (key == '4') {
-                t3dstep.rotY(Math.PI / 32);
+                t3dstep.rotY(Math.PI / dzielnik);
                 t3d_obrot_4.mul(t3dstep);
                 t_obrot_4.setTransform(t3d_obrot_4);
             }
 
             if (key == '6') {
-                t3dstep.rotY(-Math.PI / 32);
+                t3dstep.rotY(-Math.PI / dzielnik);
                 t3d_obrot_4.mul(t3dstep);
                 t_obrot_4.setTransform(t3d_obrot_4);
             }
             if (key == '1') {
-                t3dstep.rotZ(-Math.PI / 32);
-                t3d_obrot_4.mul(t3dstep);
-                t_obrot_4.setTransform(t3d_obrot_4);
+                if (kat_5 < Math.PI / 3) {
+                    t3dstep.rotZ(-Math.PI / dzielnik);
+                    t3d_obrot_4.mul(t3dstep);
+                    t_obrot_4.setTransform(t3d_obrot_4);
+                    kat_5 += Math.PI / dzielnik;
+                    kat_6 -= Math.PI / dzielnik;
+                }
             }
 
             if (key == '9') {
-                t3dstep.rotZ(Math.PI / 32);
-                t3d_obrot_4.mul(t3dstep);
-                t_obrot_4.setTransform(t3d_obrot_4);
+                if (kat_6 < Math.PI / 3) {
+                    t3dstep.rotZ(Math.PI / dzielnik);
+                    t3d_obrot_4.mul(t3dstep);
+                    t_obrot_4.setTransform(t3d_obrot_4);
+                    kat_5 -= Math.PI / dzielnik;
+                    kat_6 += Math.PI / dzielnik;
+                }
             }
 
             if (key == '3') {
-                t3dstep.rotX(-Math.PI / 32);
-                t3d_obrot_4.mul(t3dstep);
-                t_obrot_4.setTransform(t3d_obrot_4);
+                if (kat_7 < Math.PI / 3) {
+                    t3dstep.rotX(-Math.PI / dzielnik);
+                    t3d_obrot_4.mul(t3dstep);
+                    t_obrot_4.setTransform(t3d_obrot_4);
+                    kat_7 += Math.PI / dzielnik;
+                    kat_8 -= Math.PI / dzielnik;
+                }
             }
 
             if (key == '7') {
-                t3dstep.rotX(Math.PI / 32);
-                t3d_obrot_4.mul(t3dstep);
-                t_obrot_4.setTransform(t3d_obrot_4);
+                if (kat_8 < Math.PI / 3) {
+                    t3dstep.rotX(Math.PI / dzielnik);
+                    t3d_obrot_4.mul(t3dstep);
+                    t_obrot_4.setTransform(t3d_obrot_4);
+                    kat_7 -= Math.PI / dzielnik;
+                    kat_8 += Math.PI / dzielnik;
+                }
             }
 
             if (key == '5') {
-                t3dstep.rotZ(Math.PI / 32);
-                t3d_obrot_5.mul(t3dstep);
-                t_obrot_5.setTransform(t3d_obrot_5);
+                if (kat_9 < 0) {
+                    t3dstep.rotZ(Math.PI / dzielnik);
+                    t3d_obrot_5.mul(t3dstep);
+                    t_obrot_5.setTransform(t3d_obrot_5);
 
-                t3dstep.rotZ(-Math.PI / 32);
-                t3d_obrot_6.mul(t3dstep);
-                t_obrot_6.setTransform(t3d_obrot_6);
+                    t3dstep.rotZ(-Math.PI / dzielnik);
+                    t3d_obrot_6.mul(t3dstep);
+                    t_obrot_6.setTransform(t3d_obrot_6);
+
+                    kat_9 += Math.PI / dzielnik;
+                    kat_10 -= Math.PI / dzielnik;
+                }
             }
 
             if (key == '0') {
-                t3dstep.rotZ(-Math.PI / 32);
-                t3d_obrot_5.mul(t3dstep);
-                t_obrot_5.setTransform(t3d_obrot_5);
+                if (kat_10 < Math.PI / 8) {
+                    t3dstep.rotZ(-Math.PI / dzielnik);
+                    t3d_obrot_5.mul(t3dstep);
+                    t_obrot_5.setTransform(t3d_obrot_5);
 
-                t3dstep.rotZ(Math.PI / 32);
-                t3d_obrot_6.mul(t3dstep);
-                t_obrot_6.setTransform(t3d_obrot_6);
+                    t3dstep.rotZ(Math.PI / dzielnik);
+                    t3d_obrot_6.mul(t3dstep);
+                    t_obrot_6.setTransform(t3d_obrot_6);
+
+                    kat_9 -= Math.PI / dzielnik;
+                    kat_10 += Math.PI / dzielnik;
+                }
             }
             if (key == 'i') {
-                z -= 3*cos(alfa);
-                x -= 3*sin(alfa);
+                z -= 3 * cos(alfa);
+                x -= 3 * sin(alfa);
                 przesuniecie_obserwatora.setTranslation(new Vector3f(x, 0.0f, z));
                 universe.getViewingPlatform().getViewPlatformTransform().setTransform(przesuniecie_obserwatora);
             }
             if (key == 'k') {
-                z += 3*cos(alfa);
-                x += 3*sin(alfa);
+                z += 3 * cos(alfa);
+                x += 3 * sin(alfa);
                 przesuniecie_obserwatora.setTranslation(new Vector3f(x, 0.0f, z));
                 universe.getViewingPlatform().getViewPlatformTransform().setTransform(przesuniecie_obserwatora);
             }
