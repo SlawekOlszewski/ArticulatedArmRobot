@@ -1,5 +1,7 @@
 package articulatedarmrobot;
 
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -17,7 +19,7 @@ import javax.swing.JPanel;
 class Client extends JFrame implements ActionListener, KeyListener {
 
     private int port = 64003;
-    private String ip = "192.168.0.24";
+    private String ip = "192.168.0.25";
 
     JButton w = new JButton("W");
     JButton s = new JButton("S");
@@ -46,9 +48,12 @@ class Client extends JFrame implements ActionListener, KeyListener {
         super("Zdalne sterowanie ramieniem robota");
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(450, 160);
+        setSize(324, 248);
+        setResizable(false);
         JPanel panel = new JPanel();
-
+        panel.setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+        
         w.addActionListener(this);
         s.addActionListener(this);
         a.addActionListener(this);
@@ -69,25 +74,101 @@ class Client extends JFrame implements ActionListener, KeyListener {
         b0.addActionListener(this);
         r.addActionListener(this);
 
-        panel.add(w);
-        panel.add(s);
-        panel.add(a);
-        panel.add(d);
-        panel.add(i);
-        panel.add(j);
-        panel.add(k);
-        panel.add(l);
-        panel.add(b1);
-        panel.add(b2);
-        panel.add(b3);
-        panel.add(b4);
-        panel.add(b5);
-        panel.add(b6);
-        panel.add(b7);
-        panel.add(b8);
-        panel.add(b9);
-        panel.add(b0);
-        panel.add(r);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 1;
+        c.gridy = 1;
+        panel.add(w, c);
+        
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 1;
+        c.gridy = 2;
+        panel.add(s, c);
+        
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 0;
+        c.gridy = 2;
+        panel.add(a, c);
+        
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 2;
+        c.gridy = 2;
+        panel.add(d, c);
+        
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 8;
+        c.gridy = 1;
+        panel.add(i, c);
+        
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 7;
+        c.gridy = 2;
+        panel.add(j,c);
+        
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 8;
+        c.gridy = 2;
+        panel.add(k, c);
+        
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 9;
+        c.gridy = 2;
+        panel.add(l, c);
+        
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 0;
+        c.gridy = 7;
+        panel.add(b1, c);
+        
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 1;
+        c.gridy = 7;
+        panel.add(b2, c);
+        
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 2;
+        c.gridy = 7;
+        panel.add(b3, c);
+        
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 0;
+        c.gridy = 6;
+        panel.add(b4, c);
+        
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 1;
+        c.gridy = 6;
+        panel.add(b5, c);
+        
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 2;
+        c.gridy = 6;
+        panel.add(b6, c);
+        
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 0;
+        c.gridy = 5;
+        panel.add(b7, c);
+        
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 1;
+        c.gridy = 5;
+        panel.add(b8, c);
+        
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 2;
+        c.gridy = 5;
+        panel.add(b9, c);
+        
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 1;
+        c.gridy = 8;
+        panel.add(b0, c);
+        
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridwidth = 16;
+        c.gridx = 0;
+        c.gridy = 9;
+        panel.add(r, c);
         w.addKeyListener(this);
 
         setContentPane(panel);
@@ -456,6 +537,14 @@ class Client extends JFrame implements ActionListener, KeyListener {
         if (e.getKeyChar() == 'j') {
             try {
                 j();
+            } catch (Exception ex) {
+                Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        if (e.getKeyChar() == 'r') {
+            try {
+                r();
+                System.exit(0);
             } catch (Exception ex) {
                 Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
             }
