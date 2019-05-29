@@ -2,6 +2,8 @@ package articulatedarmrobot;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.*;
 import java.net.*;
 import javax.swing.JOptionPane;
@@ -12,7 +14,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-class Client extends JFrame implements ActionListener {
+class Client extends JFrame implements ActionListener, KeyListener {
 
     private int port = 64003;
     private String ip = "192.168.0.24";
@@ -86,6 +88,7 @@ class Client extends JFrame implements ActionListener {
         panel.add(b9);
         panel.add(b0);
         panel.add(r);
+        w.addKeyListener(this);
 
         setContentPane(panel);
         show();
@@ -327,5 +330,151 @@ class Client extends JFrame implements ActionListener {
     public static void main(String argv[]) throws Exception {
         new Client();
 
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        if (e.getKeyChar() == 'w') {
+            try {
+                w();
+            } catch (Exception ex) {
+                Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        if (e.getKeyChar() == 's') {
+            try {
+                s();
+            } catch (Exception ex) {
+                Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        if (e.getKeyChar() == 'a') {
+            try {
+                a();
+            } catch (Exception ex) {
+                Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        if (e.getKeyChar() == 'd') {
+            try {
+                d();
+            } catch (Exception ex) {
+                Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        if (e.getKeyChar() == '9') {
+            try {
+                b9();
+            } catch (Exception ex) {
+                Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        if (e.getKeyChar() == '8') {
+            try {
+                b8();
+            } catch (Exception ex) {
+                Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        if (e.getKeyChar() == '7') {
+            try {
+                b7();
+            } catch (Exception ex) {
+                Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        if (e.getKeyChar() == '6') {
+            try {
+                b6();
+            } catch (Exception ex) {
+                Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        if (e.getKeyChar() == '5') {
+            try {
+                b5();
+            } catch (Exception ex) {
+                Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        if (e.getKeyChar() == '4') {
+            try {
+                b4();
+            } catch (Exception ex) {
+                Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        if (e.getKeyChar() == '3') {
+            try {
+                b3();
+            } catch (Exception ex) {
+                Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        if (e.getKeyChar() == '2') {
+            try {
+                b2();
+            } catch (Exception ex) {
+                Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        if (e.getKeyChar() == '1') {
+            try {
+                b1();
+            } catch (Exception ex) {
+                Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        if (e.getKeyChar() == '0') {
+            try {
+                b0();
+            } catch (Exception ex) {
+                Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        if (e.getKeyChar() == 'i') {
+            try {
+                i();
+            } catch (Exception ex) {
+                Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        if (e.getKeyChar() == 'k') {
+            try {
+                k();
+            } catch (Exception ex) {
+                Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        if (e.getKeyChar() == 'l') {
+            try {
+                l();
+            } catch (Exception ex) {
+                Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        if (e.getKeyChar() == 'j') {
+            try {
+                j();
+            } catch (Exception ex) {
+                Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        if (e.getKeyChar() == 'r') {
+            try {
+                r();
+            } catch (Exception ex) {
+                Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 }
