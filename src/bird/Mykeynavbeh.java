@@ -37,6 +37,7 @@ public class Mykeynavbeh extends Applet implements KeyListener {
  private TransformGroup ryst = null;
  private TransformGroup lapa_1 = null;
  private TransformGroup lapa_2 = null;
+ private TransformGroup podloga = null;
  private TransformGroup t_obrot_1 = null;
  private TransformGroup t_obrot_2 = null;
  private TransformGroup t_obrot_3 = null;
@@ -57,6 +58,7 @@ public class Mykeynavbeh extends Applet implements KeyListener {
  private Transform3D t3dstep = new Transform3D();
  private Matrix4d matrix = new Matrix4d();
 
+
  public Mykeynavbeh() {
   setLayout(new BorderLayout());
   GraphicsConfiguration config = SimpleUniverse
@@ -74,6 +76,10 @@ public class Mykeynavbeh extends Applet implements KeyListener {
   canvas.addKeyListener(this);
 
   universe.addBranchGraph(scene);
+  
+
+
+
  }
 
  private BranchGroup createSceneGraph() {
@@ -88,6 +94,11 @@ public class Mykeynavbeh extends Applet implements KeyListener {
   PlatformGeometry platformGeom = new PlatformGeometry();
   platformGeom.addChild(keyNavBeh);
   universe.getViewingPlatform().setPlatformGeometry(platformGeom);
+  
+  Background background = new Background(new Color3f(1f,0,0));
+BoundingSphere sphere = new BoundingSphere(new Point3d(0,0,0), 100000);
+background.setApplicationBounds(sphere);
+objRoot.addChild(background);
 
   AmbientLight lightA = new AmbientLight();
   lightA.setInfluencingBounds(bounds);
@@ -106,6 +117,8 @@ public class Mykeynavbeh extends Applet implements KeyListener {
   objRoot.addChild(lightC);
   
   objRoot.addChild(createBird());
+  
+  
 
   return objRoot;
  }
@@ -139,6 +152,7 @@ public class Mykeynavbeh extends Applet implements KeyListener {
   ryst = new TransformGroup();
   lapa_1 = new TransformGroup();
   lapa_2 =  new TransformGroup();
+  podloga =  new TransformGroup();
   t_obrot_1 =  new TransformGroup();
   t_obrot_2 =  new TransformGroup();
   t_obrot_3 =  new TransformGroup(t3d_obrot_3);
@@ -314,6 +328,12 @@ public class Mykeynavbeh extends Applet implements KeyListener {
   t3d.setRotation(new AxisAngle4f(0.0f, 1.0f, 0.0f, (float) Math.PI));
   t3d.setScale(0.6);
   lapa_2.setTransform(t3d);
+  
+  //podloga
+  t3d.set(new Vector3d(0.5, -7.0, 0.0));
+  t3d.setRotation(new AxisAngle4f(0.0f, 1f, 0.0f, (float) Math.PI));
+  t3d.setScale(1000);
+  podloga.setTransform(t3d);
 
   ObjectFile loader = new ObjectFile();
   Scene s_walec_glowny = null;
@@ -324,12 +344,14 @@ public class Mykeynavbeh extends Applet implements KeyListener {
   Scene s_ryst = null;
   Scene s_lapa_1 = null;
   Scene s_lapa_2 = null;
+  Scene s_podloga = null;
 
 
-  File file = new java.io.File("model/bird_bl.obj");
+  File file = new java.io.File("model/podstawka.obj");
   File file1 = new java.io.File("model/kula.obj");
   File file2 = new java.io.File("model/walec.obj");
   File file3 = new java.io.File("model/lapa.obj");
+  File file4 = new java.io.File("model/podloga.obj");
 
   try {
    s_walec_glowny = loader.load(file.toURI().toURL());
@@ -340,6 +362,7 @@ public class Mykeynavbeh extends Applet implements KeyListener {
    s_ryst = loader.load(file1.toURI().toURL());
    s_lapa_1 = loader.load(file3.toURI().toURL());
    s_lapa_2 = loader.load(file3.toURI().toURL());
+   s_podloga = loader.load(file4.toURI().toURL());
 
   } catch (Exception e) {
    System.err.println(e);
@@ -369,8 +392,12 @@ public class Mykeynavbeh extends Applet implements KeyListener {
   
   //lapa_2
   lapa_2.addChild(s_lapa_2.getSceneGroup());
+  
+  //podloga
+  podloga.addChild(s_podloga.getSceneGroup());
 
   b_obrot_1.addChild(walec_glowny);
+  b_obrot_1.addChild(podloga);
 
   b_obrot_2.addChild(walec_srodek);
   b_obrot_2.addChild(kula_1);
@@ -500,7 +527,7 @@ public class Mykeynavbeh extends Applet implements KeyListener {
    t_obrot_4.setTransform(t3d_obrot_4);
   }
   
-   if (key == '/') {
+   if (key == '5') {
    t3dstep.rotZ(Math.PI / 32);
    t3d_obrot_5.mul(t3dstep);
    t_obrot_5.setTransform(t3d_obrot_5);
@@ -510,7 +537,7 @@ public class Mykeynavbeh extends Applet implements KeyListener {
    t_obrot_6.setTransform(t3d_obrot_6);
   }
 
-  if (key == '*') {
+  if (key == '0') {
    t3dstep.rotZ(-Math.PI / 32);
    t3d_obrot_5.mul(t3dstep);
    t_obrot_5.setTransform(t3d_obrot_5);
