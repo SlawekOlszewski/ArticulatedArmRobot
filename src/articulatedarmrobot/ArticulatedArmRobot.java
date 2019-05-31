@@ -46,6 +46,7 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
     private TransformGroup lapa_1 = null;
     private TransformGroup lapa_2 = null;
     private TransformGroup podloga = null;
+    private TransformGroup szescian = null;
     private TransformGroup t_obrot_1 = null;
     private TransformGroup t_obrot_2 = null;
     private TransformGroup t_obrot_3 = null;
@@ -60,6 +61,7 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
     private BranchGroup b_obrot_6 = null;
     private Transform3D t3d = null;
     private Transform3D t3d_podloga = new Transform3D();
+    private Transform3D t3d_szescian = new Transform3D();
     private Transform3D t3d_obrot_3 = new Transform3D();
     private Transform3D t3d_obrot_4 = new Transform3D();
     private Transform3D t3d_obrot_5 = new Transform3D();
@@ -147,6 +149,10 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
         t3d_podloga.setTranslation(new Vector3f(0.0f, -7.0f, 0.0f));
         t3d_podloga.setScale(1000);
         
+        t3d_szescian = new Transform3D();
+        t3d_szescian.setTranslation(new Vector3f(-9.0f, -6.0f, 0.0f));
+        t3d_szescian.setScale(0.3);
+        
         t3d_obrot_3 = new Transform3D();
         t3d_obrot_3.setTranslation(new Vector3f(-6.0f, 0.0f, 0.0f));
 
@@ -175,6 +181,7 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
         lapa_1 = new TransformGroup();
         lapa_2 = new TransformGroup();
         podloga = new TransformGroup(t3d_podloga);
+        szescian = new TransformGroup(t3d_szescian);
         t_obrot_1 = new TransformGroup();
         t_obrot_2 = new TransformGroup();
         t_obrot_3 = new TransformGroup(t3d_obrot_3);
@@ -314,6 +321,12 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
         podloga.setCapability(TransformGroup.ALLOW_CHILDREN_READ);
         podloga.setCapability(TransformGroup.ALLOW_CHILDREN_WRITE);
         podloga.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
+        
+        szescian.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+        szescian.setCapability(TransformGroup.ALLOW_CHILDREN_EXTEND);
+        szescian.setCapability(TransformGroup.ALLOW_CHILDREN_READ);
+        szescian.setCapability(TransformGroup.ALLOW_CHILDREN_WRITE);
+        szescian.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
 
         t3d.set(new Vector3d(0.0, -7.0, 0.0));
         t3d.setRotation(new AxisAngle4f(0.0f, 1.0f, 0.0f, -1.2f));
@@ -419,6 +432,9 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
         //podloga
         podloga.addChild(s_podloga.getSceneGroup());
         
+        //szescian
+        szescian.addChild(s_szescian.getSceneGroup());
+        
         b_obrot_1.addChild(walec_glowny);
 
         b_obrot_2.addChild(walec_srodek);
@@ -447,6 +463,7 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
 
         objRoot.addChild(t_obrot_1);
         objRoot.addChild(podloga);
+        objRoot.addChild(szescian);
 
         objRoot.compile();
 
