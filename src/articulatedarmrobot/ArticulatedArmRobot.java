@@ -59,6 +59,7 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
     private BranchGroup b_obrot_5 = null;
     private BranchGroup b_obrot_6 = null;
     private Transform3D t3d = null;
+    private Transform3D t3d_podloga = new Transform3D();
     private Transform3D t3d_obrot_3 = new Transform3D();
     private Transform3D t3d_obrot_4 = new Transform3D();
     private Transform3D t3d_obrot_5 = new Transform3D();
@@ -142,6 +143,10 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
 
     private BranchGroup createBird() {
 
+        t3d_podloga = new Transform3D();
+        t3d_podloga.setTranslation(new Vector3f(0.0f, -7.0f, 0.0f));
+        t3d_podloga.setScale(1000);
+        
         t3d_obrot_3 = new Transform3D();
         t3d_obrot_3.setTranslation(new Vector3f(-6.0f, 0.0f, 0.0f));
 
@@ -169,7 +174,7 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
         ryst = new TransformGroup();
         lapa_1 = new TransformGroup();
         lapa_2 = new TransformGroup();
-        podloga = new TransformGroup();
+        podloga = new TransformGroup(t3d_podloga);
         t_obrot_1 = new TransformGroup();
         t_obrot_2 = new TransformGroup();
         t_obrot_3 = new TransformGroup(t3d_obrot_3);
@@ -304,6 +309,12 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
         t_obrot_6.setCapability(TransformGroup.ALLOW_CHILDREN_WRITE);
         t_obrot_6.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
 
+        podloga.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+        podloga.setCapability(TransformGroup.ALLOW_CHILDREN_EXTEND);
+        podloga.setCapability(TransformGroup.ALLOW_CHILDREN_READ);
+        podloga.setCapability(TransformGroup.ALLOW_CHILDREN_WRITE);
+        podloga.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
+
         t3d.set(new Vector3d(0.0, -7.0, 0.0));
         t3d.setRotation(new AxisAngle4f(0.0f, 1.0f, 0.0f, -1.2f));
         t3d.setScale(1.00);
@@ -345,12 +356,6 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
         t3d.setScale(0.6);
         lapa_2.setTransform(t3d);
 
-        //podloga
-        t3d.set(new Vector3d(0.5, -7.0, 0.0));
-        t3d.setRotation(new AxisAngle4f(0.0f, 1f, 0.0f, (float) Math.PI));
-        t3d.setScale(1000);
-        podloga.setTransform(t3d);
-
         ObjectFile loader = new ObjectFile();
         Scene s_walec_glowny = null;
         Scene s_walec_srodek = null;
@@ -361,12 +366,14 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
         Scene s_lapa_1 = null;
         Scene s_lapa_2 = null;
         Scene s_podloga = null;
+        Scene s_szescian = null;
 
         File file = new java.io.File("model/podstawka.obj");
         File file1 = new java.io.File("model/kula.obj");
         File file2 = new java.io.File("model/walec.obj");
         File file3 = new java.io.File("model/lapa.obj");
         File file4 = new java.io.File("model/podloga.obj");
+        File file5 = new java.io.File("model/szescian.obj");
 
         try {
             s_walec_glowny = loader.load(file.toURI().toURL());
@@ -378,6 +385,7 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
             s_lapa_1 = loader.load(file3.toURI().toURL());
             s_lapa_2 = loader.load(file3.toURI().toURL());
             s_podloga = loader.load(file4.toURI().toURL());
+            s_szescian = loader.load(file5.toURI().toURL());
 
         } catch (Exception e) {
             System.err.println(e);
@@ -410,9 +418,8 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
 
         //podloga
         podloga.addChild(s_podloga.getSceneGroup());
-
+        
         b_obrot_1.addChild(walec_glowny);
-        b_obrot_1.addChild(podloga);
 
         b_obrot_2.addChild(walec_srodek);
         b_obrot_2.addChild(kula_1);
@@ -424,7 +431,7 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
 
         b_obrot_5.addChild(lapa_1);
         b_obrot_6.addChild(lapa_2);
-
+        
         t_obrot_1.addChild(b_obrot_1);
         t_obrot_2.addChild(b_obrot_2);
         t_obrot_3.addChild(b_obrot_3);
@@ -439,6 +446,7 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
         t_obrot_1.addChild(t_obrot_2);
 
         objRoot.addChild(t_obrot_1);
+        objRoot.addChild(podloga);
 
         objRoot.compile();
 
