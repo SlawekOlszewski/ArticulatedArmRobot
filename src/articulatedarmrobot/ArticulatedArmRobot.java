@@ -160,10 +160,10 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
         t3d_obrot_4.setTranslation(new Vector3f(0.0f, -4.5f, 0.0f));
 
         t3d_obrot_5 = new Transform3D();
-        t3d_obrot_5.setTranslation(new Vector3f(0.0f, 0.0f, 0.0f));
+        t3d_obrot_5.setTranslation(new Vector3f(-0.1f, 0.1f, 0.0f));
 
         t3d_obrot_6 = new Transform3D();
-        t3d_obrot_6.setTranslation(new Vector3f(0.0f, 0.0f, 0.0f));
+        t3d_obrot_6.setTranslation(new Vector3f(0.1f, 0.1f, 0.0f));
 
         BranchGroup objRoot = new BranchGroup();
         b_obrot_1 = new BranchGroup();
