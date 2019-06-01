@@ -28,6 +28,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import jdk.nashorn.internal.objects.Global;
 
+import javax.media.j3d.WakeupOnCollisionEntry;
+import javax.media.j3d.WakeupOnCollisionExit;
+import java.util.*;
+
 public class ArticulatedArmRobot extends Applet implements KeyListener {
 
     private int port = 64003;
@@ -37,6 +41,8 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
     private TransformGroup viewtrans = null;
 
     //private TransformGroup tg = null;
+    private BoundingSphere bounds = null;
+    private TransformGroup tg = null;
     private TransformGroup walec_glowny = null;
     private TransformGroup walec_srodek = null;
     private TransformGroup walec_gora = null;
@@ -84,6 +90,8 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
     private double kat_10 = 0;
 
     private double dzielnik = 256;
+    
+    private boolean stop = false;
 
     public ArticulatedArmRobot() {
         setLayout(new BorderLayout());
@@ -107,7 +115,7 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
     private BranchGroup createSceneGraph() {
         BranchGroup objRoot = new BranchGroup();
 
-        BoundingSphere bounds = new BoundingSphere(new Point3d(), 10000.0);
+        bounds = new BoundingSphere(new Point3d(), 10000.0);
 
         viewtrans = universe.getViewingPlatform().getViewPlatformTransform();
 
@@ -172,6 +180,7 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
         b_obrot_4 = new BranchGroup();
         b_obrot_5 = new BranchGroup();
         b_obrot_6 = new BranchGroup();
+        tg = new TransformGroup();
         walec_glowny = new TransformGroup();
         walec_srodek = new TransformGroup();
         walec_gora = new TransformGroup();
@@ -460,10 +469,21 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
         t_obrot_3.addChild(t_obrot_4);
         t_obrot_2.addChild(t_obrot_3);
         t_obrot_1.addChild(t_obrot_2);
+        
+        CollisionDetectorGroup cdGroup = new CollisionDetectorGroup(szescian);
+        cdGroup.setSchedulingBounds(bounds);
 
-        objRoot.addChild(t_obrot_1);
+        tg.addChild(szescian);
+        // objRoot.addChild(tg_tink);
+        tg.addChild(cdGroup);
+
+        //objRoot.addChild(tg);
+
+        //objRoot.addChild(t_obrot_1);
+        tg.addChild(t_obrot_1);
+        objRoot.addChild(tg);
         objRoot.addChild(podloga);
-        objRoot.addChild(szescian);
+        //objRoot.addChild(szescian);
 
         objRoot.compile();
 
@@ -482,6 +502,8 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
             key = e.getKeyChar();
 
             if (key == 'a') {
+                if(!stop)
+                {
                 t3dstep.rotY(Math.PI / dzielnik);
                 t_obrot_1.getTransform(t3d);
                 t3d.get(matrix);
@@ -489,6 +511,7 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
                 t3d.mul(t3dstep);
                 t3d.setTranslation(new Vector3d(matrix.m03, matrix.m13, matrix.m23));
                 t_obrot_1.setTransform(t3d);
+                }
 
             }
 
@@ -845,4 +868,38 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
     public void keyReleased(KeyEvent e) {
 
     }
+    
+    class CollisionDetectorGroup extends Behavior {
+  private boolean inCollision = false;
+  private Group group;
+
+  private WakeupOnCollisionEntry wEnter;
+  private WakeupOnCollisionExit wExit;
+
+  public CollisionDetectorGroup(Group gp) { // Corrected: gp
+   group = gp; // Corrected: gp
+   inCollision = false;
+
+  }
+
+  public void initialize() {
+   wEnter = new WakeupOnCollisionEntry(group);
+   wExit = new WakeupOnCollisionExit(group);
+   wakeupOn(wEnter);
+  }
+
+  public void processStimulus(Enumeration criteria) {
+
+   inCollision = !inCollision;
+   if (inCollision) {
+
+    stop = true;
+
+    wakeupOn(wExit);
+   } else {
+       stop = false;
+    wakeupOn(wEnter);
+   }
+  }
+ }
 }
