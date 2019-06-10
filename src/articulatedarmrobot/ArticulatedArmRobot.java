@@ -53,6 +53,8 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
     private TransformGroup lapa_2 = null;
     private TransformGroup podloga = null;
     private TransformGroup szescian = null;
+    private TransformGroup t_obrot_szescian = null;
+    private TransformGroup t_obrot_szescian_2 = null;
     private TransformGroup t_obrot_1 = null;
     private TransformGroup t_obrot_2 = null;
     private TransformGroup t_obrot_3 = null;
@@ -68,6 +70,7 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
     private Transform3D t3d = null;
     private Transform3D t3d_podloga = new Transform3D();
     private Transform3D t3d_szescian = new Transform3D();
+    private Transform3D t3d_obrot_szescian = new Transform3D();
     private Transform3D t3d_obrot_3 = new Transform3D();
     private Transform3D t3d_obrot_4 = new Transform3D();
     private Transform3D t3d_obrot_5 = new Transform3D();
@@ -88,10 +91,13 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
     private double kat_8 = 0;
     private double kat_9 = 0;
     private double kat_10 = 0;
+    
+    private Vector3f temp = new Vector3f();
 
     private double dzielnik = 256;
     
     private boolean stop = false;
+    private boolean czy_byl_klik = false;
 
     public ArticulatedArmRobot() {
         setLayout(new BorderLayout());
@@ -146,20 +152,22 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
         lightC.setColor(new Color3f(1.0f, 1.0f, 1.0f));
         objRoot.addChild(lightC);
 
-        objRoot.addChild(createBird());
+        objRoot.addChild(createArm());
 
         return objRoot;
     }
 
-    private BranchGroup createBird() {
+    private BranchGroup createArm() {
 
         t3d_podloga = new Transform3D();
         t3d_podloga.setTranslation(new Vector3f(0.0f, -7.0f, 0.0f));
         t3d_podloga.setScale(1000);
         
+        t3d_obrot_szescian = new Transform3D();
+        t3d_obrot_szescian.setTranslation(new Vector3f(0.0f, -10.0f, 0.0f));
+        
         t3d_szescian = new Transform3D();
         t3d_szescian.setTranslation(new Vector3f(-9.0f, -6.0f, 0.0f));
-        t3d_szescian.setScale(0.3);
         
         t3d_obrot_3 = new Transform3D();
         t3d_obrot_3.setTranslation(new Vector3f(-6.0f, 0.0f, 0.0f));
@@ -191,6 +199,8 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
         lapa_2 = new TransformGroup();
         podloga = new TransformGroup(t3d_podloga);
         szescian = new TransformGroup(t3d_szescian);
+        t_obrot_szescian = new TransformGroup();
+        t_obrot_szescian_2 = new TransformGroup(t3d_obrot_szescian);
         t_obrot_1 = new TransformGroup();
         t_obrot_2 = new TransformGroup();
         t_obrot_3 = new TransformGroup(t3d_obrot_3);
@@ -336,6 +346,18 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
         szescian.setCapability(TransformGroup.ALLOW_CHILDREN_READ);
         szescian.setCapability(TransformGroup.ALLOW_CHILDREN_WRITE);
         szescian.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
+        
+        t_obrot_szescian.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+        t_obrot_szescian.setCapability(TransformGroup.ALLOW_CHILDREN_EXTEND);
+        t_obrot_szescian.setCapability(TransformGroup.ALLOW_CHILDREN_READ);
+        t_obrot_szescian.setCapability(TransformGroup.ALLOW_CHILDREN_WRITE);
+        t_obrot_szescian.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
+        
+        t_obrot_szescian_2.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+        t_obrot_szescian_2.setCapability(TransformGroup.ALLOW_CHILDREN_EXTEND);
+        t_obrot_szescian_2.setCapability(TransformGroup.ALLOW_CHILDREN_READ);
+        t_obrot_szescian_2.setCapability(TransformGroup.ALLOW_CHILDREN_WRITE);
+        t_obrot_szescian_2.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
 
         t3d.set(new Vector3d(0.0, -7.0, 0.0));
         t3d.setRotation(new AxisAngle4f(0.0f, 1.0f, 0.0f, -1.2f));
@@ -377,7 +399,10 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
         t3d.setRotation(new AxisAngle4f(0.0f, 1.0f, 0.0f, (float) Math.PI));
         t3d.setScale(0.6);
         lapa_2.setTransform(t3d);
-
+        
+        /*t3d.set(new Vector3d(0.0, -5.0, 0.0));
+        t_obrot_szescian.setTransform(t3d);*/
+        
         ObjectFile loader = new ObjectFile();
         Scene s_walec_glowny = null;
         Scene s_walec_srodek = null;
@@ -457,13 +482,16 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
         b_obrot_5.addChild(lapa_1);
         b_obrot_6.addChild(lapa_2);
         
+        t_obrot_szescian.addChild(t_obrot_szescian_2);
+        
         t_obrot_1.addChild(b_obrot_1);
         t_obrot_2.addChild(b_obrot_2);
         t_obrot_3.addChild(b_obrot_3);
         t_obrot_4.addChild(b_obrot_4);
         t_obrot_5.addChild(b_obrot_5);
         t_obrot_6.addChild(b_obrot_6);
-
+        
+        t_obrot_6.addChild(t_obrot_szescian);
         t_obrot_4.addChild(t_obrot_6);
         t_obrot_4.addChild(t_obrot_5);
         t_obrot_3.addChild(t_obrot_4);
@@ -502,15 +530,41 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
             key = e.getKeyChar();
 
             if (key == 'a') {
-                if(!stop)
+                
+                if(stop && czy_byl_klik)
                 {
-                t3dstep.rotY(Math.PI / dzielnik);
-                t_obrot_1.getTransform(t3d);
-                t3d.get(matrix);
-                t3d.setTranslation(new Vector3d(0.0, 0.0, 0.0));
-                t3d.mul(t3dstep);
-                t3d.setTranslation(new Vector3d(matrix.m03, matrix.m13, matrix.m23));
-                t_obrot_1.setTransform(t3d);
+                    t3dstep.rotY(Math.PI / dzielnik);
+                    t_obrot_1.getTransform(t3d);
+                    t3d.mul(t3dstep);
+                    t_obrot_1.setTransform(t3d);
+                    
+                    t_obrot_5.getLocalToVworld(t3d_szescian);
+                    /*t3d.get(temp);
+                    t3d_szescian.setTranslation(temp);*/
+                    /*
+                    t_obrot_2.getTransform(t3d);
+                    t3d_szescian.add(t3d);
+                    
+                    t_obrot_3.getTransform(t3d);
+                    t3d_szescian.add(t3d);
+                    
+                    t_obrot_4.getTransform(t3d);
+                    t3d_szescian.add(t3d);*/
+                    //t3d_szescian.transform(new Vector3f(-10.0f,0.0f,0.0f));
+                    //t3d_szescian.setTranslation(new Vector3f(-1.0f,0.0f,0.0f));
+                    szescian.setTransform(t3d_szescian);
+                    /*temp = new Vector3f(0.0f, 0.0f,0.0f);
+                    t3d_szescian.setTranslation(temp);
+                    szescian.setTransform(t3d_szescian);*/
+                    
+                    
+                }
+                else
+                {
+                    t3dstep.rotY(Math.PI / dzielnik);
+                    t_obrot_1.getTransform(t3d);
+                    t3d.mul(t3dstep);
+                    t_obrot_1.setTransform(t3d);
                 }
 
             }
@@ -519,10 +573,7 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
 
                 t3dstep.rotY(-Math.PI / dzielnik);
                 t_obrot_1.getTransform(t3d);
-                t3d.get(matrix);
-                t3d.setTranslation(new Vector3d(0.0, 0.0, 0.0));
                 t3d.mul(t3dstep);
-                t3d.setTranslation(new Vector3d(matrix.m03, matrix.m13, matrix.m23));
                 t_obrot_1.setTransform(t3d);
 
             }
@@ -532,7 +583,6 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
                     t3dstep.rotZ(-Math.PI / dzielnik);
                     t_obrot_2.getTransform(t3d);
                     t3d.mul(t3dstep);
-                    t3d.setTranslation(new Vector3d(matrix.m03, matrix.m13, matrix.m23));
                     t_obrot_2.setTransform(t3d);
                     kat_1 += Math.PI / dzielnik;
                     kat_2 -= Math.PI / dzielnik;
@@ -544,7 +594,6 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
                     t3dstep.rotZ(Math.PI / dzielnik);
                     t_obrot_2.getTransform(t3d);
                     t3d.mul(t3dstep);
-                    t3d.setTranslation(new Vector3d(matrix.m03, matrix.m13, matrix.m23));
                     t_obrot_2.setTransform(t3d);
                     kat_1 -= Math.PI / dzielnik;
                     kat_2 += Math.PI / dzielnik;
@@ -657,6 +706,10 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
                 } catch (IOException ex) {
                     Logger.getLogger(ArticulatedArmRobot.class.getName()).log(Level.SEVERE, null, ex);
                 }
+            }
+            if(key == 'm')
+            {
+                czy_byl_klik = !czy_byl_klik;
             }
         }
     }
