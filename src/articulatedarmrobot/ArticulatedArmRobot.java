@@ -512,11 +512,12 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
                     t3d.mul(t3dstep);
                     t_obrot_1.setTransform(t3d);
                     
-                    t_obrot_5.getLocalToVworld(t3d_szescian);
+                    t_obrot_5.getLocalToVworld(t3d);
 
-                    t3d.set(new Vector3f(0.0f,-1.7f,0.0f));
-                    t3d_szescian.mul(t3d);
-                    szescian.setTransform(t3d_szescian);
+                    //t3d.set(new Vector3f(0.0f,-1.7f,0.0f));
+                    
+                    t3d.mul(t3d_szescian);
+                    szescian.setTransform(t3d);
                     
                 }
                 else if(!stop)
