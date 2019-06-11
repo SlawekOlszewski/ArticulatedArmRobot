@@ -558,7 +558,7 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
 
             if (key == 'w') {
                 
-                if(stop && czy_byl_klik && kat_10 == 13*(Math.PI / dzielnik))
+                if(stop && czy_byl_klik && kat_10 == 13*(Math.PI / dzielnik) && kat_1 < Math.PI / 4)
                 {
                     t3dstep.rotZ(-Math.PI / dzielnik);
                     t_obrot_2.getTransform(t3d);
@@ -584,7 +584,7 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
             }
 
             if (key == 's') {
-                if(stop && czy_byl_klik && kat_10 == 13*(Math.PI / dzielnik))
+                if(stop && czy_byl_klik && kat_10 == 13*(Math.PI / dzielnik) && kat_2 < Math.PI / 8)
                 {
                     t3dstep.rotZ(Math.PI / dzielnik);
                     t_obrot_2.getTransform(t3d);
@@ -611,7 +611,7 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
             }
             if (key == '8') {
                 
-            if(stop && czy_byl_klik && kat_10 == 13*(Math.PI / dzielnik))
+            if(stop && czy_byl_klik && kat_10 == 13*(Math.PI / dzielnik) && kat_3 < Math.PI / 4)
             {
                 t3dstep.rotZ(-Math.PI / dzielnik);
                 t3d_obrot_3.mul(t3dstep);
@@ -636,7 +636,7 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
             }
             if (key == '2') {
                 
-            if(stop && czy_byl_klik && kat_10 == 13*(Math.PI / dzielnik))
+            if(stop && czy_byl_klik && kat_10 == 13*(Math.PI / dzielnik) && kat_4 < Math.PI / 8)
             {
                 t3dstep.rotZ(Math.PI / dzielnik);
                 t3d_obrot_3.mul(t3dstep);
@@ -708,7 +708,7 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
             }
             if (key == '1') {
                 
-                if(stop && czy_byl_klik && kat_10 == 13*(Math.PI / dzielnik))
+                if(stop && czy_byl_klik && kat_10 == 13*(Math.PI / dzielnik) && kat_5 < Math.PI / 3)
                 {
                     t3dstep.rotZ(-Math.PI / dzielnik);
                     t3d_obrot_4.mul(t3dstep);
@@ -735,7 +735,7 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
 
             if (key == '9') {
                 
-                if(stop && czy_byl_klik && kat_10 == 13*(Math.PI / dzielnik))
+                if(stop && czy_byl_klik && kat_10 == 13*(Math.PI / dzielnik) && kat_6 < Math.PI / 3)
                 {
                     t3dstep.rotZ(Math.PI / dzielnik);
                     t3d_obrot_4.mul(t3dstep);
@@ -762,7 +762,7 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
 
             if (key == '3') {
                 
-                if(stop && czy_byl_klik && kat_10 == 13*(Math.PI / dzielnik))
+                if(stop && czy_byl_klik && kat_10 == 13*(Math.PI / dzielnik) && kat_7 < Math.PI / 3)
                 {
                     t3dstep.rotX(-Math.PI / dzielnik);
                     t3d_obrot_4.mul(t3dstep);
@@ -789,7 +789,7 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
 
             if (key == '7') {
                 
-                if(stop && czy_byl_klik && kat_10 == 13*(Math.PI / dzielnik))
+                if(stop && czy_byl_klik && kat_10 == 13*(Math.PI / dzielnik) && kat_8 < Math.PI / 3)
                 {
                     t3dstep.rotX(Math.PI / dzielnik);
                     t3d_obrot_4.mul(t3dstep);
