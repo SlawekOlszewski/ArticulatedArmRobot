@@ -347,6 +347,11 @@ class Client extends JFrame implements ActionListener, KeyListener {
         char sentence = 'k';
         outToServer.writeObject(sentence + "\n");
     }
+    
+    public void m() throws Exception {
+        char sentence = 'm';
+        outToServer.writeObject(sentence + "\n");
+    }
 
     public void l() throws Exception {
         char sentence = 'l';
@@ -545,6 +550,13 @@ class Client extends JFrame implements ActionListener, KeyListener {
             try {
                 r();
                 System.exit(0);
+            } catch (Exception ex) {
+                Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        if (e.getKeyChar() == 'm') {
+            try {
+                m();
             } catch (Exception ex) {
                 Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
             }
