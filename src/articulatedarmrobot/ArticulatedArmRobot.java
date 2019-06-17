@@ -1531,16 +1531,6 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
                         powrotne.append("5");
                     }
                 }
-                if (key == 'r') {
-                    remote = !remote;
-                    try {
-                        welcomeSocket = new ServerSocket(port);
-                        connectionSocket = welcomeSocket.accept();
-                        externalControl();
-                    } catch (IOException ex) {
-                        Logger.getLogger(ArticulatedArmRobot.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
                 
             if (key == 'i') {
                 z -= 3 * cos(alfa);
