@@ -931,6 +931,7 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
                     czy_byl_klik = !czy_byl_klik;
                     if (nagrywanie) {
                         ruchy.append("m");
+                        powrotne.append("m");
                     }
                 }
                 if (key == 'n') {
@@ -978,117 +979,348 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
             }
 
             if (key == 'a') {
-                t3dstep.rotY(Math.PI / dzielnik);
-                t_obrot_1.getTransform(t3d);
-                t3d.get(matrix);
-                t3d.setTranslation(new Vector3d(0.0, 0.0, 0.0));
-                t3d.mul(t3dstep);
-                t3d.setTranslation(new Vector3d(matrix.m03, matrix.m13, matrix.m23));
-                t_obrot_1.setTransform(t3d);
+
+                if (stop && czy_byl_klik && kat_10 == 13 * (Math.PI / dzielnik)) {
+                    t3dstep.rotY(Math.PI / dzielnik);
+                    t_obrot_1.getTransform(t3d);
+                    t3d.mul(t3dstep);
+                    t_obrot_1.setTransform(t3d);
+
+                    t_obrot_5.getLocalToVworld(t3d_szescian);
+
+                    t3d.set(new Vector3f(0.0f, -1.7f, 0.0f));
+                    t3d_szescian.mul(t3d);
+                    szescian.setTransform(t3d_szescian);
+
+                } else {
+                    t3dstep.rotY(Math.PI / dzielnik);
+                    t_obrot_1.getTransform(t3d);
+                    t3d.mul(t3dstep);
+                    t_obrot_1.setTransform(t3d);
+                }
+                if (nagrywanie) {
+                    ruchy.append("a");
+                    powrotne.append("d");
+                }
 
             }
 
             if (key == 'd') {
 
-                t3dstep.rotY(-Math.PI / dzielnik);
-                t_obrot_1.getTransform(t3d);
-                t3d.get(matrix);
-                t3d.setTranslation(new Vector3d(0.0, 0.0, 0.0));
-                t3d.mul(t3dstep);
-                t3d.setTranslation(new Vector3d(matrix.m03, matrix.m13, matrix.m23));
-                t_obrot_1.setTransform(t3d);
+                if (stop && czy_byl_klik && kat_10 == 13 * (Math.PI / dzielnik)) {
+
+                    t3dstep.rotY(-Math.PI / dzielnik);
+                    t_obrot_1.getTransform(t3d);
+                    t3d.mul(t3dstep);
+                    t_obrot_1.setTransform(t3d);
+
+                    t_obrot_5.getLocalToVworld(t3d_szescian);
+
+                    t3d.set(new Vector3f(0.0f, -1.7f, 0.0f));
+                    t3d_szescian.mul(t3d);
+                    szescian.setTransform(t3d_szescian);
+
+                } else {
+                    t3dstep.rotY(-Math.PI / dzielnik);
+                    t_obrot_1.getTransform(t3d);
+                    t3d.mul(t3dstep);
+                    t_obrot_1.setTransform(t3d);
+                }
+                if (nagrywanie) {
+                    ruchy.append("d");
+                    powrotne.append("a");
+                }
 
             }
 
             if (key == 'w') {
-                if (kat_1 < Math.PI / 4) {
+
+                if (stop && czy_byl_klik && kat_10 == 13 * (Math.PI / dzielnik) && kat_1 < Math.PI / 4) {
                     t3dstep.rotZ(-Math.PI / dzielnik);
                     t_obrot_2.getTransform(t3d);
                     t3d.mul(t3dstep);
-                    t3d.setTranslation(new Vector3d(matrix.m03, matrix.m13, matrix.m23));
+                    t_obrot_2.setTransform(t3d);
+                    kat_1 += Math.PI / dzielnik;
+                    kat_2 -= Math.PI / dzielnik;
+
+                    t_obrot_5.getLocalToVworld(t3d_szescian);
+
+                    t3d.set(new Vector3f(0.0f, -1.7f, 0.0f));
+                    t3d_szescian.mul(t3d);
+                    szescian.setTransform(t3d_szescian);
+                } else if (kat_1 < Math.PI / 4) {
+                    t3dstep.rotZ(-Math.PI / dzielnik);
+                    t_obrot_2.getTransform(t3d);
+                    t3d.mul(t3dstep);
                     t_obrot_2.setTransform(t3d);
                     kat_1 += Math.PI / dzielnik;
                     kat_2 -= Math.PI / dzielnik;
                 }
+                if (nagrywanie) {
+                    ruchy.append("w");
+                    powrotne.append("s");
+                }
             }
 
             if (key == 's') {
-                if (kat_2 < Math.PI / 8) {
+
+                podloga.getLocalToVworld(t3d);
+                t3d.get(wektor_1);
+                lapa_1.getLocalToVworld(t3d_szescian);
+                t3d_szescian.get(wektor_2);
+
+                if (wektor_2.y + 4.4 <= wektor_1.y) {
+                    czy_podloga = true;
+                } else {
+                    czy_podloga = false;
+                }
+
+                if (stop && czy_byl_klik && kat_10 == 13 * (Math.PI / dzielnik) && kat_2 < Math.PI / 8 && !czy_podloga) {
                     t3dstep.rotZ(Math.PI / dzielnik);
                     t_obrot_2.getTransform(t3d);
                     t3d.mul(t3dstep);
-                    t3d.setTranslation(new Vector3d(matrix.m03, matrix.m13, matrix.m23));
+                    t_obrot_2.setTransform(t3d);
+                    kat_1 -= Math.PI / dzielnik;
+                    kat_2 += Math.PI / dzielnik;
+
+                    t_obrot_5.getLocalToVworld(t3d_szescian);
+
+                    t3d.set(new Vector3f(0.0f, -1.7f, 0.0f));
+                    t3d_szescian.mul(t3d);
+                    szescian.setTransform(t3d_szescian);
+                } else if (kat_2 < Math.PI / 8 && !czy_podloga) {
+                    t3dstep.rotZ(Math.PI / dzielnik);
+                    t_obrot_2.getTransform(t3d);
+                    t3d.mul(t3dstep);
                     t_obrot_2.setTransform(t3d);
                     kat_1 -= Math.PI / dzielnik;
                     kat_2 += Math.PI / dzielnik;
                 }
+                if (nagrywanie) {
+                    ruchy.append("s");
+                    powrotne.append("w");
+                }
             }
             if (key == '8') {
-                if (kat_3 < Math.PI / 4) {
+
+                if (stop && czy_byl_klik && kat_10 == 13 * (Math.PI / dzielnik) && kat_3 < Math.PI / 4) {
+                    t3dstep.rotZ(-Math.PI / dzielnik);
+                    t3d_obrot_3.mul(t3dstep);
+                    t_obrot_3.setTransform(t3d_obrot_3);
+                    kat_3 += Math.PI / dzielnik;
+                    kat_4 -= Math.PI / dzielnik;
+
+                    t_obrot_5.getLocalToVworld(t3d_szescian);
+
+                    t3d.set(new Vector3f(0.0f, -1.7f, 0.0f));
+                    t3d_szescian.mul(t3d);
+                    szescian.setTransform(t3d_szescian);
+                } else if (kat_3 < Math.PI / 4) {
                     t3dstep.rotZ(-Math.PI / dzielnik);
                     t3d_obrot_3.mul(t3dstep);
                     t_obrot_3.setTransform(t3d_obrot_3);
                     kat_3 += Math.PI / dzielnik;
                     kat_4 -= Math.PI / dzielnik;
                 }
+                if (nagrywanie) {
+                    ruchy.append("8");
+                    powrotne.append("2");
+                }
             }
             if (key == '2') {
-                if (kat_4 < Math.PI / 8) {
+
+                podloga.getLocalToVworld(t3d);
+                t3d.get(wektor_1);
+                lapa_1.getLocalToVworld(t3d_szescian);
+                t3d_szescian.get(wektor_2);
+
+                if (wektor_2.y + 4.4 <= wektor_1.y) {
+                    czy_podloga = true;
+                } else {
+                    czy_podloga = false;
+                }
+
+                if (stop && czy_byl_klik && kat_10 == 13 * (Math.PI / dzielnik) && !czy_podloga) {
+                    t3dstep.rotZ(Math.PI / dzielnik);
+                    t3d_obrot_3.mul(t3dstep);
+                    t_obrot_3.setTransform(t3d_obrot_3);
+                    kat_3 -= Math.PI / dzielnik;
+                    kat_4 += Math.PI / dzielnik;
+
+                    t_obrot_5.getLocalToVworld(t3d_szescian);
+
+                    t3d.set(new Vector3f(0.0f, -1.7f, 0.0f));
+                    t3d_szescian.mul(t3d);
+                    szescian.setTransform(t3d_szescian);
+                } else if (kat_4 < Math.PI / 8 && !czy_podloga) {
                     t3dstep.rotZ(Math.PI / dzielnik);
                     t3d_obrot_3.mul(t3dstep);
                     t_obrot_3.setTransform(t3d_obrot_3);
                     kat_3 -= Math.PI / dzielnik;
                     kat_4 += Math.PI / dzielnik;
                 }
+                if (nagrywanie) {
+                    ruchy.append("2");
+                    powrotne.append("8");
+                }
             }
             if (key == '4') {
-                t3dstep.rotY(Math.PI / dzielnik);
-                t3d_obrot_4.mul(t3dstep);
-                t_obrot_4.setTransform(t3d_obrot_4);
+
+                if (stop && czy_byl_klik && kat_10 == 13 * (Math.PI / dzielnik)) {
+                    t3dstep.rotY(Math.PI / dzielnik);
+                    t3d_obrot_4.mul(t3dstep);
+                    t_obrot_4.setTransform(t3d_obrot_4);
+
+                    t_obrot_5.getLocalToVworld(t3d_szescian);
+
+                    t3d.set(new Vector3f(0.0f, -1.7f, 0.0f));
+                    t3d_szescian.mul(t3d);
+                    szescian.setTransform(t3d_szescian);
+                } else {
+
+                    t3dstep.rotY(Math.PI / dzielnik);
+                    t3d_obrot_4.mul(t3dstep);
+                    t_obrot_4.setTransform(t3d_obrot_4);
+                }
+                if (nagrywanie) {
+                    ruchy.append("4");
+                    powrotne.append("6");
+                }
             }
 
             if (key == '6') {
-                t3dstep.rotY(-Math.PI / dzielnik);
-                t3d_obrot_4.mul(t3dstep);
-                t_obrot_4.setTransform(t3d_obrot_4);
+
+                if (stop && czy_byl_klik && kat_10 == 13 * (Math.PI / dzielnik)) {
+                    t3dstep.rotY(-Math.PI / dzielnik);
+                    t3d_obrot_4.mul(t3dstep);
+                    t_obrot_4.setTransform(t3d_obrot_4);
+
+                    t_obrot_5.getLocalToVworld(t3d_szescian);
+
+                    t3d.set(new Vector3f(0.0f, -1.7f, 0.0f));
+                    t3d_szescian.mul(t3d);
+                    szescian.setTransform(t3d_szescian);
+
+                } else {
+                    t3dstep.rotY(-Math.PI / dzielnik);
+                    t3d_obrot_4.mul(t3dstep);
+                    t_obrot_4.setTransform(t3d_obrot_4);
+                }
+                if (nagrywanie) {
+                    ruchy.append("6");
+                    powrotne.append("4");
+                }
+
             }
             if (key == '1') {
-                if (kat_5 < Math.PI / 3) {
+
+                if (stop && czy_byl_klik && kat_10 == 13 * (Math.PI / dzielnik) && kat_5 < Math.PI / 3) {
+                    t3dstep.rotZ(-Math.PI / dzielnik);
+                    t3d_obrot_4.mul(t3dstep);
+                    t_obrot_4.setTransform(t3d_obrot_4);
+                    kat_5 += Math.PI / dzielnik;
+                    kat_6 -= Math.PI / dzielnik;
+
+                    t_obrot_5.getLocalToVworld(t3d_szescian);
+
+                    t3d.set(new Vector3f(0.0f, -1.7f, 0.0f));
+                    t3d_szescian.mul(t3d);
+                    szescian.setTransform(t3d_szescian);
+
+                } else if (kat_5 < Math.PI / 3) {
                     t3dstep.rotZ(-Math.PI / dzielnik);
                     t3d_obrot_4.mul(t3dstep);
                     t_obrot_4.setTransform(t3d_obrot_4);
                     kat_5 += Math.PI / dzielnik;
                     kat_6 -= Math.PI / dzielnik;
                 }
+                if (nagrywanie) {
+                    ruchy.append("1");
+                    powrotne.append("9");
+                }
             }
 
             if (key == '9') {
-                if (kat_6 < Math.PI / 3) {
+
+                if (stop && czy_byl_klik && kat_10 == 13 * (Math.PI / dzielnik) && kat_6 < Math.PI / 3) {
+                    t3dstep.rotZ(Math.PI / dzielnik);
+                    t3d_obrot_4.mul(t3dstep);
+                    t_obrot_4.setTransform(t3d_obrot_4);
+                    kat_5 -= Math.PI / dzielnik;
+                    kat_6 += Math.PI / dzielnik;
+
+                    t_obrot_5.getLocalToVworld(t3d_szescian);
+
+                    t3d.set(new Vector3f(0.0f, -1.7f, 0.0f));
+                    t3d_szescian.mul(t3d);
+                    szescian.setTransform(t3d_szescian);
+
+                } else if (kat_6 < Math.PI / 3) {
                     t3dstep.rotZ(Math.PI / dzielnik);
                     t3d_obrot_4.mul(t3dstep);
                     t_obrot_4.setTransform(t3d_obrot_4);
                     kat_5 -= Math.PI / dzielnik;
                     kat_6 += Math.PI / dzielnik;
                 }
+                if (nagrywanie) {
+                    ruchy.append("9");
+                    powrotne.append("1");
+                }
             }
 
             if (key == '3') {
-                if (kat_7 < Math.PI / 3) {
+
+                if (stop && czy_byl_klik && kat_10 == 13 * (Math.PI / dzielnik) && kat_7 < Math.PI / 3) {
+                    t3dstep.rotX(-Math.PI / dzielnik);
+                    t3d_obrot_4.mul(t3dstep);
+                    t_obrot_4.setTransform(t3d_obrot_4);
+                    kat_7 += Math.PI / dzielnik;
+                    kat_8 -= Math.PI / dzielnik;
+
+                    t_obrot_5.getLocalToVworld(t3d_szescian);
+
+                    t3d.set(new Vector3f(0.0f, -1.7f, 0.0f));
+                    t3d_szescian.mul(t3d);
+                    szescian.setTransform(t3d_szescian);
+
+                } else if (kat_7 < Math.PI / 3) {
                     t3dstep.rotX(-Math.PI / dzielnik);
                     t3d_obrot_4.mul(t3dstep);
                     t_obrot_4.setTransform(t3d_obrot_4);
                     kat_7 += Math.PI / dzielnik;
                     kat_8 -= Math.PI / dzielnik;
                 }
+                if (nagrywanie) {
+                    ruchy.append("3");
+                    powrotne.append("7");
+                }
             }
 
             if (key == '7') {
-                if (kat_8 < Math.PI / 3) {
+
+                if (stop && czy_byl_klik && kat_10 == 13 * (Math.PI / dzielnik) && kat_8 < Math.PI / 3) {
                     t3dstep.rotX(Math.PI / dzielnik);
                     t3d_obrot_4.mul(t3dstep);
                     t_obrot_4.setTransform(t3d_obrot_4);
                     kat_7 -= Math.PI / dzielnik;
                     kat_8 += Math.PI / dzielnik;
+
+                    t_obrot_5.getLocalToVworld(t3d_szescian);
+
+                    t3d.set(new Vector3f(0.0f, -1.7f, 0.0f));
+                    t3d_szescian.mul(t3d);
+                    szescian.setTransform(t3d_szescian);
+
+                } else if (kat_8 < Math.PI / 3) {
+                    t3dstep.rotX(Math.PI / dzielnik);
+                    t3d_obrot_4.mul(t3dstep);
+                    t_obrot_4.setTransform(t3d_obrot_4);
+                    kat_7 -= Math.PI / dzielnik;
+                    kat_8 += Math.PI / dzielnik;
+                }
+                if (nagrywanie) {
+                    ruchy.append("7");
+                    powrotne.append("3");
                 }
             }
 
@@ -1105,6 +1337,10 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
                     kat_9 += Math.PI / dzielnik;
                     kat_10 -= Math.PI / dzielnik;
                 }
+                if (nagrywanie) {
+                    ruchy.append("5");
+                    powrotne.append("0");
+                }
             }
 
             if (key == '0') {
@@ -1119,6 +1355,10 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
 
                     kat_9 -= Math.PI / dzielnik;
                     kat_10 += Math.PI / dzielnik;
+                }
+                if (nagrywanie) {
+                    ruchy.append("0");
+                    powrotne.append("5");
                 }
             }
             if (key == 'm') {
@@ -1150,388 +1390,388 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
             }
             if (key == 'a') {
 
-                    if (stop && czy_byl_klik && kat_10 == 13 * (Math.PI / dzielnik)) {
-                        t3dstep.rotY(Math.PI / dzielnik);
-                        t_obrot_1.getTransform(t3d);
-                        t3d.mul(t3dstep);
-                        t_obrot_1.setTransform(t3d);
+                if (stop && czy_byl_klik && kat_10 == 13 * (Math.PI / dzielnik)) {
+                    t3dstep.rotY(Math.PI / dzielnik);
+                    t_obrot_1.getTransform(t3d);
+                    t3d.mul(t3dstep);
+                    t_obrot_1.setTransform(t3d);
 
-                        t_obrot_5.getLocalToVworld(t3d_szescian);
+                    t_obrot_5.getLocalToVworld(t3d_szescian);
 
-                        t3d.set(new Vector3f(0.0f, -1.7f, 0.0f));
-                        t3d_szescian.mul(t3d);
-                        szescian.setTransform(t3d_szescian);
+                    t3d.set(new Vector3f(0.0f, -1.7f, 0.0f));
+                    t3d_szescian.mul(t3d);
+                    szescian.setTransform(t3d_szescian);
 
-                    } else {
-                        t3dstep.rotY(Math.PI / dzielnik);
-                        t_obrot_1.getTransform(t3d);
-                        t3d.mul(t3dstep);
-                        t_obrot_1.setTransform(t3d);
-                    }
-                    if (nagrywanie) {
-                        ruchy.append("a");
-                        powrotne.append("d");
-                    }
-
+                } else {
+                    t3dstep.rotY(Math.PI / dzielnik);
+                    t_obrot_1.getTransform(t3d);
+                    t3d.mul(t3dstep);
+                    t_obrot_1.setTransform(t3d);
+                }
+                if (nagrywanie) {
+                    ruchy.append("a");
+                    powrotne.append("d");
                 }
 
-                if (key == 'd') {
+            }
 
-                    if (stop && czy_byl_klik && kat_10 == 13 * (Math.PI / dzielnik)) {
+            if (key == 'd') {
 
-                        t3dstep.rotY(-Math.PI / dzielnik);
-                        t_obrot_1.getTransform(t3d);
-                        t3d.mul(t3dstep);
-                        t_obrot_1.setTransform(t3d);
+                if (stop && czy_byl_klik && kat_10 == 13 * (Math.PI / dzielnik)) {
 
-                        t_obrot_5.getLocalToVworld(t3d_szescian);
+                    t3dstep.rotY(-Math.PI / dzielnik);
+                    t_obrot_1.getTransform(t3d);
+                    t3d.mul(t3dstep);
+                    t_obrot_1.setTransform(t3d);
 
-                        t3d.set(new Vector3f(0.0f, -1.7f, 0.0f));
-                        t3d_szescian.mul(t3d);
-                        szescian.setTransform(t3d_szescian);
+                    t_obrot_5.getLocalToVworld(t3d_szescian);
 
-                    } else {
-                        t3dstep.rotY(-Math.PI / dzielnik);
-                        t_obrot_1.getTransform(t3d);
-                        t3d.mul(t3dstep);
-                        t_obrot_1.setTransform(t3d);
-                    }
-                    if (nagrywanie) {
-                        ruchy.append("d");
-                        powrotne.append("a");
-                    }
+                    t3d.set(new Vector3f(0.0f, -1.7f, 0.0f));
+                    t3d_szescian.mul(t3d);
+                    szescian.setTransform(t3d_szescian);
 
+                } else {
+                    t3dstep.rotY(-Math.PI / dzielnik);
+                    t_obrot_1.getTransform(t3d);
+                    t3d.mul(t3dstep);
+                    t_obrot_1.setTransform(t3d);
+                }
+                if (nagrywanie) {
+                    ruchy.append("d");
+                    powrotne.append("a");
                 }
 
-                if (key == 'w') {
+            }
 
-                    if (stop && czy_byl_klik && kat_10 == 13 * (Math.PI / dzielnik) && kat_1 < Math.PI / 4) {
-                        t3dstep.rotZ(-Math.PI / dzielnik);
-                        t_obrot_2.getTransform(t3d);
-                        t3d.mul(t3dstep);
-                        t_obrot_2.setTransform(t3d);
-                        kat_1 += Math.PI / dzielnik;
-                        kat_2 -= Math.PI / dzielnik;
+            if (key == 'w') {
 
-                        t_obrot_5.getLocalToVworld(t3d_szescian);
+                if (stop && czy_byl_klik && kat_10 == 13 * (Math.PI / dzielnik) && kat_1 < Math.PI / 4) {
+                    t3dstep.rotZ(-Math.PI / dzielnik);
+                    t_obrot_2.getTransform(t3d);
+                    t3d.mul(t3dstep);
+                    t_obrot_2.setTransform(t3d);
+                    kat_1 += Math.PI / dzielnik;
+                    kat_2 -= Math.PI / dzielnik;
 
-                        t3d.set(new Vector3f(0.0f, -1.7f, 0.0f));
-                        t3d_szescian.mul(t3d);
-                        szescian.setTransform(t3d_szescian);
-                    } else if (kat_1 < Math.PI / 4) {
-                        t3dstep.rotZ(-Math.PI / dzielnik);
-                        t_obrot_2.getTransform(t3d);
-                        t3d.mul(t3dstep);
-                        t_obrot_2.setTransform(t3d);
-                        kat_1 += Math.PI / dzielnik;
-                        kat_2 -= Math.PI / dzielnik;
-                    }
-                    if (nagrywanie) {
-                        ruchy.append("w");
-                        powrotne.append("s");
-                    }
+                    t_obrot_5.getLocalToVworld(t3d_szescian);
+
+                    t3d.set(new Vector3f(0.0f, -1.7f, 0.0f));
+                    t3d_szescian.mul(t3d);
+                    szescian.setTransform(t3d_szescian);
+                } else if (kat_1 < Math.PI / 4) {
+                    t3dstep.rotZ(-Math.PI / dzielnik);
+                    t_obrot_2.getTransform(t3d);
+                    t3d.mul(t3dstep);
+                    t_obrot_2.setTransform(t3d);
+                    kat_1 += Math.PI / dzielnik;
+                    kat_2 -= Math.PI / dzielnik;
+                }
+                if (nagrywanie) {
+                    ruchy.append("w");
+                    powrotne.append("s");
+                }
+            }
+
+            if (key == 's') {
+
+                podloga.getLocalToVworld(t3d);
+                t3d.get(wektor_1);
+                lapa_1.getLocalToVworld(t3d_szescian);
+                t3d_szescian.get(wektor_2);
+
+                if (wektor_2.y + 4.4 <= wektor_1.y) {
+                    czy_podloga = true;
+                } else {
+                    czy_podloga = false;
                 }
 
-                if (key == 's') {
+                if (stop && czy_byl_klik && kat_10 == 13 * (Math.PI / dzielnik) && kat_2 < Math.PI / 8 && !czy_podloga) {
+                    t3dstep.rotZ(Math.PI / dzielnik);
+                    t_obrot_2.getTransform(t3d);
+                    t3d.mul(t3dstep);
+                    t_obrot_2.setTransform(t3d);
+                    kat_1 -= Math.PI / dzielnik;
+                    kat_2 += Math.PI / dzielnik;
 
-                    podloga.getLocalToVworld(t3d);
-                    t3d.get(wektor_1);
-                    lapa_1.getLocalToVworld(t3d_szescian);
-                    t3d_szescian.get(wektor_2);
+                    t_obrot_5.getLocalToVworld(t3d_szescian);
 
-                    if (wektor_2.y + 4.4 <= wektor_1.y) {
-                        czy_podloga = true;
-                    } else {
-                        czy_podloga = false;
-                    }
-
-                    if (stop && czy_byl_klik && kat_10 == 13 * (Math.PI / dzielnik) && kat_2 < Math.PI / 8 && !czy_podloga) {
-                        t3dstep.rotZ(Math.PI / dzielnik);
-                        t_obrot_2.getTransform(t3d);
-                        t3d.mul(t3dstep);
-                        t_obrot_2.setTransform(t3d);
-                        kat_1 -= Math.PI / dzielnik;
-                        kat_2 += Math.PI / dzielnik;
-
-                        t_obrot_5.getLocalToVworld(t3d_szescian);
-
-                        t3d.set(new Vector3f(0.0f, -1.7f, 0.0f));
-                        t3d_szescian.mul(t3d);
-                        szescian.setTransform(t3d_szescian);
-                    } else if (kat_2 < Math.PI / 8 && !czy_podloga) {
-                        t3dstep.rotZ(Math.PI / dzielnik);
-                        t_obrot_2.getTransform(t3d);
-                        t3d.mul(t3dstep);
-                        t_obrot_2.setTransform(t3d);
-                        kat_1 -= Math.PI / dzielnik;
-                        kat_2 += Math.PI / dzielnik;
-                    }
-                    if (nagrywanie) {
-                        ruchy.append("s");
-                        powrotne.append("w");
-                    }
+                    t3d.set(new Vector3f(0.0f, -1.7f, 0.0f));
+                    t3d_szescian.mul(t3d);
+                    szescian.setTransform(t3d_szescian);
+                } else if (kat_2 < Math.PI / 8 && !czy_podloga) {
+                    t3dstep.rotZ(Math.PI / dzielnik);
+                    t_obrot_2.getTransform(t3d);
+                    t3d.mul(t3dstep);
+                    t_obrot_2.setTransform(t3d);
+                    kat_1 -= Math.PI / dzielnik;
+                    kat_2 += Math.PI / dzielnik;
                 }
-                if (key == '8') {
-
-                    if (stop && czy_byl_klik && kat_10 == 13 * (Math.PI / dzielnik) && kat_3 < Math.PI / 4) {
-                        t3dstep.rotZ(-Math.PI / dzielnik);
-                        t3d_obrot_3.mul(t3dstep);
-                        t_obrot_3.setTransform(t3d_obrot_3);
-                        kat_3 += Math.PI / dzielnik;
-                        kat_4 -= Math.PI / dzielnik;
-
-                        t_obrot_5.getLocalToVworld(t3d_szescian);
-
-                        t3d.set(new Vector3f(0.0f, -1.7f, 0.0f));
-                        t3d_szescian.mul(t3d);
-                        szescian.setTransform(t3d_szescian);
-                    } else if (kat_3 < Math.PI / 4) {
-                        t3dstep.rotZ(-Math.PI / dzielnik);
-                        t3d_obrot_3.mul(t3dstep);
-                        t_obrot_3.setTransform(t3d_obrot_3);
-                        kat_3 += Math.PI / dzielnik;
-                        kat_4 -= Math.PI / dzielnik;
-                    }
-                    if (nagrywanie) {
-                        ruchy.append("8");
-                        powrotne.append("2");
-                    }
+                if (nagrywanie) {
+                    ruchy.append("s");
+                    powrotne.append("w");
                 }
-                if (key == '2') {
+            }
+            if (key == '8') {
 
-                    podloga.getLocalToVworld(t3d);
-                    t3d.get(wektor_1);
-                    lapa_1.getLocalToVworld(t3d_szescian);
-                    t3d_szescian.get(wektor_2);
+                if (stop && czy_byl_klik && kat_10 == 13 * (Math.PI / dzielnik) && kat_3 < Math.PI / 4) {
+                    t3dstep.rotZ(-Math.PI / dzielnik);
+                    t3d_obrot_3.mul(t3dstep);
+                    t_obrot_3.setTransform(t3d_obrot_3);
+                    kat_3 += Math.PI / dzielnik;
+                    kat_4 -= Math.PI / dzielnik;
 
-                    if (wektor_2.y + 4.4 <= wektor_1.y) {
-                        czy_podloga = true;
-                    } else {
-                        czy_podloga = false;
-                    }
+                    t_obrot_5.getLocalToVworld(t3d_szescian);
 
-                    if (stop && czy_byl_klik && kat_10 == 13 * (Math.PI / dzielnik) && !czy_podloga) {
-                        t3dstep.rotZ(Math.PI / dzielnik);
-                        t3d_obrot_3.mul(t3dstep);
-                        t_obrot_3.setTransform(t3d_obrot_3);
-                        kat_3 -= Math.PI / dzielnik;
-                        kat_4 += Math.PI / dzielnik;
-
-                        t_obrot_5.getLocalToVworld(t3d_szescian);
-
-                        t3d.set(new Vector3f(0.0f, -1.7f, 0.0f));
-                        t3d_szescian.mul(t3d);
-                        szescian.setTransform(t3d_szescian);
-                    } else if (kat_4 < Math.PI / 8 && !czy_podloga) {
-                        t3dstep.rotZ(Math.PI / dzielnik);
-                        t3d_obrot_3.mul(t3dstep);
-                        t_obrot_3.setTransform(t3d_obrot_3);
-                        kat_3 -= Math.PI / dzielnik;
-                        kat_4 += Math.PI / dzielnik;
-                    }
-                    if (nagrywanie) {
-                        ruchy.append("2");
-                        powrotne.append("8");
-                    }
+                    t3d.set(new Vector3f(0.0f, -1.7f, 0.0f));
+                    t3d_szescian.mul(t3d);
+                    szescian.setTransform(t3d_szescian);
+                } else if (kat_3 < Math.PI / 4) {
+                    t3dstep.rotZ(-Math.PI / dzielnik);
+                    t3d_obrot_3.mul(t3dstep);
+                    t_obrot_3.setTransform(t3d_obrot_3);
+                    kat_3 += Math.PI / dzielnik;
+                    kat_4 -= Math.PI / dzielnik;
                 }
-                if (key == '4') {
+                if (nagrywanie) {
+                    ruchy.append("8");
+                    powrotne.append("2");
+                }
+            }
+            if (key == '2') {
 
-                    if (stop && czy_byl_klik && kat_10 == 13 * (Math.PI / dzielnik)) {
-                        t3dstep.rotY(Math.PI / dzielnik);
-                        t3d_obrot_4.mul(t3dstep);
-                        t_obrot_4.setTransform(t3d_obrot_4);
+                podloga.getLocalToVworld(t3d);
+                t3d.get(wektor_1);
+                lapa_1.getLocalToVworld(t3d_szescian);
+                t3d_szescian.get(wektor_2);
 
-                        t_obrot_5.getLocalToVworld(t3d_szescian);
-
-                        t3d.set(new Vector3f(0.0f, -1.7f, 0.0f));
-                        t3d_szescian.mul(t3d);
-                        szescian.setTransform(t3d_szescian);
-                    } else {
-
-                        t3dstep.rotY(Math.PI / dzielnik);
-                        t3d_obrot_4.mul(t3dstep);
-                        t_obrot_4.setTransform(t3d_obrot_4);
-                    }
-                    if (nagrywanie) {
-                        ruchy.append("4");
-                        powrotne.append("6");
-                    }
+                if (wektor_2.y + 4.4 <= wektor_1.y) {
+                    czy_podloga = true;
+                } else {
+                    czy_podloga = false;
                 }
 
-                if (key == '6') {
+                if (stop && czy_byl_klik && kat_10 == 13 * (Math.PI / dzielnik) && !czy_podloga) {
+                    t3dstep.rotZ(Math.PI / dzielnik);
+                    t3d_obrot_3.mul(t3dstep);
+                    t_obrot_3.setTransform(t3d_obrot_3);
+                    kat_3 -= Math.PI / dzielnik;
+                    kat_4 += Math.PI / dzielnik;
 
-                    if (stop && czy_byl_klik && kat_10 == 13 * (Math.PI / dzielnik)) {
-                        t3dstep.rotY(-Math.PI / dzielnik);
-                        t3d_obrot_4.mul(t3dstep);
-                        t_obrot_4.setTransform(t3d_obrot_4);
+                    t_obrot_5.getLocalToVworld(t3d_szescian);
 
-                        t_obrot_5.getLocalToVworld(t3d_szescian);
-
-                        t3d.set(new Vector3f(0.0f, -1.7f, 0.0f));
-                        t3d_szescian.mul(t3d);
-                        szescian.setTransform(t3d_szescian);
-
-                    } else {
-                        t3dstep.rotY(-Math.PI / dzielnik);
-                        t3d_obrot_4.mul(t3dstep);
-                        t_obrot_4.setTransform(t3d_obrot_4);
-                    }
-                    if (nagrywanie) {
-                        ruchy.append("6");
-                        powrotne.append("4");
-                    }
-
+                    t3d.set(new Vector3f(0.0f, -1.7f, 0.0f));
+                    t3d_szescian.mul(t3d);
+                    szescian.setTransform(t3d_szescian);
+                } else if (kat_4 < Math.PI / 8 && !czy_podloga) {
+                    t3dstep.rotZ(Math.PI / dzielnik);
+                    t3d_obrot_3.mul(t3dstep);
+                    t_obrot_3.setTransform(t3d_obrot_3);
+                    kat_3 -= Math.PI / dzielnik;
+                    kat_4 += Math.PI / dzielnik;
                 }
-                if (key == '1') {
-
-                    if (stop && czy_byl_klik && kat_10 == 13 * (Math.PI / dzielnik) && kat_5 < Math.PI / 3) {
-                        t3dstep.rotZ(-Math.PI / dzielnik);
-                        t3d_obrot_4.mul(t3dstep);
-                        t_obrot_4.setTransform(t3d_obrot_4);
-                        kat_5 += Math.PI / dzielnik;
-                        kat_6 -= Math.PI / dzielnik;
-
-                        t_obrot_5.getLocalToVworld(t3d_szescian);
-
-                        t3d.set(new Vector3f(0.0f, -1.7f, 0.0f));
-                        t3d_szescian.mul(t3d);
-                        szescian.setTransform(t3d_szescian);
-
-                    } else if (kat_5 < Math.PI / 3) {
-                        t3dstep.rotZ(-Math.PI / dzielnik);
-                        t3d_obrot_4.mul(t3dstep);
-                        t_obrot_4.setTransform(t3d_obrot_4);
-                        kat_5 += Math.PI / dzielnik;
-                        kat_6 -= Math.PI / dzielnik;
-                    }
-                    if (nagrywanie) {
-                        ruchy.append("1");
-                        powrotne.append("9");
-                    }
+                if (nagrywanie) {
+                    ruchy.append("2");
+                    powrotne.append("8");
                 }
+            }
+            if (key == '4') {
 
-                if (key == '9') {
+                if (stop && czy_byl_klik && kat_10 == 13 * (Math.PI / dzielnik)) {
+                    t3dstep.rotY(Math.PI / dzielnik);
+                    t3d_obrot_4.mul(t3dstep);
+                    t_obrot_4.setTransform(t3d_obrot_4);
 
-                    if (stop && czy_byl_klik && kat_10 == 13 * (Math.PI / dzielnik) && kat_6 < Math.PI / 3) {
-                        t3dstep.rotZ(Math.PI / dzielnik);
-                        t3d_obrot_4.mul(t3dstep);
-                        t_obrot_4.setTransform(t3d_obrot_4);
-                        kat_5 -= Math.PI / dzielnik;
-                        kat_6 += Math.PI / dzielnik;
+                    t_obrot_5.getLocalToVworld(t3d_szescian);
 
-                        t_obrot_5.getLocalToVworld(t3d_szescian);
+                    t3d.set(new Vector3f(0.0f, -1.7f, 0.0f));
+                    t3d_szescian.mul(t3d);
+                    szescian.setTransform(t3d_szescian);
+                } else {
 
-                        t3d.set(new Vector3f(0.0f, -1.7f, 0.0f));
-                        t3d_szescian.mul(t3d);
-                        szescian.setTransform(t3d_szescian);
+                    t3dstep.rotY(Math.PI / dzielnik);
+                    t3d_obrot_4.mul(t3dstep);
+                    t_obrot_4.setTransform(t3d_obrot_4);
+                }
+                if (nagrywanie) {
+                    ruchy.append("4");
+                    powrotne.append("6");
+                }
+            }
 
-                    } else if (kat_6 < Math.PI / 3) {
-                        t3dstep.rotZ(Math.PI / dzielnik);
-                        t3d_obrot_4.mul(t3dstep);
-                        t_obrot_4.setTransform(t3d_obrot_4);
-                        kat_5 -= Math.PI / dzielnik;
-                        kat_6 += Math.PI / dzielnik;
-                    }
-                    if (nagrywanie) {
-                        ruchy.append("9");
-                        powrotne.append("1");
-                    }
+            if (key == '6') {
+
+                if (stop && czy_byl_klik && kat_10 == 13 * (Math.PI / dzielnik)) {
+                    t3dstep.rotY(-Math.PI / dzielnik);
+                    t3d_obrot_4.mul(t3dstep);
+                    t_obrot_4.setTransform(t3d_obrot_4);
+
+                    t_obrot_5.getLocalToVworld(t3d_szescian);
+
+                    t3d.set(new Vector3f(0.0f, -1.7f, 0.0f));
+                    t3d_szescian.mul(t3d);
+                    szescian.setTransform(t3d_szescian);
+
+                } else {
+                    t3dstep.rotY(-Math.PI / dzielnik);
+                    t3d_obrot_4.mul(t3dstep);
+                    t_obrot_4.setTransform(t3d_obrot_4);
+                }
+                if (nagrywanie) {
+                    ruchy.append("6");
+                    powrotne.append("4");
                 }
 
-                if (key == '3') {
+            }
+            if (key == '1') {
 
-                    if (stop && czy_byl_klik && kat_10 == 13 * (Math.PI / dzielnik) && kat_7 < Math.PI / 3) {
-                        t3dstep.rotX(-Math.PI / dzielnik);
-                        t3d_obrot_4.mul(t3dstep);
-                        t_obrot_4.setTransform(t3d_obrot_4);
-                        kat_7 += Math.PI / dzielnik;
-                        kat_8 -= Math.PI / dzielnik;
+                if (stop && czy_byl_klik && kat_10 == 13 * (Math.PI / dzielnik) && kat_5 < Math.PI / 3) {
+                    t3dstep.rotZ(-Math.PI / dzielnik);
+                    t3d_obrot_4.mul(t3dstep);
+                    t_obrot_4.setTransform(t3d_obrot_4);
+                    kat_5 += Math.PI / dzielnik;
+                    kat_6 -= Math.PI / dzielnik;
 
-                        t_obrot_5.getLocalToVworld(t3d_szescian);
+                    t_obrot_5.getLocalToVworld(t3d_szescian);
 
-                        t3d.set(new Vector3f(0.0f, -1.7f, 0.0f));
-                        t3d_szescian.mul(t3d);
-                        szescian.setTransform(t3d_szescian);
+                    t3d.set(new Vector3f(0.0f, -1.7f, 0.0f));
+                    t3d_szescian.mul(t3d);
+                    szescian.setTransform(t3d_szescian);
 
-                    } else if (kat_7 < Math.PI / 3) {
-                        t3dstep.rotX(-Math.PI / dzielnik);
-                        t3d_obrot_4.mul(t3dstep);
-                        t_obrot_4.setTransform(t3d_obrot_4);
-                        kat_7 += Math.PI / dzielnik;
-                        kat_8 -= Math.PI / dzielnik;
-                    }
-                    if (nagrywanie) {
-                        ruchy.append("3");
-                        powrotne.append("7");
-                    }
+                } else if (kat_5 < Math.PI / 3) {
+                    t3dstep.rotZ(-Math.PI / dzielnik);
+                    t3d_obrot_4.mul(t3dstep);
+                    t_obrot_4.setTransform(t3d_obrot_4);
+                    kat_5 += Math.PI / dzielnik;
+                    kat_6 -= Math.PI / dzielnik;
                 }
-
-                if (key == '7') {
-
-                    if (stop && czy_byl_klik && kat_10 == 13 * (Math.PI / dzielnik) && kat_8 < Math.PI / 3) {
-                        t3dstep.rotX(Math.PI / dzielnik);
-                        t3d_obrot_4.mul(t3dstep);
-                        t_obrot_4.setTransform(t3d_obrot_4);
-                        kat_7 -= Math.PI / dzielnik;
-                        kat_8 += Math.PI / dzielnik;
-
-                        t_obrot_5.getLocalToVworld(t3d_szescian);
-
-                        t3d.set(new Vector3f(0.0f, -1.7f, 0.0f));
-                        t3d_szescian.mul(t3d);
-                        szescian.setTransform(t3d_szescian);
-
-                    } else if (kat_8 < Math.PI / 3) {
-                        t3dstep.rotX(Math.PI / dzielnik);
-                        t3d_obrot_4.mul(t3dstep);
-                        t_obrot_4.setTransform(t3d_obrot_4);
-                        kat_7 -= Math.PI / dzielnik;
-                        kat_8 += Math.PI / dzielnik;
-                    }
-                    if (nagrywanie) {
-                        ruchy.append("7");
-                        powrotne.append("3");
-                    }
+                if (nagrywanie) {
+                    ruchy.append("1");
+                    powrotne.append("9");
                 }
+            }
 
-                if (key == '5') {
-                    if (kat_9 < 0) {
-                        t3dstep.rotZ(Math.PI / dzielnik);
-                        t3d_obrot_5.mul(t3dstep);
-                        t_obrot_5.setTransform(t3d_obrot_5);
+            if (key == '9') {
 
-                        t3dstep.rotZ(-Math.PI / dzielnik);
-                        t3d_obrot_6.mul(t3dstep);
-                        t_obrot_6.setTransform(t3d_obrot_6);
+                if (stop && czy_byl_klik && kat_10 == 13 * (Math.PI / dzielnik) && kat_6 < Math.PI / 3) {
+                    t3dstep.rotZ(Math.PI / dzielnik);
+                    t3d_obrot_4.mul(t3dstep);
+                    t_obrot_4.setTransform(t3d_obrot_4);
+                    kat_5 -= Math.PI / dzielnik;
+                    kat_6 += Math.PI / dzielnik;
 
-                        kat_9 += Math.PI / dzielnik;
-                        kat_10 -= Math.PI / dzielnik;
-                    }
-                    if (nagrywanie) {
-                        ruchy.append("5");
-                        powrotne.append("0");
-                    }
+                    t_obrot_5.getLocalToVworld(t3d_szescian);
+
+                    t3d.set(new Vector3f(0.0f, -1.7f, 0.0f));
+                    t3d_szescian.mul(t3d);
+                    szescian.setTransform(t3d_szescian);
+
+                } else if (kat_6 < Math.PI / 3) {
+                    t3dstep.rotZ(Math.PI / dzielnik);
+                    t3d_obrot_4.mul(t3dstep);
+                    t_obrot_4.setTransform(t3d_obrot_4);
+                    kat_5 -= Math.PI / dzielnik;
+                    kat_6 += Math.PI / dzielnik;
                 }
-
-                if (key == '0') {
-                    if (kat_10 < Math.PI / 8) {
-                        t3dstep.rotZ(-Math.PI / dzielnik);
-                        t3d_obrot_5.mul(t3dstep);
-                        t_obrot_5.setTransform(t3d_obrot_5);
-
-                        t3dstep.rotZ(Math.PI / dzielnik);
-                        t3d_obrot_6.mul(t3dstep);
-                        t_obrot_6.setTransform(t3d_obrot_6);
-
-                        kat_9 -= Math.PI / dzielnik;
-                        kat_10 += Math.PI / dzielnik;
-                    }
-                    if (nagrywanie) {
-                        ruchy.append("0");
-                        powrotne.append("5");
-                    }
+                if (nagrywanie) {
+                    ruchy.append("9");
+                    powrotne.append("1");
                 }
-                
+            }
+
+            if (key == '3') {
+
+                if (stop && czy_byl_klik && kat_10 == 13 * (Math.PI / dzielnik) && kat_7 < Math.PI / 3) {
+                    t3dstep.rotX(-Math.PI / dzielnik);
+                    t3d_obrot_4.mul(t3dstep);
+                    t_obrot_4.setTransform(t3d_obrot_4);
+                    kat_7 += Math.PI / dzielnik;
+                    kat_8 -= Math.PI / dzielnik;
+
+                    t_obrot_5.getLocalToVworld(t3d_szescian);
+
+                    t3d.set(new Vector3f(0.0f, -1.7f, 0.0f));
+                    t3d_szescian.mul(t3d);
+                    szescian.setTransform(t3d_szescian);
+
+                } else if (kat_7 < Math.PI / 3) {
+                    t3dstep.rotX(-Math.PI / dzielnik);
+                    t3d_obrot_4.mul(t3dstep);
+                    t_obrot_4.setTransform(t3d_obrot_4);
+                    kat_7 += Math.PI / dzielnik;
+                    kat_8 -= Math.PI / dzielnik;
+                }
+                if (nagrywanie) {
+                    ruchy.append("3");
+                    powrotne.append("7");
+                }
+            }
+
+            if (key == '7') {
+
+                if (stop && czy_byl_klik && kat_10 == 13 * (Math.PI / dzielnik) && kat_8 < Math.PI / 3) {
+                    t3dstep.rotX(Math.PI / dzielnik);
+                    t3d_obrot_4.mul(t3dstep);
+                    t_obrot_4.setTransform(t3d_obrot_4);
+                    kat_7 -= Math.PI / dzielnik;
+                    kat_8 += Math.PI / dzielnik;
+
+                    t_obrot_5.getLocalToVworld(t3d_szescian);
+
+                    t3d.set(new Vector3f(0.0f, -1.7f, 0.0f));
+                    t3d_szescian.mul(t3d);
+                    szescian.setTransform(t3d_szescian);
+
+                } else if (kat_8 < Math.PI / 3) {
+                    t3dstep.rotX(Math.PI / dzielnik);
+                    t3d_obrot_4.mul(t3dstep);
+                    t_obrot_4.setTransform(t3d_obrot_4);
+                    kat_7 -= Math.PI / dzielnik;
+                    kat_8 += Math.PI / dzielnik;
+                }
+                if (nagrywanie) {
+                    ruchy.append("7");
+                    powrotne.append("3");
+                }
+            }
+
+            if (key == '5') {
+                if (kat_9 < 0) {
+                    t3dstep.rotZ(Math.PI / dzielnik);
+                    t3d_obrot_5.mul(t3dstep);
+                    t_obrot_5.setTransform(t3d_obrot_5);
+
+                    t3dstep.rotZ(-Math.PI / dzielnik);
+                    t3d_obrot_6.mul(t3dstep);
+                    t_obrot_6.setTransform(t3d_obrot_6);
+
+                    kat_9 += Math.PI / dzielnik;
+                    kat_10 -= Math.PI / dzielnik;
+                }
+                if (nagrywanie) {
+                    ruchy.append("5");
+                    powrotne.append("0");
+                }
+            }
+
+            if (key == '0') {
+                if (kat_10 < Math.PI / 8) {
+                    t3dstep.rotZ(-Math.PI / dzielnik);
+                    t3d_obrot_5.mul(t3dstep);
+                    t_obrot_5.setTransform(t3d_obrot_5);
+
+                    t3dstep.rotZ(Math.PI / dzielnik);
+                    t3d_obrot_6.mul(t3dstep);
+                    t_obrot_6.setTransform(t3d_obrot_6);
+
+                    kat_9 -= Math.PI / dzielnik;
+                    kat_10 += Math.PI / dzielnik;
+                }
+                if (nagrywanie) {
+                    ruchy.append("0");
+                    powrotne.append("5");
+                }
+            }
+
             if (key == 'i') {
                 z -= 3 * cos(alfa);
                 x -= 3 * sin(alfa);
