@@ -19,7 +19,7 @@ import javax.swing.JPanel;
 class Client extends JFrame implements ActionListener, KeyListener {
 
     private int port = 64003;
-    private String ip = "192.168.0.25";
+    private String ip = "172.20.10.5";
 
     JButton w = new JButton("W");
     JButton s = new JButton("S");
