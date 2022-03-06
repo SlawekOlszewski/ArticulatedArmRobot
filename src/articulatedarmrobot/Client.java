@@ -15,13 +15,20 @@ import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.event.*;
+import java.awt.*;
+import javax.swing.*;
 
-class Client extends JFrame implements ActionListener, KeyListener {
+class Client extends JFrame implements ChangeListener {
 
     private int port = 64003;
-    private String ip = "172.20.10.5";
-
-    JButton w = new JButton("W");
+    private String ip = "localhost";
+//192.168.0.143
+    
+        // create a slider
+    JSlider SliderWS = new JSlider(0,100);
+    JSlider SliderAD = new JSlider(0,100);
+    /*JButton w = new JButton("W");
     JButton s = new JButton("S");
     JButton a = new JButton("A");
     JButton d = new JButton("D");
@@ -38,145 +45,82 @@ class Client extends JFrame implements ActionListener, KeyListener {
     JButton b7 = new JButton("7");
     JButton b8 = new JButton("8");
     JButton b9 = new JButton("9");
-    JButton b0 = new JButton("0");
+    JButton b0 = new JButton("0");*/
     JButton r = new JButton("Przelacz na lokalne sterowanie");
-
+    int poprzednia=0;
+    int wynik=0;
     Socket clientSocket = new Socket(InetAddress.getByName(ip), port);
     ObjectOutputStream outToServer = new ObjectOutputStream(clientSocket.getOutputStream());
 
-    public Client() throws Exception {
+    public Client() throws Exception{
         super("Zdalne sterowanie ramieniem robota");
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(324, 248);
         setResizable(false);
         JPanel panel = new JPanel();
-        panel.setLayout(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
-        
-        w.addActionListener(this);
-        s.addActionListener(this);
-        a.addActionListener(this);
-        d.addActionListener(this);
-        i.addActionListener(this);
-        j.addActionListener(this);
-        k.addActionListener(this);
-        l.addActionListener(this);
-        b1.addActionListener(this);
-        b2.addActionListener(this);
-        b3.addActionListener(this);
-        b4.addActionListener(this);
-        b5.addActionListener(this);
-        b6.addActionListener(this);
-        b7.addActionListener(this);
-        b8.addActionListener(this);
-        b9.addActionListener(this);
-        b0.addActionListener(this);
-        r.addActionListener(this);
-
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 1;
-        c.gridy = 1;
-        panel.add(w, c);
-        
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 1;
-        c.gridy = 2;
-        panel.add(s, c);
-        
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 0;
-        c.gridy = 2;
-        panel.add(a, c);
-        
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 2;
-        c.gridy = 2;
-        panel.add(d, c);
-        
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 8;
-        c.gridy = 1;
-        panel.add(i, c);
-        
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 7;
-        c.gridy = 2;
-        panel.add(j,c);
-        
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 8;
-        c.gridy = 2;
-        panel.add(k, c);
-        
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 9;
-        c.gridy = 2;
-        panel.add(l, c);
-        
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 0;
-        c.gridy = 7;
-        panel.add(b1, c);
-        
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 1;
-        c.gridy = 7;
-        panel.add(b2, c);
-        
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 2;
-        c.gridy = 7;
-        panel.add(b3, c);
-        
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 0;
-        c.gridy = 6;
-        panel.add(b4, c);
-        
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 1;
-        c.gridy = 6;
-        panel.add(b5, c);
-        
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 2;
-        c.gridy = 6;
-        panel.add(b6, c);
-        
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 0;
-        c.gridy = 5;
-        panel.add(b7, c);
-        
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 1;
-        c.gridy = 5;
-        panel.add(b8, c);
-        
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 2;
-        c.gridy = 5;
-        panel.add(b9, c);
-        
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 1;
-        c.gridy = 8;
-        panel.add(b0, c);
-        
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridwidth = 16;
-        c.gridx = 0;
-        c.gridy = 9;
-        panel.add(r, c);
-        w.addKeyListener(this);
-
+       TworzenieSlidera(SliderWS,panel,"WS");
+       TworzenieSlidera(SliderAD,panel,"AD");
         setContentPane(panel);
         show();
     }
 
-    public void actionPerformed(ActionEvent e) {
+ public static void main(String argv[]) throws Exception {
+        new Client();
+
+    }
+ public void TworzenieSlidera(JSlider nowy, JPanel panel,String nazwa){
+ nowy.addChangeListener(this);
+       nowy.setMajorTickSpacing(20);
+        nowy.setMinorTickSpacing(5);
+        nowy.setPaintTicks(true);
+        nowy.setSnapToTicks(true);
+
+        panel.add(nowy);
+        panel.add(new JLabel(nazwa));
+ }
+ 
+  public void stateChanged(ChangeEvent e) {
+      JSlider source = (JSlider)e.getSource();
+          if (!source.getValueIsAdjusting()) {
+              int sleepSense = (int)source.getValue();
+          if (source == SliderWS) {
+            try {
+                System.out.print(sleepSense+"\n");
+                wynik=sleepSense-poprzednia;
+                poprzednia=sleepSense;
+                if(wynik>0){
+                for(int i=0;i<wynik;i++){
+                Thread.sleep(10);
+                PrzekazanieZdalne('w');
+                }
+                }
+                else{
+                    for(int i=wynik;i<0;i++){
+                Thread.sleep(10);
+                PrzekazanieZdalne('s');
+                }
+                }
+            } catch (Exception ex) {
+                Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+
+
+    }
+ }
+  }
+  public void PrzekazanieZdalne(char przekazanie) throws Exception {
+        char sentence = przekazanie;
+        outToServer.writeObject(sentence + "\n");
+    }
+  
+}
+
+        
+ /*   public void actionPerformed(ActionEvent e) {
         Object zrodlo = e.getSource();
+        
         if (zrodlo == w) {
             try {
                 w();
@@ -579,3 +523,4 @@ class Client extends JFrame implements ActionListener, KeyListener {
         }
     }
 }
+*/
