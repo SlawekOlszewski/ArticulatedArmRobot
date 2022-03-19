@@ -10,7 +10,6 @@ import com.sun.j3d.utils.applet.MainFrame;
 import com.sun.j3d.utils.universe.SimpleUniverse;
 import com.sun.j3d.utils.universe.PlatformGeometry;
 import com.sun.j3d.utils.behaviors.keyboard.*;
-import com.sun.j3d.loaders.Scene;
 import com.sun.j3d.loaders.objectfile.ObjectFile;
 
 import com.sun.j3d.utils.geometry.ColorCube;
@@ -19,8 +18,6 @@ import java.io.*;
 
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
-import static java.lang.Math.cos;
-import static java.lang.Math.sin;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.logging.Level;
@@ -30,13 +27,13 @@ import javax.media.j3d.WakeupOnCollisionEntry;
 import javax.media.j3d.WakeupOnCollisionExit;
 import java.util.*;
 
+import static java.util.Map.entry;
+
 public class ArticulatedArmRobot extends Applet implements KeyListener {
 
-    private int port = 64003;
+    private final int port = 64003;
 
     private SimpleUniverse universe = null;
-    private Canvas3D canvas = null;
-    private TransformGroup viewtrans = null;
 
     private ColorCube cubek = new ColorCube();
 
@@ -89,7 +86,7 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
     private double kat_9 = 0;
     private double kat_10 = 0;
 
-    private double dzielnik = 256;
+    private final double dzielnik = 256;
     private Vector3f wektor_1 = new Vector3f();
     private Vector3f wektor_2 = new Vector3f();
 
@@ -103,29 +100,25 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
 
     public ArticulatedArmRobot() {
         setLayout(new BorderLayout());
-        GraphicsConfiguration config = SimpleUniverse
-                .getPreferredConfiguration();
+        GraphicsConfiguration config = SimpleUniverse.getPreferredConfiguration();
 
-        canvas = new Canvas3D(config);
+        Canvas3D canvas = new Canvas3D(config);
         add("Center", canvas);
         universe = new SimpleUniverse(canvas);
 
         BranchGroup scene = createSceneGraph();
         universe.getViewingPlatform().setNominalViewingTransform();
-
         universe.getViewer().getView().setBackClipDistance(100);
 
         canvas.addKeyListener(this);
-
         universe.addBranchGraph(scene);
     }
 
     private BranchGroup createSceneGraph() {
         BranchGroup objRoot = new BranchGroup();
-
         bounds = new BoundingSphere(new Point3d(), 10000.0);
 
-        viewtrans = universe.getViewingPlatform().getViewPlatformTransform();
+        TransformGroup viewtrans = universe.getViewingPlatform().getViewPlatformTransform();
 
         KeyNavigatorBehavior keyNavBeh = new KeyNavigatorBehavior(viewtrans);
         keyNavBeh.setSchedulingBounds(bounds);
@@ -159,14 +152,6 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
         return objRoot;
     }
 
-    private void setCapabilities(Group group) {
-        group.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
-        group.setCapability(TransformGroup.ALLOW_CHILDREN_EXTEND);
-        group.setCapability(TransformGroup.ALLOW_CHILDREN_READ);
-        group.setCapability(TransformGroup.ALLOW_CHILDREN_WRITE);
-        group.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
-    }
-
     private BranchGroup createArm() {
 
         t3d_podloga = new Transform3D();
@@ -196,6 +181,7 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
         cubek = new ColorCube(0.3);
 
         BranchGroup objRoot = new BranchGroup();
+
         b_obrot_1 = new BranchGroup();
         b_obrot_2 = new BranchGroup();
         b_obrot_3 = new BranchGroup();
@@ -222,29 +208,18 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
         t_obrot_6 = new TransformGroup(t3d_obrot_6);
         t3d = new Transform3D();
 
-        setCapabilities(walec_glowny);
-        setCapabilities(walec_srodek);
-        setCapabilities(walec_gora);
-        setCapabilities(kula_1);
-        setCapabilities(kula_2);
-        setCapabilities(ryst);
-        setCapabilities(lapa_1);
-        setCapabilities(lapa_2);
-        setCapabilities(b_obrot_1);
-        setCapabilities(t_obrot_1);
-        setCapabilities(b_obrot_2);
-        setCapabilities(t_obrot_2);
-        setCapabilities(b_obrot_3);
-        setCapabilities(t_obrot_3);
-        setCapabilities(b_obrot_4);
-        setCapabilities(t_obrot_4);
-        setCapabilities(b_obrot_5);
-        setCapabilities(t_obrot_5);
-        setCapabilities(b_obrot_6);
-        setCapabilities(t_obrot_6);
-        setCapabilities(podloga);
-        setCapabilities(tlo);
-        setCapabilities(szescian);
+        ArrayList<BranchGroup> branchGroups = new ArrayList<BranchGroup>(Arrays.asList(b_obrot_1, b_obrot_2, b_obrot_3, b_obrot_4, b_obrot_5, b_obrot_6));
+
+        ArrayList<TransformGroup> transformGroups = new ArrayList<TransformGroup>(Arrays.asList(walec_glowny, walec_srodek, walec_gora, kula_1, kula_2, ryst, lapa_1, lapa_2, t_obrot_1,
+                t_obrot_2, t_obrot_3, t_obrot_4, t_obrot_5, t_obrot_6, podloga, tlo, szescian));
+
+        ArrayList<Group> groups = new ArrayList<Group>();
+        groups.addAll(branchGroups);
+        groups.addAll(transformGroups);
+
+        for (Group group : groups) {
+            setCapabilities(group);
+        }
 
         t3d.set(new Vector3d(0.0, -7.0, 0.0));
         t3d.setRotation(new AxisAngle4f(0.0f, 1.0f, 0.0f, -1.2f));
@@ -287,102 +262,38 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
         lapa_2.setTransform(t3d);
 
         ObjectFile loader = new ObjectFile();
-        Scene s_walec_glowny = null;
-        Scene s_walec_srodek = null;
-        Scene s_walec_gora = null;
-        Scene s_kula_1 = null;
-        Scene s_kula_2 = null;
-        Scene s_ryst = null;
-        Scene s_lapa_1 = null;
-        Scene s_lapa_2 = null;
-        Scene s_podloga = null;
-        Scene s_tlo = null;
-        Scene s_szescian = null;
 
-        File file = new java.io.File("model/podstawka.obj");
-        File file1 = new java.io.File("model/kula.obj");
-        File file2 = new java.io.File("model/walec.obj");
-        File file3 = new java.io.File("model/lapa.obj");
-        File file4 = new java.io.File("model/podloga.obj");
-        File file5 = new java.io.File("model/szescian.obj");
-        File file6 = new java.io.File("model/tlo.obj");
+        addChild(walec_glowny, loader, "model/podstawka.obj");
+        addChild(walec_srodek, loader, "model/walec.obj");
+        addChild(walec_gora, loader, "model/walec.obj");
+        addChild(kula_1, loader, "model/kula.obj");
+        addChild(kula_2, loader, "model/kula.obj");
+        addChild(ryst, loader, "model/kula.obj");
+        addChild(lapa_1, loader, "model/lapa.obj");
+        addChild(lapa_2, loader, "model/lapa.obj");
+        addChild(podloga, loader, "model/podloga.obj");
+        addChild(tlo, loader, "model/tlo.obj");
 
-        try {
-            s_walec_glowny = loader.load(file.toURI().toURL());
-            s_walec_srodek = loader.load(file2.toURI().toURL());
-            s_walec_gora = loader.load(file2.toURI().toURL());
-            s_kula_1 = loader.load(file1.toURI().toURL());
-            s_kula_2 = loader.load(file1.toURI().toURL());
-            s_ryst = loader.load(file1.toURI().toURL());
-            s_lapa_1 = loader.load(file3.toURI().toURL());
-            s_lapa_2 = loader.load(file3.toURI().toURL());
-            s_podloga = loader.load(file4.toURI().toURL());
-            s_szescian = loader.load(file5.toURI().toURL());
-            s_tlo = loader.load(file6.toURI().toURL());
+        Map<Group, Group[]> test = Map.ofEntries(
+                entry(b_obrot_1, new Group[]{walec_glowny}),
+                entry(b_obrot_2, new Group[]{kula_1, walec_srodek}),
+                entry(b_obrot_3, new Group[]{walec_gora, kula_2}),
+                entry(b_obrot_4, new Group[]{ryst}),
+                entry(b_obrot_5, new Group[]{lapa_1}),
+                entry(b_obrot_6, new Group[]{lapa_2}),
+                entry(t_obrot_1, new Group[]{b_obrot_1, t_obrot_2}),
+                entry(t_obrot_2, new Group[]{b_obrot_2, t_obrot_3}),
+                entry(t_obrot_3, new Group[]{b_obrot_3, t_obrot_4}),
+                entry(t_obrot_4, new Group[]{b_obrot_4, t_obrot_5, t_obrot_6}),
+                entry(t_obrot_5, new Group[]{b_obrot_5}),
+                entry(t_obrot_6, new Group[]{b_obrot_6})
+        );
 
-        } catch (Exception e) {
-            System.err.println(e);
-            System.exit(1);
+        for (Map.Entry<Group, Group[]> entry : test.entrySet()) {
+            addChildren(entry.getKey(), entry.getValue());
         }
 
-        //podstawa
-        walec_glowny.addChild(s_walec_glowny.getSceneGroup());
-
-        //walec_srodek
-        walec_srodek.addChild(s_walec_srodek.getSceneGroup());
-
-        //walec_gora
-        walec_gora.addChild(s_walec_gora.getSceneGroup());
-
-        // kula_1
-        kula_1.addChild(s_kula_1.getSceneGroup());
-
-        //kula_2
-        kula_2.addChild(s_kula_2.getSceneGroup());
-
-        //ryst
-        ryst.addChild(s_ryst.getSceneGroup());
-
-        //lapa_1
-        lapa_1.addChild(s_lapa_1.getSceneGroup());
-
-        //lapa_2
-        lapa_2.addChild(s_lapa_2.getSceneGroup());
-
-        //podloga
-        podloga.addChild(s_podloga.getSceneGroup());
-
-        //tlo
-        tlo.addChild(s_tlo.getSceneGroup());
-
         szescian.addChild(cubek);
-
-        b_obrot_1.addChild(walec_glowny);
-
-        b_obrot_2.addChild(walec_srodek);
-        b_obrot_2.addChild(kula_1);
-
-        b_obrot_3.addChild(walec_gora);
-        b_obrot_3.addChild(kula_2);
-
-        b_obrot_4.addChild(ryst);
-
-        b_obrot_5.addChild(lapa_1);
-        b_obrot_6.addChild(lapa_2);
-
-        t_obrot_1.addChild(b_obrot_1);
-        t_obrot_2.addChild(b_obrot_2);
-        t_obrot_3.addChild(b_obrot_3);
-        t_obrot_4.addChild(b_obrot_4);
-        t_obrot_5.addChild(b_obrot_5);
-        t_obrot_6.addChild(b_obrot_6);
-
-        t_obrot_4.addChild(t_obrot_6);
-        t_obrot_4.addChild(t_obrot_5);
-        t_obrot_3.addChild(t_obrot_4);
-        t_obrot_2.addChild(t_obrot_3);
-        t_obrot_1.addChild(t_obrot_2);
-
         CollisionDetectorGroup cdGroup = new CollisionDetectorGroup(szescian);
         cdGroup.setSchedulingBounds(bounds);
 
@@ -394,16 +305,38 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
         objRoot.addChild(podloga);
 
         objRoot.compile();
-
         return objRoot;
+    }
 
+    private void setCapabilities(Group group) {
+        group.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+        group.setCapability(TransformGroup.ALLOW_CHILDREN_EXTEND);
+        group.setCapability(TransformGroup.ALLOW_CHILDREN_READ);
+        group.setCapability(TransformGroup.ALLOW_CHILDREN_WRITE);
+        group.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
+    }
+
+    private void addChildren(Group parent, Group children[]) {
+        for (Group child : children) {
+            parent.addChild(child);
+        }
+    }
+
+    private void addChild(TransformGroup tg, ObjectFile loader, String filePath) {
+        try {
+            File file = new java.io.File(filePath);
+            tg.addChild(loader.load(file.toURI().toURL()).getSceneGroup());
+        } catch (Exception e) {
+            System.err.println(e);
+            System.exit(1);
+        }
     }
 
     public static void main(String[] args) {
         ArticulatedArmRobot applet = new ArticulatedArmRobot();
         Frame frame = new MainFrame(applet, 800, 600);
     }
-
+    
     private void steering(char key, String flag) {
         if (key == 'a') {
 
@@ -833,7 +766,7 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
         }
         if (key == 'p') {
             nagrywanie = false;
-            if (ruchy != null && ruchy.length()!=0) {
+            if (ruchy != null && ruchy.length() != 0) {
                 odtwarzanie = !odtwarzanie;
                 try {
                     automaticControl();

@@ -28,52 +28,49 @@ class Client extends JFrame implements ChangeListener, ActionListener {
         public LabelSlider(LabelSliderConfig lsConfig) throws Exception {
             this.pierwsza = lsConfig.labelText.toLowerCase().charAt(0);
             this.druga = lsConfig.labelText.toLowerCase().charAt(1);
-            
-            if (lsConfig.max==2) {
+
+            if (lsConfig.max == 2) {
                 this.major = 1;
                 this.minor = 1;
                 this.druga = 'M';
             }
-            
+
             this.label = new JLabel(lsConfig.labelText);
             this.slider = new JSlider(lsConfig.min, lsConfig.max, lsConfig.value);
         }
     }
-    
+
     class LabelSliderConfig {
+
         public double dzielnik = 0.703125;
         public final String labelText;
         public final int min;
         public final int max;
         public final int value;
-        
-        
+
         public LabelSliderConfig(int min, int max, int value, String labelText) throws Exception {
             this.labelText = labelText;
-            if (max==2){
+            if (max == 2) {
                 dzielnik = 1;
             }
-            this.min = (int)(min / dzielnik);
-            this.max = (int)(max / dzielnik);
+            this.min = (int) (min / dzielnik);
+            this.max = (int) (max / dzielnik);
             this.value = value;
         }
     }
-    
-    
-    private int port = 64003;
-    private String ip = "localhost";
+
+    private final int port = 64003;
+    private final String ip = "localhost";
 //192.168.0.143
-    
-    
-    
+
     LabelSliderConfig lsConfigs[] = {new LabelSliderConfig(-180, 180, 0, "AD: 0"),
-                                    new LabelSliderConfig(-23, 45, 0, "WS: 0"),
-                                    new LabelSliderConfig(-60, 60, 0, "19: 0"),
-                                    new LabelSliderConfig(-23, 45, 0, "28: 0"),
-                                    new LabelSliderConfig(-60, 60, 0, "37: 0"),
-                                    new LabelSliderConfig(-180, 180, 0, "46: 0"),
-                                    new LabelSliderConfig(0, 2, 0, "mM: 0")
-                                    };
+        new LabelSliderConfig(-23, 45, 0, "WS: 0"),
+        new LabelSliderConfig(-60, 60, 0, "19: 0"),
+        new LabelSliderConfig(-23, 45, 0, "28: 0"),
+        new LabelSliderConfig(-60, 60, 0, "37: 0"),
+        new LabelSliderConfig(-180, 180, 0, "46: 0"),
+        new LabelSliderConfig(0, 2, 0, "mM: 0")
+    };
     ArrayList<LabelSlider> LabelSliderList = new ArrayList();
 
     JButton r = new JButton("Przelacz na lokalne sterowanie");
@@ -84,7 +81,7 @@ class Client extends JFrame implements ChangeListener, ActionListener {
 
     public Client() throws Exception {
         super("Zdalne sterowanie ramieniem robota");
-        
+
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(324, 300);
         setResizable(false);
@@ -120,6 +117,7 @@ class Client extends JFrame implements ChangeListener, ActionListener {
         panel.add(Box.createRigidArea(new Dimension(0, 20)));
     }
 
+    @Override
     public void stateChanged(ChangeEvent e) {
         JSlider source = (JSlider) e.getSource();
         int sleepSense = (int) source.getValue();
@@ -151,21 +149,17 @@ class Client extends JFrame implements ChangeListener, ActionListener {
         }
     }
 
+    @Override
     public void actionPerformed(ActionEvent e) {
         Object zrodlo = e.getSource();
 
         if (zrodlo == r) {
             try {
-                r();
+                outToServer.writeObject('r' + "\n");
                 System.exit(0);
             } catch (Exception ex) {
                 Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
             }
-        };
-    }
-
-    public void r() throws Exception {
-        char sentence = 'r';
-        outToServer.writeObject(sentence + "\n");
+        }
     }
 }
