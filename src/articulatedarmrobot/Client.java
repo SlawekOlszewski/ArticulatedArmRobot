@@ -109,13 +109,13 @@ class Client extends JFrame implements ChangeListener, ActionListener {
                 poprzednia=sleepSense;
                 if(wynik>0){
                 for(int i=0;i<wynik;i++){
-                Thread.sleep(10);
+//                Thread.sleep(10);
                 PrzekazanieZdalne(pierwsza);
                 }
                 }
                 else{
                     for(int i=wynik;i<0;i++){
-                Thread.sleep(10);
+//                Thread.sleep(10);
                 PrzekazanieZdalne(druga);
                 }
                 }
