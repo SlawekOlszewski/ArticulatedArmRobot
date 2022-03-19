@@ -883,10 +883,6 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
     private void externalControl() {
         char key;
         String clientSentence = null;
-        Transform3D przesuniecie_obserwatora = new Transform3D();
-        Transform3D rotacja = new Transform3D();
-        float x = 0, z = 5;
-        double alfa = 0;
         BufferedReader inFromClient;
         while (remote) {
             try {
@@ -899,30 +895,6 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
             key = clientSentence.charAt(clientSentence.length() - 1);
 
             steering(key, "external");
-            if (key == 'i') {
-                z -= 3 * cos(alfa);
-                x -= 3 * sin(alfa);
-                przesuniecie_obserwatora.setTranslation(new Vector3f(x, 0.0f, z));
-                universe.getViewingPlatform().getViewPlatformTransform().setTransform(przesuniecie_obserwatora);
-            }
-            if (key == 'k') {
-                z += 3 * cos(alfa);
-                x += 3 * sin(alfa);
-                przesuniecie_obserwatora.setTranslation(new Vector3f(x, 0.0f, z));
-                universe.getViewingPlatform().getViewPlatformTransform().setTransform(przesuniecie_obserwatora);
-            }
-            if (key == 'j') {
-                rotacja.rotY(0.07);
-                alfa += 0.07;
-                przesuniecie_obserwatora.mul(rotacja);
-                universe.getViewingPlatform().getViewPlatformTransform().setTransform(przesuniecie_obserwatora);
-            }
-            if (key == 'l') {
-                rotacja.rotY(-0.07);
-                alfa -= 0.07;
-                przesuniecie_obserwatora.mul(rotacja);
-                universe.getViewingPlatform().getViewPlatformTransform().setTransform(przesuniecie_obserwatora);
-            }
         }
         try {
             connectionSocket.close();
