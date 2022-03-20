@@ -32,11 +32,8 @@ import static java.util.Map.entry;
 public class ArticulatedArmRobot extends Applet implements KeyListener {
 
     private final int port = 64003;
-
     private SimpleUniverse universe = null;
-
     private ColorCube cubek = new ColorCube();
-
     private BoundingSphere bounds = null;
     private TransformGroup tg = null;
     private TransformGroup walec_glowny = null;
@@ -346,6 +343,7 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
     public static void main(String[] args) {
         ArticulatedArmRobot applet = new ArticulatedArmRobot();
         Frame frame = new MainFrame(applet, 800, 600);
+        frame.setTitle("ArticulatedArmRobot");
     }
 
     private void checkPodloga() {
