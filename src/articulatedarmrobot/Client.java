@@ -24,6 +24,7 @@ class Client extends JFrame implements ChangeListener, ActionListener {
         public char druga;
         public int major = 20;
         public int minor = 1;
+        public int poprzednia = 0;
 
         public LabelSlider(LabelSliderConfig lsConfig) throws Exception {
             this.pierwsza = lsConfig.labelText.toLowerCase().charAt(0);
@@ -61,7 +62,6 @@ class Client extends JFrame implements ChangeListener, ActionListener {
 
     private final int port = 64003;
     private final String ip = "localhost";
-//192.168.0.143
 
     LabelSliderConfig lsConfigs[] = {new LabelSliderConfig(-180, 180, 0, "AD: 0"),
         new LabelSliderConfig(-23, 45, 0, "WS: 0"),
@@ -74,8 +74,6 @@ class Client extends JFrame implements ChangeListener, ActionListener {
     ArrayList<LabelSlider> LabelSliderList = new ArrayList();
 
     JButton r = new JButton("Przelacz na lokalne sterowanie");
-    int poprzednia = 0;
-    int wynik = 0;
     Socket clientSocket = new Socket(InetAddress.getByName(ip), port);
     ObjectOutputStream outToServer = new ObjectOutputStream(clientSocket.getOutputStream());
 
@@ -123,25 +121,25 @@ class Client extends JFrame implements ChangeListener, ActionListener {
         int sleepSense = (int) source.getValue();
         for (LabelSlider ls : LabelSliderList) {
             if (source == ls.slider) {
-                Przesuwanie(ls.pierwsza, ls.druga, ls.label, sleepSense);
+                Przesuwanie(ls, sleepSense);
             }
         }
     }
 
-    public void Przesuwanie(char pierwsza, char druga, JLabel label, int sleepSense) {
+    public void Przesuwanie(LabelSlider ls, int sleepSense) {
         try {
-            label.setText(label.getText().split(": ")[0] + ": " + String.valueOf(sleepSense));
-            wynik = sleepSense - poprzednia;
-            poprzednia = sleepSense;
+            ls.label.setText(ls.label.getText().split(": ")[0] + ": " + String.valueOf(sleepSense));
+            int wynik = sleepSense - ls.poprzednia;
+            ls.poprzednia = sleepSense;
             if (wynik > 0) {
                 for (int i = 0; i < wynik; i++) {
                     Thread.sleep(1);
-                    outToServer.writeObject(pierwsza + "\n");
+                    outToServer.writeObject(ls.pierwsza + "\n");
                 }
             } else {
                 for (int i = wynik; i < 0; i++) {
                     Thread.sleep(1);
-                    outToServer.writeObject(druga + "\n");
+                    outToServer.writeObject(ls.druga + "\n");
                 }
             }
         } catch (Exception ex) {

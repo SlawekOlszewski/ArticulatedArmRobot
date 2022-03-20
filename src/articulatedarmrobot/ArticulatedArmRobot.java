@@ -26,7 +26,7 @@ import java.util.logging.Logger;
 import javax.media.j3d.WakeupOnCollisionEntry;
 import javax.media.j3d.WakeupOnCollisionExit;
 import java.util.*;
-
+import java.util.Map.Entry;
 import static java.util.Map.entry;
 
 public class ArticulatedArmRobot extends Applet implements KeyListener {
@@ -70,7 +70,8 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
     private Transform3D t3d_obrot_4 = new Transform3D();
     private Transform3D t3d_obrot_5 = new Transform3D();
     private Transform3D t3d_obrot_6 = new Transform3D();
-    private Transform3D t3dstep = new Transform3D();
+    private final Transform3D t3dstep = new Transform3D();
+
     private boolean remote = false;
     private ServerSocket welcomeSocket = null;
     private Socket connectionSocket = null;
@@ -87,16 +88,26 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
     private double kat_10 = 0;
 
     private final double dzielnik = 256;
-    private Vector3f wektor_1 = new Vector3f();
-    private Vector3f wektor_2 = new Vector3f();
+    private final Vector3f wektor_1 = new Vector3f();
+    private final Vector3f wektor_2 = new Vector3f();
 
     private boolean stop = false;
     private boolean trzyma = false;
     private boolean czy_podloga = false;
     private boolean nagrywanie = false;
     private boolean odtwarzanie = false;
+
+    private final Map<String, String> movesMap = Map.ofEntries(
+            entry("w", "s"),
+            entry("a", "d"),
+            entry("2", "8"),
+            entry("4", "6"),
+            entry("1", "9"),
+            entry("3", "7"),
+            entry("M", "m")
+    );
+
     private StringBuilder ruchy;
-    private StringBuilder powrotne;
 
     public ArticulatedArmRobot() {
         setLayout(new BorderLayout());
@@ -336,375 +347,168 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
         ArticulatedArmRobot applet = new ArticulatedArmRobot();
         Frame frame = new MainFrame(applet, 800, 600);
     }
-    
+
+    private void checkPodloga() {
+        podloga.getLocalToVworld(t3d);
+        t3d.get(wektor_1);
+        lapa_1.getLocalToVworld(t3d_szescian);
+        t3d_szescian.get(wektor_2);
+        if (wektor_2.y + 4.4 <= wektor_1.y) {
+            czy_podloga = true;
+        } else {
+            czy_podloga = false;
+        }
+    }
+
+    private void cubeSteering() {
+        if (stop && kat_10 == 13 * (Math.PI / dzielnik)) {
+            t_obrot_5.getLocalToVworld(t3d_szescian);
+
+            t3d.set(new Vector3f(0.0f, -1.7f, 0.0f));
+            t3d_szescian.mul(t3d);
+            szescian.setTransform(t3d_szescian);
+        }
+    }
+
+    private void steeringAD(double direction, char key) {
+        t3dstep.rotY(direction * Math.PI / dzielnik);
+        t_obrot_1.getTransform(t3d);
+        t3d.mul(t3dstep);
+        t_obrot_1.setTransform(t3d);
+
+        trzyma = stop;
+        cubeSteering();
+        addToReplay(key);
+    }
+
+    private void steeringWS(double direction, char key) {
+        t3dstep.rotZ(direction * Math.PI / dzielnik);
+        t_obrot_2.getTransform(t3d);
+        t3d.mul(t3dstep);
+        t_obrot_2.setTransform(t3d);
+        kat_1 = kat_1 - direction * Math.PI / dzielnik;
+        kat_2 = kat_2 + direction * Math.PI / dzielnik;
+        trzyma = stop;
+        cubeSteering();
+        addToReplay(key);
+    }
+
+    private void steering28(double direction, char key) {
+        t3dstep.rotZ(direction * Math.PI / dzielnik);
+        t3d_obrot_3.mul(t3dstep);
+        t_obrot_3.setTransform(t3d_obrot_3);
+        kat_3 = kat_3 - direction * Math.PI / dzielnik;
+        kat_4 = kat_4 + direction * Math.PI / dzielnik;
+        trzyma = stop;
+        cubeSteering();
+        addToReplay(key);
+    }
+
+    private void steering46(double direction, char key) {
+        t3dstep.rotY(direction * Math.PI / dzielnik);
+        t3d_obrot_4.mul(t3dstep);
+        t_obrot_4.setTransform(t3d_obrot_4);
+        trzyma = stop;
+        cubeSteering();
+        addToReplay(key);
+    }
+
+    private void steering19(double direction, char key) {
+        t3dstep.rotZ(direction * Math.PI / dzielnik);
+        t3d_obrot_4.mul(t3dstep);
+        t_obrot_4.setTransform(t3d_obrot_4);
+        kat_5 = kat_5 - direction * Math.PI / dzielnik;
+        kat_6 = kat_6 + direction * Math.PI / dzielnik;
+        trzyma = stop;
+        cubeSteering();
+        addToReplay(key);
+    }
+
+    private void steering37(double direction, char key) {
+        t3dstep.rotX(direction * Math.PI / dzielnik);
+        t3d_obrot_4.mul(t3dstep);
+        t_obrot_4.setTransform(t3d_obrot_4);
+        kat_7 = kat_7 - direction * Math.PI / dzielnik;
+        kat_8 = kat_8 + direction * Math.PI / dzielnik;
+        trzyma = stop;
+        cubeSteering();
+        addToReplay(key);
+    }
+
+    private void steeringMm(double direction, char key) {
+        int ile = 13;
+        t3dstep.rotZ(ile * direction * Math.PI / dzielnik);
+        t3d_obrot_5.mul(t3dstep);
+        t_obrot_5.setTransform(t3d_obrot_5);
+
+        t3dstep.rotZ(ile * -direction * Math.PI / dzielnik);
+        t3d_obrot_6.mul(t3dstep);
+        t_obrot_6.setTransform(t3d_obrot_6);
+
+        kat_9 = kat_9 + direction * ile * Math.PI / dzielnik;
+        kat_10 = kat_10 - direction * ile * Math.PI / dzielnik;
+        addToReplay(key);
+    }
+
+    private void addToReplay(char ruch) {
+        if (nagrywanie) {
+            ruchy.append(ruch);
+        }
+    }
+
     private void steering(char key, String flag) {
         if (key == 'a') {
-
-            if (stop && kat_10 == 13 * (Math.PI / dzielnik)) {
-                t3dstep.rotY(Math.PI / dzielnik);
-                t_obrot_1.getTransform(t3d);
-                t3d.mul(t3dstep);
-                t_obrot_1.setTransform(t3d);
-
-                t_obrot_5.getLocalToVworld(t3d_szescian);
-
-                t3d.set(new Vector3f(0.0f, -1.7f, 0.0f));
-                t3d_szescian.mul(t3d);
-                szescian.setTransform(t3d_szescian);
-                trzyma = true;
-
-            } else {
-                t3dstep.rotY(Math.PI / dzielnik);
-                t_obrot_1.getTransform(t3d);
-                t3d.mul(t3dstep);
-                t_obrot_1.setTransform(t3d);
-                trzyma = false;
-            }
-            if (nagrywanie) {
-                ruchy.append("a");
-                powrotne.append("d");
-            }
-
+            steeringAD(1, key);
         }
-
         if (key == 'd') {
-
-            if (stop && kat_10 == 13 * (Math.PI / dzielnik)) {
-
-                t3dstep.rotY(-Math.PI / dzielnik);
-                t_obrot_1.getTransform(t3d);
-                t3d.mul(t3dstep);
-                t_obrot_1.setTransform(t3d);
-
-                t_obrot_5.getLocalToVworld(t3d_szescian);
-
-                t3d.set(new Vector3f(0.0f, -1.7f, 0.0f));
-                t3d_szescian.mul(t3d);
-                szescian.setTransform(t3d_szescian);
-                trzyma = true;
-
-            } else {
-                t3dstep.rotY(-Math.PI / dzielnik);
-                t_obrot_1.getTransform(t3d);
-                t3d.mul(t3dstep);
-                t_obrot_1.setTransform(t3d);
-                trzyma = false;
-            }
-            if (nagrywanie) {
-                ruchy.append("d");
-                powrotne.append("a");
-            }
-
+            steeringAD(-1, key);
         }
-
         if (key == 'w') {
-
-            if (stop && kat_10 == 13 * (Math.PI / dzielnik) && kat_1 < Math.PI / 4) {
-                t3dstep.rotZ(-Math.PI / dzielnik);
-                t_obrot_2.getTransform(t3d);
-                t3d.mul(t3dstep);
-                t_obrot_2.setTransform(t3d);
-                kat_1 += Math.PI / dzielnik;
-                kat_2 -= Math.PI / dzielnik;
-
-                t_obrot_5.getLocalToVworld(t3d_szescian);
-
-                t3d.set(new Vector3f(0.0f, -1.7f, 0.0f));
-                t3d_szescian.mul(t3d);
-                szescian.setTransform(t3d_szescian);
-                trzyma = true;
-            } else if (kat_1 < Math.PI / 4) {
-                t3dstep.rotZ(-Math.PI / dzielnik);
-                t_obrot_2.getTransform(t3d);
-                t3d.mul(t3dstep);
-                t_obrot_2.setTransform(t3d);
-                kat_1 += Math.PI / dzielnik;
-                kat_2 -= Math.PI / dzielnik;
-                trzyma = false;
-            }
-            if (nagrywanie) {
-                ruchy.append("w");
-                powrotne.append("s");
+            if (kat_1 < Math.PI / 4) {
+                steeringWS(-1, key);
             }
         }
-
         if (key == 's') {
-
-            podloga.getLocalToVworld(t3d);
-            t3d.get(wektor_1);
-            lapa_1.getLocalToVworld(t3d_szescian);
-            t3d_szescian.get(wektor_2);
-
-            if (wektor_2.y + 4.4 <= wektor_1.y) {
-                czy_podloga = true;
-            } else {
-                czy_podloga = false;
-            }
-
-            if (stop && kat_10 == 13 * (Math.PI / dzielnik) && kat_2 < Math.PI / 8 && !czy_podloga) {
-                t3dstep.rotZ(Math.PI / dzielnik);
-                t_obrot_2.getTransform(t3d);
-                t3d.mul(t3dstep);
-                t_obrot_2.setTransform(t3d);
-                kat_1 -= Math.PI / dzielnik;
-                kat_2 += Math.PI / dzielnik;
-
-                t_obrot_5.getLocalToVworld(t3d_szescian);
-
-                t3d.set(new Vector3f(0.0f, -1.7f, 0.0f));
-                t3d_szescian.mul(t3d);
-                szescian.setTransform(t3d_szescian);
-                trzyma = true;
-            } else if (kat_2 < Math.PI / 8 && !czy_podloga) {
-                t3dstep.rotZ(Math.PI / dzielnik);
-                t_obrot_2.getTransform(t3d);
-                t3d.mul(t3dstep);
-                t_obrot_2.setTransform(t3d);
-                kat_1 -= Math.PI / dzielnik;
-                kat_2 += Math.PI / dzielnik;
-                trzyma = false;
-            }
-            if (nagrywanie) {
-                ruchy.append("s");
-                powrotne.append("w");
+            checkPodloga();
+            if (kat_2 < Math.PI / 8 && !czy_podloga) {
+                steeringWS(1, key);
             }
         }
         if (key == '8') {
-
-            if (stop && kat_10 == 13 * (Math.PI / dzielnik) && kat_3 < Math.PI / 4) {
-                t3dstep.rotZ(-Math.PI / dzielnik);
-                t3d_obrot_3.mul(t3dstep);
-                t_obrot_3.setTransform(t3d_obrot_3);
-                kat_3 += Math.PI / dzielnik;
-                kat_4 -= Math.PI / dzielnik;
-
-                t_obrot_5.getLocalToVworld(t3d_szescian);
-
-                t3d.set(new Vector3f(0.0f, -1.7f, 0.0f));
-                t3d_szescian.mul(t3d);
-                szescian.setTransform(t3d_szescian);
-                trzyma = true;
-            } else if (kat_3 < Math.PI / 4) {
-                t3dstep.rotZ(-Math.PI / dzielnik);
-                t3d_obrot_3.mul(t3dstep);
-                t_obrot_3.setTransform(t3d_obrot_3);
-                kat_3 += Math.PI / dzielnik;
-                kat_4 -= Math.PI / dzielnik;
-                trzyma = false;
-            }
-            if (nagrywanie) {
-                ruchy.append("8");
-                powrotne.append("2");
+            if (kat_3 < Math.PI / 4) {
+                steering28(-1, key);
             }
         }
         if (key == '2') {
-
-            podloga.getLocalToVworld(t3d);
-            t3d.get(wektor_1);
-            lapa_1.getLocalToVworld(t3d_szescian);
-            t3d_szescian.get(wektor_2);
-
-            if (wektor_2.y + 4.4 <= wektor_1.y) {
-                czy_podloga = true;
-            } else {
-                czy_podloga = false;
-            }
-
-            if (stop && kat_10 == 13 * (Math.PI / dzielnik) && !czy_podloga) {
-                t3dstep.rotZ(Math.PI / dzielnik);
-                t3d_obrot_3.mul(t3dstep);
-                t_obrot_3.setTransform(t3d_obrot_3);
-                kat_3 -= Math.PI / dzielnik;
-                kat_4 += Math.PI / dzielnik;
-
-                t_obrot_5.getLocalToVworld(t3d_szescian);
-
-                t3d.set(new Vector3f(0.0f, -1.7f, 0.0f));
-                t3d_szescian.mul(t3d);
-                szescian.setTransform(t3d_szescian);
-                trzyma = true;
-            } else if (kat_4 < Math.PI / 8 && !czy_podloga) {
-                t3dstep.rotZ(Math.PI / dzielnik);
-                t3d_obrot_3.mul(t3dstep);
-                t_obrot_3.setTransform(t3d_obrot_3);
-                kat_3 -= Math.PI / dzielnik;
-                kat_4 += Math.PI / dzielnik;
-                trzyma = false;
-            }
-            if (nagrywanie) {
-                ruchy.append("2");
-                powrotne.append("8");
+            checkPodloga();
+            if (kat_4 < Math.PI / 8 && !czy_podloga) {
+                steering28(1, key);
             }
         }
         if (key == '4') {
-
-            if (stop && kat_10 == 13 * (Math.PI / dzielnik)) {
-                t3dstep.rotY(Math.PI / dzielnik);
-                t3d_obrot_4.mul(t3dstep);
-                t_obrot_4.setTransform(t3d_obrot_4);
-
-                t_obrot_5.getLocalToVworld(t3d_szescian);
-
-                t3d.set(new Vector3f(0.0f, -1.7f, 0.0f));
-                t3d_szescian.mul(t3d);
-                szescian.setTransform(t3d_szescian);
-                trzyma = true;
-            } else {
-
-                t3dstep.rotY(Math.PI / dzielnik);
-                t3d_obrot_4.mul(t3dstep);
-                t_obrot_4.setTransform(t3d_obrot_4);
-                trzyma = false;
-            }
-            if (nagrywanie) {
-                ruchy.append("4");
-                powrotne.append("6");
-            }
+            steering46(1, key);
         }
-
         if (key == '6') {
-
-            if (stop && kat_10 == 13 * (Math.PI / dzielnik)) {
-                t3dstep.rotY(-Math.PI / dzielnik);
-                t3d_obrot_4.mul(t3dstep);
-                t_obrot_4.setTransform(t3d_obrot_4);
-
-                t_obrot_5.getLocalToVworld(t3d_szescian);
-
-                t3d.set(new Vector3f(0.0f, -1.7f, 0.0f));
-                t3d_szescian.mul(t3d);
-                szescian.setTransform(t3d_szescian);
-                trzyma = true;
-
-            } else {
-                t3dstep.rotY(-Math.PI / dzielnik);
-                t3d_obrot_4.mul(t3dstep);
-                t_obrot_4.setTransform(t3d_obrot_4);
-                trzyma = false;
-            }
-            if (nagrywanie) {
-                ruchy.append("6");
-                powrotne.append("4");
-            }
-
+            steering46(-1, key);
         }
         if (key == '1') {
-
-            if (stop && kat_10 == 13 * (Math.PI / dzielnik) && kat_5 < Math.PI / 3) {
-                t3dstep.rotZ(-Math.PI / dzielnik);
-                t3d_obrot_4.mul(t3dstep);
-                t_obrot_4.setTransform(t3d_obrot_4);
-                kat_5 += Math.PI / dzielnik;
-                kat_6 -= Math.PI / dzielnik;
-
-                t_obrot_5.getLocalToVworld(t3d_szescian);
-
-                t3d.set(new Vector3f(0.0f, -1.7f, 0.0f));
-                t3d_szescian.mul(t3d);
-                szescian.setTransform(t3d_szescian);
-                trzyma = true;
-
-            } else if (kat_5 < Math.PI / 3) {
-                t3dstep.rotZ(-Math.PI / dzielnik);
-                t3d_obrot_4.mul(t3dstep);
-                t_obrot_4.setTransform(t3d_obrot_4);
-                kat_5 += Math.PI / dzielnik;
-                kat_6 -= Math.PI / dzielnik;
-                trzyma = false;
-            }
-            if (nagrywanie) {
-                ruchy.append("1");
-                powrotne.append("9");
+            if (kat_5 < Math.PI / 3) {
+                steering19(-1, key);
             }
         }
-
         if (key == '9') {
-
-            if (stop && kat_10 == 13 * (Math.PI / dzielnik) && kat_6 < Math.PI / 3) {
-                t3dstep.rotZ(Math.PI / dzielnik);
-                t3d_obrot_4.mul(t3dstep);
-                t_obrot_4.setTransform(t3d_obrot_4);
-                kat_5 -= Math.PI / dzielnik;
-                kat_6 += Math.PI / dzielnik;
-
-                t_obrot_5.getLocalToVworld(t3d_szescian);
-
-                t3d.set(new Vector3f(0.0f, -1.7f, 0.0f));
-                t3d_szescian.mul(t3d);
-                szescian.setTransform(t3d_szescian);
-                trzyma = true;
-
-            } else if (kat_6 < Math.PI / 3) {
-                t3dstep.rotZ(Math.PI / dzielnik);
-                t3d_obrot_4.mul(t3dstep);
-                t_obrot_4.setTransform(t3d_obrot_4);
-                kat_5 -= Math.PI / dzielnik;
-                kat_6 += Math.PI / dzielnik;
-                trzyma = false;
-            }
-            if (nagrywanie) {
-                ruchy.append("9");
-                powrotne.append("1");
+            if (kat_6 < Math.PI / 3) {
+                steering19(1, key);
             }
         }
-
         if (key == '3') {
-
-            if (stop && kat_10 == 13 * (Math.PI / dzielnik) && kat_7 < Math.PI / 3) {
-                t3dstep.rotX(-Math.PI / dzielnik);
-                t3d_obrot_4.mul(t3dstep);
-                t_obrot_4.setTransform(t3d_obrot_4);
-                kat_7 += Math.PI / dzielnik;
-                kat_8 -= Math.PI / dzielnik;
-
-                t_obrot_5.getLocalToVworld(t3d_szescian);
-
-                t3d.set(new Vector3f(0.0f, -1.7f, 0.0f));
-                t3d_szescian.mul(t3d);
-                szescian.setTransform(t3d_szescian);
-                trzyma = true;
-
-            } else if (kat_7 < Math.PI / 3) {
-                t3dstep.rotX(-Math.PI / dzielnik);
-                t3d_obrot_4.mul(t3dstep);
-                t_obrot_4.setTransform(t3d_obrot_4);
-                kat_7 += Math.PI / dzielnik;
-                kat_8 -= Math.PI / dzielnik;
-                trzyma = false;
-            }
-            if (nagrywanie) {
-                ruchy.append("3");
-                powrotne.append("7");
+            if (kat_7 < Math.PI / 3) {
+                steering37(-1, key);
             }
         }
-
         if (key == '7') {
-
-            if (stop && kat_10 == 13 * (Math.PI / dzielnik) && kat_8 < Math.PI / 3) {
-                t3dstep.rotX(Math.PI / dzielnik);
-                t3d_obrot_4.mul(t3dstep);
-                t_obrot_4.setTransform(t3d_obrot_4);
-                kat_7 -= Math.PI / dzielnik;
-                kat_8 += Math.PI / dzielnik;
-
-                t_obrot_5.getLocalToVworld(t3d_szescian);
-
-                t3d.set(new Vector3f(0.0f, -1.7f, 0.0f));
-                t3d_szescian.mul(t3d);
-                szescian.setTransform(t3d_szescian);
-                trzyma = true;
-
-            } else if (kat_8 < Math.PI / 3) {
-                t3dstep.rotX(Math.PI / dzielnik);
-                t3d_obrot_4.mul(t3dstep);
-                t_obrot_4.setTransform(t3d_obrot_4);
-                kat_7 -= Math.PI / dzielnik;
-                kat_8 += Math.PI / dzielnik;
-                trzyma = false;
-            }
-            if (nagrywanie) {
-                ruchy.append("7");
-                powrotne.append("3");
+            if (kat_8 < Math.PI / 3) {
+                steering37(1, key);
             }
         }
         if (key == 'r') {
@@ -719,50 +523,21 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
                 }
             }
         }
-        if (key == 'm') { // otwieranie
+        if (key == 'm') {
             if (kat_10 < 2 * 13 * Math.PI / dzielnik) {
-                int ile = 13;
-                t3dstep.rotZ(ile * -Math.PI / dzielnik);
-                t3d_obrot_5.mul(t3dstep);
-                t_obrot_5.setTransform(t3d_obrot_5);
-
-                t3dstep.rotZ(ile * Math.PI / dzielnik);
-                t3d_obrot_6.mul(t3dstep);
-                t_obrot_6.setTransform(t3d_obrot_6);
-
-                kat_9 -= ile * Math.PI / dzielnik;
-                kat_10 += ile * Math.PI / dzielnik;
-                if (nagrywanie) {
-                    ruchy.append("m");
-                    powrotne.append("M");
-                }
+                steeringMm(-1, key);
             }
         }
-        if (key == 'M') { //zamykanie
-            int ile = 13;
-            if (!trzyma & kat_10 - ile * Math.PI / dzielnik >= 0) {
-                t3dstep.rotZ(ile * Math.PI / dzielnik);
-                t3d_obrot_5.mul(t3dstep);
-                t_obrot_5.setTransform(t3d_obrot_5);
-
-                t3dstep.rotZ(ile * -Math.PI / dzielnik);
-                t3d_obrot_6.mul(t3dstep);
-                t_obrot_6.setTransform(t3d_obrot_6);
-
-                kat_9 += ile * Math.PI / dzielnik;
-                kat_10 -= ile * Math.PI / dzielnik;
-                if (nagrywanie) {
-                    ruchy.append("M");
-                    powrotne.append("m");
-                }
+        if (key == 'M') {
+            if (!trzyma & kat_10 - 13 * Math.PI / dzielnik >= 0) {
+                steeringMm(1, key);
             }
         }
         if (key == 'n') {
             if (!nagrywanie) {
                 ruchy = new StringBuilder();
-                powrotne = new StringBuilder();
             }
-            nagrywanie = !nagrywanie;
+            nagrywanie = true;
         }
         if (key == 'p') {
             nagrywanie = false;
@@ -777,6 +552,7 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
         }
     }
 
+    @Override
     public void keyTyped(KeyEvent e) {
         char key;
         if (!remote) {
@@ -787,30 +563,38 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
         }
     }
 
-    private void automaticControl() throws InterruptedException {
-        char key;
-        int length = ruchy.length() - 1;
-        int length_powrot = powrotne.length() - 1;
-
-        int i = 0;
-        int wracamy = 0;
-        while (odtwarzanie) {
-            Thread.sleep(32);
-            if (wracamy != length_powrot) {
-                key = powrotne.charAt(length_powrot - wracamy);
-                wracamy++;
-            } else {
-                key = ruchy.charAt(i);
-                i++;
+    private String getKey(Map<String, String> map, char value) {
+        String key = null;
+        for (Entry entry : map.entrySet()) {
+            if (entry.getValue().equals("" + value)) {
+                key = (String) entry.getKey();
+                break;
             }
-            if (i == length) {
-                odtwarzanie = false;
-            }
-            if (wracamy == length_powrot && i == 0) {
-                Thread.sleep(500);
-            }
-            steering(key, "automatic");
         }
+        return key;
+    }
+
+    private void automaticControl() throws InterruptedException {
+        String key;
+        int length = ruchy.length() - 1;
+        ruchy.reverse();
+        for (int i = 0; i < length; i++) {
+            Thread.sleep(32);
+            char mapKey = ruchy.charAt(i);
+            key = movesMap.get("" + mapKey);
+            if (key == null) {
+                key = getKey(movesMap, mapKey);
+            }
+            steering(key.charAt(0), "automatic");
+        }
+        Thread.sleep(500);
+        ruchy.reverse();
+        for (int i = 0; i < length; i++) {
+            Thread.sleep(32);
+            key = "" + ruchy.charAt(i);
+            steering(key.charAt(0), "automatic");
+        }
+        odtwarzanie = false;
     }
 
     private void externalControl() {
@@ -824,9 +608,7 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
             } catch (IOException ex) {
                 Logger.getLogger(ArticulatedArmRobot.class.getName()).log(Level.SEVERE, null, ex);
             }
-
             key = clientSentence.charAt(clientSentence.length() - 1);
-
             steering(key, "external");
         }
         try {
@@ -837,38 +619,38 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
         }
     }
 
+    @Override
     public void keyPressed(KeyEvent e) {
     }
 
+    @Override
     public void keyReleased(KeyEvent e) {
     }
 
     class CollisionDetectorGroup extends Behavior {
 
         private boolean inCollision = false;
-        private Group group;
-
+        private final Group group;
         private WakeupOnCollisionEntry wEnter;
         private WakeupOnCollisionExit wExit;
 
         public CollisionDetectorGroup(Group gp) {
             group = gp;
             inCollision = false;
-
         }
 
+        @Override
         public void initialize() {
             wEnter = new WakeupOnCollisionEntry(group);
             wExit = new WakeupOnCollisionExit(group);
             wakeupOn(wEnter);
         }
 
+        @Override
         public void processStimulus(Enumeration criteria) {
-
             inCollision = !inCollision;
             if (inCollision) {
                 stop = true;
-
                 wakeupOn(wExit);
             } else {
                 stop = false;
