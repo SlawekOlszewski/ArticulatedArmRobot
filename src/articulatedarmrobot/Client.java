@@ -59,10 +59,10 @@ class Client extends JFrame implements ChangeListener, ActionListener {
             this.value = value;
         }
     }
-
+    
     private final int port = 64003;
     private final String ip = "localhost";
-
+    
     LabelSliderConfig lsConfigs[] = {new LabelSliderConfig(-180, 180, 0, "AD: 0"),
         new LabelSliderConfig(-23, 45, 0, "WS: 0"),
         new LabelSliderConfig(-60, 60, 0, "19: 0"),

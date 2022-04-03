@@ -230,45 +230,54 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
             setCapabilities(group);
         }
 
-        t3d.set(new Vector3d(0.0, -7.0, 0.0));
-        t3d.setRotation(new AxisAngle4f(0.0f, 1.0f, 0.0f, -1.2f));
-        t3d.setScale(1.00);
-        walec_glowny.setTransform(t3d);
-
-        t3d.set(new Vector3f(0.0f, 0.0f, 0.0f));
-        t3d.setRotation(new AxisAngle4f(0.0f, 0.0f, 1.57f, (float) Math.PI / 2));
-        t3d.setScale(1.0);
-        walec_srodek.setTransform(t3d);
-
-        t3d.set(new Vector3f(0.0f, 0.0f, 0.0f));
-        t3d.setRotation(new AxisAngle4f(0.0f, 0.0f, 1.57f, (float) Math.PI));
-        t3d.setScale(0.7);
-        walec_gora.setTransform(t3d);
-
-        t3d.set(new Vector3d(0.0, 0.0, 0.0));
-        t3d.setRotation(new AxisAngle4f(0.0f, 1.0f, 0.0f, -1.2f));
-        t3d.setScale(2.0);
-        kula_1.setTransform(t3d);
-
-        t3d.set(new Vector3d(0.0, 0.0, 0.0));
-        t3d.setRotation(new AxisAngle4f(0.0f, 1.0f, 0.0f, -1.2f));
-        t3d.setScale(1.5);
-        kula_2.setTransform(t3d);
-
-        t3d.set(new Vector3d(0.0, 0.0, 0.0));
-        t3d.setRotation(new AxisAngle4f(0.0f, 1.0f, 0.0f, -1.2f));
-        t3d.setScale(0.9);
-        ryst.setTransform(t3d);
-
-        t3d.set(new Vector3d(-0.5, -1.2, 0.0));
-        t3d.setRotation(new AxisAngle4f(0.0f, 0.0f, 0.0f, 0.0f));
-        t3d.setScale(0.6);
-        lapa_1.setTransform(t3d);
-
-        t3d.set(new Vector3d(0.5, -1.2, 0.0));
-        t3d.setRotation(new AxisAngle4f(0.0f, 1.0f, 0.0f, (float) Math.PI));
-        t3d.setScale(0.6);
-        lapa_2.setTransform(t3d);
+//        t3d.set(new Vector3d(0.0, -7.0, 0.0));
+//        t3d.setRotation(new AxisAngle4f(0.0f, 1.0f, 0.0f, -1.2f));
+//        t3d.setScale(1.00);
+//        walec_glowny.setTransform(t3d);
+//
+//        t3d.set(new Vector3f(0.0f, 0.0f, 0.0f));
+//        t3d.setRotation(new AxisAngle4f(0.0f, 0.0f, 1.57f, (float) Math.PI / 2));
+//        t3d.setScale(1.0);
+//        walec_srodek.setTransform(t3d);
+//
+//        t3d.set(new Vector3f(0.0f, 0.0f, 0.0f));
+//        t3d.setRotation(new AxisAngle4f(0.0f, 0.0f, 1.57f, (float) Math.PI));
+//        t3d.setScale(0.7);
+//        walec_gora.setTransform(t3d);
+//
+//        t3d.set(new Vector3d(0.0, 0.0, 0.0));
+//        t3d.setRotation(new AxisAngle4f(0.0f, 1.0f, 0.0f, -1.2f));
+//        t3d.setScale(2.0);
+//        kula_1.setTransform(t3d);
+//
+//        t3d.set(new Vector3d(0.0, 0.0, 0.0));
+//        t3d.setRotation(new AxisAngle4f(0.0f, 1.0f, 0.0f, -1.2f));
+//        t3d.setScale(1.5);
+//        kula_2.setTransform(t3d);
+//
+//        t3d.set(new Vector3d(0.0, 0.0, 0.0));
+//        t3d.setRotation(new AxisAngle4f(0.0f, 1.0f, 0.0f, -1.2f));
+//        t3d.setScale(0.9);
+//        ryst.setTransform(t3d);
+//
+//        t3d.set(new Vector3d(-0.5, -1.2, 0.0));
+//        t3d.setRotation(new AxisAngle4f(0.0f, 0.0f, 0.0f, 0.0f));
+//        t3d.setScale(0.6);
+//        lapa_1.setTransform(t3d);
+//
+//        t3d.set(new Vector3d(0.5, -1.2, 0.0));
+//        t3d.setRotation(new AxisAngle4f(0.0f, 1.0f, 0.0f, (float) Math.PI));
+//        t3d.setScale(0.6);
+//        lapa_2.setTransform(t3d);
+        
+        assignTransform3D(new Vector3d(0.0, -7.0, 0.0), new AxisAngle4f(0.0f, 1.0f, 0.0f, -1.2f), 1.00, walec_glowny);
+        assignTransform3D(new Vector3d(0.0f, 0.0, 0.0), new AxisAngle4f(0.0f, 0.0f, 1.57f, (float) Math.PI / 2), 1.00, walec_srodek);
+        assignTransform3D(new Vector3d(0.0f, 0.0, 0.0), new AxisAngle4f(0.0f, 0.0f, 1.57f, (float) Math.PI), 0.70, walec_gora);
+        assignTransform3D(new Vector3d(0.0, 0.0, 0.0), new AxisAngle4f(0.0f, 1.0f, 0.0f, -1.2f), 2.00, kula_1);
+        assignTransform3D(new Vector3d(0.0, 0.0, 0.0), new AxisAngle4f(0.0f, 1.0f, 0.0f, -1.2f), 1.50, kula_2);
+        assignTransform3D(new Vector3d(0.0, 0.0, 0.0), new AxisAngle4f(0.0f, 1.0f, 0.0f, -1.2f), 0.90, ryst);
+        assignTransform3D(new Vector3d(-0.5, -1.2, 0.0), new AxisAngle4f(0.0f, 0.0f, 0.0f, 0.0f), 0.60, lapa_1);
+        assignTransform3D(new Vector3d(0.5, -1.2, 0.0), new AxisAngle4f(0.0f, 1.0f, 0.0f, (float) Math.PI), 0.60, lapa_2);
 
         ObjectFile loader = new ObjectFile();
 
@@ -315,6 +324,13 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
 
         objRoot.compile();
         return objRoot;
+    }
+    
+    private void assignTransform3D(Vector3d vector, AxisAngle4f rotation, double scale, TransformGroup target) {
+        t3d.set(vector);
+        t3d.setRotation(rotation);
+        t3d.setScale(scale);
+        target.setTransform(t3d);
     }
 
     private void setCapabilities(Group group) {
