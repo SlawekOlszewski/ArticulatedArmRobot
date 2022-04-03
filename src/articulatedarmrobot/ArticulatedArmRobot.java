@@ -32,9 +32,11 @@ import static java.util.Map.entry;
 public class ArticulatedArmRobot extends Applet implements KeyListener {
 
     private final int port = 64003;
+    
     private SimpleUniverse universe = null;
     private ColorCube cubek = new ColorCube();
     private BoundingSphere bounds = null;
+    
     private TransformGroup tg = null;
     private TransformGroup walec_glowny = null;
     private TransformGroup walec_srodek = null;
@@ -83,17 +85,17 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
     private double kat_8 = 0;
     private double kat_9 = 0;
     private double kat_10 = 0;
-
-    private final double dzielnik = 256;
-    private final Vector3f wektor_1 = new Vector3f();
-    private final Vector3f wektor_2 = new Vector3f();
+    private StringBuilder ruchy;
 
     private boolean stop = false;
     private boolean trzyma = false;
     private boolean czy_podloga = false;
     private boolean nagrywanie = false;
     private boolean odtwarzanie = false;
-
+    
+    private final double dzielnik = 256;
+    private final Vector3f wektor_1 = new Vector3f();
+    private final Vector3f wektor_2 = new Vector3f();
     private final Map<String, String> movesMap = Map.ofEntries(
             entry("w", "s"),
             entry("a", "d"),
@@ -104,7 +106,6 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
             entry("M", "m")
     );
 
-    private StringBuilder ruchy;
 
     public ArticulatedArmRobot() {
         setLayout(new BorderLayout());
@@ -365,6 +366,7 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
             t3d.set(new Vector3f(0.0f, -1.7f, 0.0f));
             t3d_szescian.mul(t3d);
             szescian.setTransform(t3d_szescian);
+            trzyma = true;
         }
     }
 
@@ -374,7 +376,7 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
         t3d.mul(t3dstep);
         t_obrot_1.setTransform(t3d);
 
-        trzyma = stop;
+        trzyma = false;
         cubeSteering();
         addToReplay(key);
     }
@@ -386,7 +388,7 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
         t_obrot_2.setTransform(t3d);
         kat_1 = kat_1 - direction * Math.PI / dzielnik;
         kat_2 = kat_2 + direction * Math.PI / dzielnik;
-        trzyma = stop;
+        trzyma = false;
         cubeSteering();
         addToReplay(key);
     }
@@ -397,7 +399,7 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
         t_obrot_3.setTransform(t3d_obrot_3);
         kat_3 = kat_3 - direction * Math.PI / dzielnik;
         kat_4 = kat_4 + direction * Math.PI / dzielnik;
-        trzyma = stop;
+        trzyma = false;
         cubeSteering();
         addToReplay(key);
     }
@@ -406,7 +408,7 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
         t3dstep.rotY(direction * Math.PI / dzielnik);
         t3d_obrot_4.mul(t3dstep);
         t_obrot_4.setTransform(t3d_obrot_4);
-        trzyma = stop;
+        trzyma = false;
         cubeSteering();
         addToReplay(key);
     }
@@ -417,7 +419,7 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
         t_obrot_4.setTransform(t3d_obrot_4);
         kat_5 = kat_5 - direction * Math.PI / dzielnik;
         kat_6 = kat_6 + direction * Math.PI / dzielnik;
-        trzyma = stop;
+        trzyma = false;
         cubeSteering();
         addToReplay(key);
     }
@@ -428,7 +430,7 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
         t_obrot_4.setTransform(t3d_obrot_4);
         kat_7 = kat_7 - direction * Math.PI / dzielnik;
         kat_8 = kat_8 + direction * Math.PI / dzielnik;
-        trzyma = stop;
+        trzyma = false;
         cubeSteering();
         addToReplay(key);
     }
@@ -561,7 +563,7 @@ public class ArticulatedArmRobot extends Applet implements KeyListener {
         }
     }
 
-    private String getKey(Map<String, String> map, char value) {
+    static private String getKey(Map<String, String> map, char value) {
         String key = null;
         for (Entry entry : map.entrySet()) {
             if (entry.getValue().equals("" + value)) {
