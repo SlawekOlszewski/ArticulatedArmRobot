@@ -13,37 +13,46 @@ import javax.swing.event.*;
 import java.awt.*;
 import java.util.ArrayList;
 import javax.swing.*;
-
+/**
+ * This file make gui with sliders to remote control robot from ArticulatedArmRobot.java file.
+ * We have sliders to all 6-axis of robot arm. Sliders have parameters set to be compatible with axis of robot arm.
+ * In gui we can find on button to disconnect remote control.
+ * 
+ * @author hubert
+ */
 class Client extends JFrame implements ChangeListener, ActionListener {
-
+/**
+ * Class to set sliders parameters as major and minor tick value, characters to description of slider and set before value of slider.
+ */
     class LabelSlider {
-
         public final JLabel label;
         public final JSlider slider;
-        public final char pierwsza;
-        public char druga;
+        public final char first;
+        public char second;
         public int major = 20;
         public int minor = 1;
-        public int poprzednia = 0;
+        public int before = 0;
 
         public LabelSlider(LabelSliderConfig lsConfig) throws Exception {
-            this.pierwsza = lsConfig.labelText.toLowerCase().charAt(0);
-            this.druga = lsConfig.labelText.toLowerCase().charAt(1);
+            this.first = lsConfig.labelText.toLowerCase().charAt(0); 
+            this.second = lsConfig.labelText.toLowerCase().charAt(1);
 
             if (lsConfig.max == 2) {
                 this.major = 1;
                 this.minor = 1;
-                this.druga = 'M';
+                this.second = 'M';
             }
 
             this.label = new JLabel(lsConfig.labelText);
             this.slider = new JSlider(lsConfig.min, lsConfig.max, lsConfig.value);
         }
     }
-
+/**
+ * Class to set all of sliders. To slider of gripper we use one "if" to set this special option with only three positions.
+ */
     class LabelSliderConfig {
 
-        public double dzielnik = 0.703125;
+        public double divider = 0.703125;
         public final String labelText;
         public final int min;
         public final int max;
@@ -52,10 +61,11 @@ class Client extends JFrame implements ChangeListener, ActionListener {
         public LabelSliderConfig(int min, int max, int value, String labelText) throws Exception {
             this.labelText = labelText;
             if (max == 2) {
-                dzielnik = 1;
+                divider = 1;
             }
-            this.min = (int) (min / dzielnik);
-            this.max = (int) (max / dzielnik);
+            
+            this.min = (int) (min / divider);
+            this.max = (int) (max / divider);
             this.value = value;
         }
     }
@@ -76,7 +86,10 @@ class Client extends JFrame implements ChangeListener, ActionListener {
     JButton r = new JButton("Przelacz na lokalne sterowanie");
     Socket clientSocket = new Socket(InetAddress.getByName(ip), port);
     ObjectOutputStream outToServer = new ObjectOutputStream(clientSocket.getOutputStream());
-
+/**
+ * Class constructor
+ * @throws Exception 
+ */
     public Client() throws Exception {
         super("Zdalne sterowanie ramieniem robota");
 
@@ -88,7 +101,7 @@ class Client extends JFrame implements ChangeListener, ActionListener {
         for (LabelSliderConfig lsConfig : lsConfigs) {
             LabelSlider ls = new LabelSlider(lsConfig);
             LabelSliderList.add(ls);
-            TworzenieSlidera(ls, panel);
+            CreateSlider(ls, panel);
         }
 
         r.addActionListener(this);
@@ -96,13 +109,22 @@ class Client extends JFrame implements ChangeListener, ActionListener {
         setContentPane(panel);
         show();
     }
-
+/**
+ * 
+ * Main with only calls our constructor.
+ * @param argv
+ * @throws Exception 
+ */
     public static void main(String argv[]) throws Exception {
         new Client();
 
     }
-
-    public void TworzenieSlidera(LabelSlider ls, JPanel panel) {
+/**
+ * This function create sliders using LabelSlider class and add them position in JPanel.
+ * @param ls
+ * @param panel 
+ */
+    private void CreateSlider(LabelSlider ls, JPanel panel) {
         JSlider slider = ls.slider;
         JLabel label = ls.label;
         slider.addChangeListener(this);
@@ -114,44 +136,55 @@ class Client extends JFrame implements ChangeListener, ActionListener {
         panel.add(label);
         panel.add(Box.createRigidArea(new Dimension(0, 20)));
     }
-
+/**
+ * Function to check actually value of sliders.
+ * @param e 
+ */
     @Override
     public void stateChanged(ChangeEvent e) {
         JSlider source = (JSlider) e.getSource();
         int sleepSense = (int) source.getValue();
         for (LabelSlider ls : LabelSliderList) {
             if (source == ls.slider) {
-                Przesuwanie(ls, sleepSense);
+                Moving(ls, sleepSense);
             }
         }
     }
-
-    public void Przesuwanie(LabelSlider ls, int sleepSense) {
+/**
+ * Function to calculate value of sliders and send it to ArticulatedArmRobot.java open in our remmote connection.
+ * It send parameters as char to host.
+ * @param ls
+ * @param sleepSense 
+ */
+    private void Moving(LabelSlider ls, int sleepSense) {
         try {
             ls.label.setText(ls.label.getText().split(": ")[0] + ": " + String.valueOf(sleepSense));
-            int wynik = sleepSense - ls.poprzednia;
-            ls.poprzednia = sleepSense;
-            if (wynik > 0) {
-                for (int i = 0; i < wynik; i++) {
+            int result = sleepSense - ls.before;
+            ls.before = sleepSense;
+            if (result > 0) {
+                for (int i = 0; i < result; i++) {
                     Thread.sleep(1);
-                    outToServer.writeObject(ls.pierwsza + "\n");
+                    outToServer.writeObject(ls.first + "\n");
                 }
             } else {
-                for (int i = wynik; i < 0; i++) {
+                for (int i = result; i < 0; i++) {
                     Thread.sleep(1);
-                    outToServer.writeObject(ls.druga + "\n");
+                    outToServer.writeObject(ls.second + "\n");
                 }
             }
         } catch (Exception ex) {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+/**
+ * Function to send to host information about exit from remote connection.
+ * @param e 
+ */
     @Override
     public void actionPerformed(ActionEvent e) {
-        Object zrodlo = e.getSource();
+        Object source = e.getSource();
 
-        if (zrodlo == r) {
+        if (source == r) {
             try {
                 outToServer.writeObject('r' + "\n");
                 System.exit(0);
