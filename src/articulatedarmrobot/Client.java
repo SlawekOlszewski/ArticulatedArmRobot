@@ -18,11 +18,10 @@ import javax.swing.*;
  * We have sliders to all 6-axis of robot arm. Sliders have parameters set to be compatible with axis of robot arm.
  * In gui we can find on button to disconnect remote control.
  * 
- * @author hubert
  */
-class Client extends JFrame implements ChangeListener, ActionListener {
+public class Client extends JFrame implements ChangeListener, ActionListener {
 /**
- * Class to set sliders parameters as major and minor tick value, characters to description of slider and set before value of slider.
+ * Class to set sliders configuration parameters:  major and minor tick value, characters to description of slider and set previous value of slider.
  */
     class LabelSlider {
         public final JLabel label;
@@ -31,7 +30,7 @@ class Client extends JFrame implements ChangeListener, ActionListener {
         public char second;
         public int major = 20;
         public int minor = 1;
-        public int before = 0;
+        public int previous = 0;
 
         public LabelSlider(LabelSliderConfig lsConfig) throws Exception {
             this.first = lsConfig.labelText.toLowerCase().charAt(0); 
@@ -111,7 +110,7 @@ class Client extends JFrame implements ChangeListener, ActionListener {
     }
 /**
  * 
- * Main with only calls our constructor.
+ * Main with only call to our constructor.
  * @param argv
  * @throws Exception 
  */
@@ -137,7 +136,7 @@ class Client extends JFrame implements ChangeListener, ActionListener {
         panel.add(Box.createRigidArea(new Dimension(0, 20)));
     }
 /**
- * Function to check actually value of sliders.
+ * Function to catch the state change of slider.
  * @param e 
  */
     @Override
@@ -159,8 +158,8 @@ class Client extends JFrame implements ChangeListener, ActionListener {
     private void Moving(LabelSlider ls, int sleepSense) {
         try {
             ls.label.setText(ls.label.getText().split(": ")[0] + ": " + String.valueOf(sleepSense));
-            int result = sleepSense - ls.before;
-            ls.before = sleepSense;
+            int result = sleepSense - ls.previous;
+            ls.previous = sleepSense;
             if (result > 0) {
                 for (int i = 0; i < result; i++) {
                     Thread.sleep(1);

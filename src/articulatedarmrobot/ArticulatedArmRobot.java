@@ -36,7 +36,6 @@ import static java.util.Map.entry;
  * local network and steer the arm remotely. 
  * There's also a possibility to steer the arm sequentialy, sequence
  * of moves can be recorded and then repeated by the arm automatically. 
- * @author Sławek Olszewski
  */
 public class ArticulatedArmRobot extends Applet implements KeyListener {
 
